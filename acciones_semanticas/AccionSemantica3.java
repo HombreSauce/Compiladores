@@ -1,22 +1,28 @@
 package acciones_semanticas;
 
-import app.Token;
+import aplicacion.ControlPosicion;
+import aplicacion.Token;
 import datos.EntradaTablaSimbolos;
+import datos.TablaIdentificadorToken;
 import datos.TablaSimbolos;
 
 public class AccionSemantica3 implements AccionSemantica{ 
     private TablaSimbolos tablaSimbolos;
+    private TablaIdentificadorToken tablaIDToken;
 
-    public AccionSemantica3(TablaSimbolos TS) {
+    public AccionSemantica3(TablaSimbolos TS, TablaIdentificadorToken tablaIdentificadorToken) {
         tablaSimbolos = TS;
+        tablaIDToken = tablaIdentificadorToken;
     }
 
     @Override
-    public Token ejecutar(char simbolo, int estadoActual, StringBuilder lexema) {
-        //devuelve uno para atras
-        lexema.substring(0, 20);
+    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura) {
+        posicionLectura.decrementar(); //PERO ESTA MIERDA NO FUNCIONA
+        if (lexema.length() > 20) {
+            lexema.setLength(20);
+        }
         EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString());
-        Token token = new Token(100, entrada); //cambiar 100 por un ID de la tabla de alfabeto
+        Token token = new Token(tablaIDToken.getID("ID"), entrada);
         return token;
     }
 } 
