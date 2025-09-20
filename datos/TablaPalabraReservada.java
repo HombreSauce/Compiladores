@@ -1,10 +1,10 @@
 package datos;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TablaPalabraReservada {
-    public static final Set<String> TPR = new HashSet<>();
+    public static final Map<String,Integer> TPR = new HashMap<>();
 
     static {
         TPR.put("if",     1);
@@ -22,8 +22,3 @@ public class TablaPalabraReservada {
         TPR.put("trunc", 13);
     }
 }
-
-// Esto se usa asi:
-// if (TablaPalabraReservada.TPR.contains(lexema)) {
-//      es palabra reservada
-// }
