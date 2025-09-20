@@ -9,29 +9,29 @@ public class TablaIdentificadorToken {
 
     static {
         int id = 100;
-        mapa_token.put("ID", id++);
-        mapa_token.put("CTE", id++);
-        mapa_token.put("CTESTR", id++);
-        mapa_token.put("+", id++);
-        mapa_token.put("-", id++);
-        mapa_token.put("*", id++);
-        mapa_token.put("/", id++);
-        mapa_token.put("=", id++);
-        mapa_token.put(":=", id++);
-        mapa_token.put(">", id++);
-        mapa_token.put("<", id++);
-        mapa_token.put(">=", id++);
-        mapa_token.put("<=", id++);
-        mapa_token.put("==", id++);
-        mapa_token.put("=!", id++);
-        mapa_token.put("(", id++);
-        mapa_token.put(")", id++);
-        mapa_token.put("{", id++);
-        mapa_token.put("}", id++);
-        mapa_token.put("_", id++);
-        mapa_token.put(";", id++);
-        mapa_token.put(",", id++);
-        mapa_token.put("->", id++);
+        mapa_token.put("ID", id++); //100
+        mapa_token.put("CTE", id++); //101
+        mapa_token.put("CTESTR", id++); //102
+        mapa_token.put("+", id++); //103
+        mapa_token.put("-", id++); //104
+        mapa_token.put("*", id++); //105
+        mapa_token.put("/", id++); //106
+        mapa_token.put("=", id++); //107
+        mapa_token.put(":=", id++); //108
+        mapa_token.put(">", id++); //109
+        mapa_token.put("<", id++); //110
+        mapa_token.put(">=", id++); //111
+        mapa_token.put("<=", id++); //112
+        mapa_token.put("==", id++); //113
+        mapa_token.put("=!", id++); //114
+        mapa_token.put("(", id++); //115
+        mapa_token.put(")", id++); //116
+        mapa_token.put("{", id++); //117
+        mapa_token.put("}", id++); //118
+        mapa_token.put("_", id++); //119
+        mapa_token.put(";", id++); //120
+        mapa_token.put(",", id++); //121
+        mapa_token.put("->", id++); //122
     }
 
     public static TablaIdentificadorToken getInstancia() {
