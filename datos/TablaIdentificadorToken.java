@@ -11,6 +11,7 @@ public class TablaIdentificadorToken {
         int id = 100;
         mapa_token.put("ID", id++);
         mapa_token.put("CTE", id++);
+        mapa_token.put("CTESTR", id++);
         mapa_token.put("+", id++);
         mapa_token.put("-", id++);
         mapa_token.put("*", id++);
