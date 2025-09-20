@@ -9,7 +9,7 @@ public class MatrizAccionSemantica {
     private static final AccionSemantica AS1 = new AccionSemantica1();
     private static final AccionSemantica AS2 = new AccionSemantica2();
     private static final AccionSemantica AS3 = new AccionSemantica3(tablaSimbolos, tablaIDToken);
-    private static final AccionSemantica AS4 = new AccionSemantica1();
+    private static final AccionSemantica AS4 = new AccionSemantica4(tablaIDToken);
     private static final AccionSemantica AS5 = new AccionSemantica1();
     private static final AccionSemantica AS6 = new AccionSemantica1();
     private static final AccionSemantica AS7 = new AccionSemantica1();
