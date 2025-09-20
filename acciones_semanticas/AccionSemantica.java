@@ -1,6 +1,6 @@
 package acciones_semanticas;
 
-import app.Token;
+import aplicacion.Token;
 
 public interface AccionSemantica {
 

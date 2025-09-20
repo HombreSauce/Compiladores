@@ -1,32 +1,40 @@
+package aplicacion;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import acciones_semanticas.AccionSemantica;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import datos.*;
-import acciones_semanticas.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 
 public class AnalizadorLexico {
 
     private String ins;
     private int inicioIns;
-    private static Map<String, Integer> alfabeto;
+    private static final Map<String, Integer> alfabeto = datos.Alfabeto.alfabeto;
     private int[][] matEstados;
     private AccionSemantica[][] matAcciones;
     private int EstadoFinal = datos.MatrizTransicion.FINAL;
 
+
     private AnalizadorLexico(String ins){
         this.ins = ins;
         this.inicioIns = 0;
-        this.alfabeto = new HashMap<>();                                      // RELLENAR
         this.matEstados = datos.MatrizTransicion.MATRIZ_ESTADOS;
         this.matAcciones = datos.MatrizAccionSemantica.MATRIZ_AS;
     }
 
     // Convierte la letra a la letra esperada por el alfabeto (o null si no pertenece)
     private String miniTokenizar(String s) {
-        return null;     
+        return "+";     
     }
+
+
 
     public String getToken() { // tiene que devolver la direccion a la tabla de simbolos
         int estadoActual = 0;                         // Inicia en el estado inicial
@@ -58,23 +66,27 @@ public class AnalizadorLexico {
         return posTablaSimbolos;
     }
 
-    public static void main(String[] args) {
-        // Inicializá matEstados, matAcciones y alfabeto antes de usar
+    public static void main(String[] args){
 
-        //-- VERSION CON STRING
-        String ins = "IF ( 3 > 2) THEN { x = 3I;} ELSE { x = 2I; }"; // Ejemplo
-        String rutaArchivo = args[0];   //esto lee el path que esta en consola y lo mete en un string // ESTO REEMPLAZA AL INS
-        
-        //-- VERSION CON BIBLIOTECAS
         // Verificamos que el usuario pase un archivo como argumento
-        //if (args.length < 1) {
-        //    System.err.println("Uso: java AnalizadorLexico <ruta-archivo>");
-        //    System.exit(1);
-        //}
+        if (args.length < 1) {
+            System.err.println("Uso: java AnalizadorLexico <archivo>");
+            System.exit(1);
+        }
 
-        AnalizadorLexico analizadorLexico = new AnalizadorLexico(ins); 
-        
-        String token = analizadorLexico.getToken();
-        System.out.println(token);
+        try {//esto carga lo que hay en ese path y lo mete en un string
+            String contenido = Files.readString(Paths.get(args[0]));
+            System.out.println("Contenido del archivo:");
+            System.out.println(contenido);
+
+            //creo la instancia del lexico con el programa leido como un string
+            AnalizadorLexico analizadorLexico = new AnalizadorLexico(contenido); 
+            
+            String token = analizadorLexico.getToken();
+            System.out.println(token);
+
+        } catch (IOException e) {
+            System.err.println("Error al leer el archivo: " + e.getMessage());
+        }
     }
 }

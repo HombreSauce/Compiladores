@@ -1,7 +1,9 @@
-package app;
+package aplicacion;
+
 import datos.EntradaTablaSimbolos;
 
 public class Token {
+    
     private int identificadorToken;
     private EntradaTablaSimbolos entradaTS;
 

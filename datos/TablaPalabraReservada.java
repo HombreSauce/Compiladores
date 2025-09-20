@@ -1,10 +1,10 @@
 package datos;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 
 public class TablaPalabraReservada {
-    public static final Set<String> TPR = new HashSet<>();
+    public static final Map<String, Integer> TPR = new HashMap<>();
 
     static {
         TPR.put("if",     1);
