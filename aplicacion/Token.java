@@ -1,5 +1,5 @@
-/*
-package app;
+package aplicacion;
+
 import datos.EntradaTablaSimbolos;
 
 public class Token {
@@ -10,6 +10,12 @@ public class Token {
         this.identificadorToken = identificadorToken;
         this.entradaTS = entradaTS;
     }
-}
 
-*/
+    public int getIDToken() {
+        return identificadorToken;
+    }
+
+    public EntradaTablaSimbolos getEntradaTS() {
+        return entradaTS;
+    }
+}

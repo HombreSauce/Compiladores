@@ -1,7 +1,11 @@
-package app;
-import acciones_semanticas.*;
-import app.funcionalidades.MiniTokenizador;
+package aplicacion;
 import java.util.Map;
+//import java.io.File;
+//import java.io.FileReader;
+//import java.io.IOException;
+//import datos.*
+//import acciones_semanticas.*;
+import app.funcionalidades.MiniTokenizador;
 public class AnalizadorLexico {
 
     private String ins;

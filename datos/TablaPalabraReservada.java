@@ -1,10 +1,11 @@
 package datos;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 
 public class TablaPalabraReservada {
-    public static final Map<String,Integer> TPR = new HashMap<>();
+    private static TablaPalabraReservada instancia;
+    private static final Map<String, Integer> TPR = new HashMap<>();
 
     static {
         TPR.put("if",     1);
@@ -20,5 +21,16 @@ public class TablaPalabraReservada {
         TPR.put("lambda",11);
         TPR.put("cv",    12);
         TPR.put("trunc", 13);
+    }
+
+    public static TablaPalabraReservada getInstancia() {
+        if (instancia == null) {
+            instancia = new TablaPalabraReservada();
+        }
+        return instancia;
+    }
+
+    public int getID(String clave) {
+        return TPR.get(clave);
     }
 }

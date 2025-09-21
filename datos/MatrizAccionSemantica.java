@@ -2,18 +2,22 @@ package datos;
 import acciones_semanticas.*;
 
 public class MatrizAccionSemantica {
+    //Instancias de las tablas anteriores
+    private static TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
+    private static TablaIdentificadorToken tablaIDToken = TablaIdentificadorToken.getInstancia();
+    private static TablaPalabraReservada tablaPalabraReservada = TablaPalabraReservada.getInstancia();
     // Instancias únicas de acciones
     private static final AccionSemantica AS1 = new AccionSemantica1();
     private static final AccionSemantica AS2 = new AccionSemantica2();
-    private static final AccionSemantica AS3 = new AccionSemantica1();
-    private static final AccionSemantica AS4 = new AccionSemantica1();
-    private static final AccionSemantica AS5 = new AccionSemantica1();
-    private static final AccionSemantica AS6 = new AccionSemantica1();
-    private static final AccionSemantica AS7 = new AccionSemantica1();
-    private static final AccionSemantica AS8 = new AccionSemantica1();
-    private static final AccionSemantica AS9 = new AccionSemantica1();
-    private static final AccionSemantica AS10 = new AccionSemantica1();
-    private static final AccionSemantica AS11 = new AccionSemantica1();
+    private static final AccionSemantica AS3 = new AccionSemantica3(tablaSimbolos, tablaIDToken);
+    private static final AccionSemantica AS4 = new AccionSemantica4(tablaIDToken);
+    private static final AccionSemantica AS5 = new AccionSemantica5(tablaIDToken);
+    private static final AccionSemantica AS6 = new AccionSemantica6(tablaIDToken);
+    private static final AccionSemantica AS7 = new AccionSemantica7(tablaPalabraReservada);
+    private static final AccionSemantica AS8 = new AccionSemantica8(tablaSimbolos, tablaIDToken);
+    private static final AccionSemantica AS9 = new AccionSemantica9(tablaSimbolos, tablaIDToken);
+    private static final AccionSemantica AS10 = new AccionSemantica10();
+    private static final AccionSemantica AS11 = new AccionSemantica11(tablaSimbolos, tablaIDToken);
     private static final AccionSemantica err = new AccionSemantica1(); //ACCION SEMANTICA ERROR SERíA??????
     
     public static final AccionSemantica[][] MATRIZ_AS = {
