@@ -4,7 +4,7 @@ public class ControlPosicion {
     private int posicion;
 
     public ControlPosicion() {
-        posicion = 1;
+        posicion = 0;
     }
 
     public void incrementar() {
@@ -17,5 +17,9 @@ public class ControlPosicion {
 
     public int getPosicion() {
         return posicion;
+    }   
+
+    public void setPosicion (int posicion) {
+        this.posicion = posicion;
     }
 }

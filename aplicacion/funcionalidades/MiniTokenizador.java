@@ -1,8 +1,12 @@
-package app.funcionalidades;
+package aplicacion.funcionalidades;
 
 public class MiniTokenizador {
     public static String miniTokenizar(char ch) {
-        if (Character.isUpperCase(ch)) {
+        if (ch == 'I') {
+            return "I";
+        } else if (ch == 'D') {
+            return "D";
+        } else if (Character.isUpperCase(ch)) {
             return "L";
         } else if (Character.isLowerCase(ch)) {
             return "l";
