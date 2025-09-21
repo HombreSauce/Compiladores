@@ -1,4 +1,4 @@
-package funcionalidades;
+package app.funcionalidades;
 
 public class MiniTokenizador {
     public static String miniTokenizar(char ch) {

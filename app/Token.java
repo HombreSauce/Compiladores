@@ -1,3 +1,4 @@
+/*
 package app;
 import datos.EntradaTablaSimbolos;
 
@@ -10,3 +11,5 @@ public class Token {
         this.entradaTS = entradaTS;
     }
 }
+
+*/

@@ -38,7 +38,7 @@ public final class Alfabeto {
 
         // blancos / control
         alfabeto.put("espacio", idx++);
-        alfabeto.put("\\n", idx++);  // usa "\\n" si tu miniTokenizar devuelve "\\n"
+        alfabeto.put("salto", idx++);  // usa "\\n" si tu miniTokenizar devuelve "\\n"
         alfabeto.put("tab", idx++);  // idem con '\t'
     }
 }
