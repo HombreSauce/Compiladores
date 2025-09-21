@@ -5,6 +5,7 @@ public class MatrizAccionSemantica {
     //Instancias de las tablas anteriores
     private static TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
     private static TablaIdentificadorToken tablaIDToken = TablaIdentificadorToken.getInstancia();
+    private static TablaPalabraReservada tablaPalabraReservada = TablaPalabraReservada.getInstancia();
     // Instancias únicas de acciones
     private static final AccionSemantica AS1 = new AccionSemantica1();
     private static final AccionSemantica AS2 = new AccionSemantica2();
@@ -12,7 +13,7 @@ public class MatrizAccionSemantica {
     private static final AccionSemantica AS4 = new AccionSemantica4(tablaIDToken);
     private static final AccionSemantica AS5 = new AccionSemantica5(tablaIDToken);
     private static final AccionSemantica AS6 = new AccionSemantica6(tablaIDToken);
-    private static final AccionSemantica AS7 = new AccionSemantica1();
+    private static final AccionSemantica AS7 = new AccionSemantica7(tablaPalabraReservada);
     private static final AccionSemantica AS8 = new AccionSemantica1();
     private static final AccionSemantica AS9 = new AccionSemantica1();
     private static final AccionSemantica AS10 = new AccionSemantica1();
