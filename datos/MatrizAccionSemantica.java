@@ -16,8 +16,8 @@ public class MatrizAccionSemantica {
     private static final AccionSemantica AS7 = new AccionSemantica7(tablaPalabraReservada);
     private static final AccionSemantica AS8 = new AccionSemantica1();
     private static final AccionSemantica AS9 = new AccionSemantica1();
-    private static final AccionSemantica AS10 = new AccionSemantica1();
-    private static final AccionSemantica AS11 = new AccionSemantica1();
+    private static final AccionSemantica AS10 = new AccionSemantica10();
+    private static final AccionSemantica AS11 = new AccionSemantica11(tablaSimbolos, tablaIDToken);
     private static final AccionSemantica err = new AccionSemantica1(); //ACCION SEMANTICA ERROR SERíA??????
     
     public static final AccionSemantica[][] MATRIZ_AS = {
