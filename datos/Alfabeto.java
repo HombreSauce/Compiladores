@@ -8,7 +8,6 @@ public final class Alfabeto {
     public static final Map<String, Integer> alfabeto = new HashMap<>();
 
     static {
-        int idx = 0;
         // clases
         alfabeto.put("L", 0);
         alfabeto.put("l", 11);
