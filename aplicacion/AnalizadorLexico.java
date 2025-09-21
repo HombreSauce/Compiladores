@@ -1,82 +1,80 @@
 package aplicacion;
-
-import java.util.HashMap;
+import acciones_semanticas.AccionSemantica;
 import java.util.Map;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import aplicacion.funcionalidades.MiniTokenizador;
 import datos.*;
-import acciones_semanticas.*;
-
 public class AnalizadorLexico {
 
-    private String ins;
-    private int inicioIns;
-    private static Map<String, Integer> alfabeto;
-    private int[][] matEstados;
+    private String ins;  // CODIGO QUE LEE EL ARCHIVO
+    private ControlPosicion inicioIns;
+
+    private static final Map<String, Integer> alfabeto = Alfabeto.alfabeto; // MIRAR DE PONER UN GET INSTANCIA
+
+    private final int[][] matEstados;
     private AccionSemantica[][] matAcciones;
-    private int EstadoFinal = datos.MatrizTransicion.FINAL;
+    private int EstadoFinal = MatrizTransicion.FINAL;
 
     private AnalizadorLexico(String ins){
         this.ins = ins;
-        this.inicioIns = 0;
-        this.alfabeto = new HashMap<>();                                      // RELLENAR
-        this.matEstados = datos.MatrizTransicion.MATRIZ_ESTADOS;
-        this.matAcciones = datos.MatrizAccionSemantica.MATRIZ_AS;
+        inicioIns = new ControlPosicion();
+        this.matEstados = MatrizTransicion.MATRIZ_ESTADOS; 
+        this.matAcciones = MatrizAccionSemantica.MATRIZ_AS;
     }
 
-    // Convierte la letra a la letra esperada por el alfabeto (o null si no pertenece)
-    private String miniTokenizar(String s) {
-        return null;     
-    }
+    public Token getToken() { // tiene que devolver la direccion a la tabla de simbolos  // TOMAR EN CUENTA EL FIN DE ARCHIVO
 
-    public String getToken() { // tiene que devolver la direccion a la tabla de simbolos
         int estadoActual = 0;                         // Inicia en el estado inicial
         StringBuilder lexema = new StringBuilder();   // Inicia el lexema vacio
-        String posTablaSimbolos = "fila 14 y tu puta madre";
+        Token token = null;
 
-        for (int i = inicioIns; i < ins.length(); i++) {      // Recorre las instrucciones 
-            String simboloCrudo = ins.substring(i, i + 1);    // Caracter por caracter
-            String simbolo = miniTokenizar(simboloCrudo);     // Convierte el simbolo leido a simbolo reconocibimpole por el Alfabeto
-            
+        for (int i = inicioIns.getPosicion(); i < ins.length(); i++) {      // Recorre las instrucciones // MIRAR DE PASAR A WHILE
+            char simboloCrudo = ins.charAt(inicioIns.getPosicion());    // Caracter por caracter
+            String simbolo = MiniTokenizador.miniTokenizar(simboloCrudo); // Convierte el simbolo leido a simbolo reconocible por el Alfabeto
             int col = alfabeto.get(simbolo);     // Ubicas el indice columna para la matriz de transicion 
 
-            lexema.append(simboloCrudo);         // Lo agrego al lexema (if)
-
             if (estadoActual != EstadoFinal) {
+                //System.out.println("Estado actual: " + estadoActual + ", simbolo: '" + simboloCrudo + "' (" + simbolo + "), columna: " + col + " lexema-" + lexema +"-");
+                token = matAcciones[estadoActual][col].ejecutar(simboloCrudo, lexema, inicioIns); // EJECUTA LA ACCION SEMANTICA
                 estadoActual = matEstados[estadoActual][col];
-                // Si quisieras ejecutar acción semántica: // tambien hay q controlar errores aqui
-                // AccionS a = matAcciones[estadoActual][col]; //////////////////ACA SE  GUARDA EN LA TABLA DE SIMBOLOS
-                // if (a != null) tiraToken += a.ejecutar(...);
+                inicioIns.incrementar();
             } else {
-                // Si llegaste a final, podrías cerrar token actual ejecutar alguna AS
-                // Por ahora, simplemente cortamos y ponemos el inicioIns con el avance para que ya pueda consumir el sig token
-                // token = que token es
-                inicioIns = i-1; // -1 o sin nada depende de la AS, pero ya  se guarda lo avanzado
-                posTablaSimbolos = /* tablaSimbolos.insertar(lexema.toString(), token) */ "puto";
-                break; // corTA EL BUCLE
+                //System.out.println("Estado actual: " + estadoActual + ", simbolo: '" + simboloCrudo + "' (" + simbolo + "), columna: " + col + " lexema-" + lexema +"-");
+                break; // corta el bucle
             }
         }
-        return posTablaSimbolos;
+        return token;
     }
 
-    public static void main(String[] args) {
-        // Inicializá matEstados, matAcciones y alfabeto antes de usar
+    public static void main(String[] args){
 
-        //-- VERSION CON STRING
-        String ins = "IF ( 3 > 2) THEN { x = 3I;} ELSE { x = 2I; }"; // Ejemplo
-        String rutaArchivo = args[0];   //esto lee el path que esta en consola y lo mete en un string // ESTO REEMPLAZA AL INS
-        
-        //-- VERSION CON BIBLIOTECAS
         // Verificamos que el usuario pase un archivo como argumento
         //if (args.length < 1) {
-        //    System.err.println("Uso: java AnalizadorLexico <ruta-archivo>");
+        //    System.err.println("Uso: java AnalizadorLexico <archivo>");
         //    System.exit(1);
         //}
 
-        AnalizadorLexico analizadorLexico = new AnalizadorLexico(ins); 
-        
-        String token = analizadorLexico.getToken();
-        System.out.println(token);
+        //try {//esto carga lo que hay en ese path y lo mete en un string
+        //    String contenido = Files.readString(Paths.get(args[0]));
+        //    System.out.println("Contenido del archivo:");
+        //    System.out.println(contenido);
+        //                       109,101,116,117
+            String contenido = "if ( 3I > 2I) { X = 3I;} else { X := 2I; }"; // Ejemplo            
+            //creo la instancia del lexico con el programa leido como un string
+            AnalizadorLexico analizadorLexico = new AnalizadorLexico(contenido); 
+
+            for (int i = 0; i < 30; i++) { // Pido tokens hasta que se acabe el string
+                Token token = analizadorLexico.getToken();
+                if (token != null) {
+                    System.out.println("Token: " + token.getIDToken());
+                } else {
+                    System.out.println("Fin del análisis léxico.");
+                    break;
+                }
+
+            }
+
+       //} catch (IOException e) {
+       //    System.err.println("Error al leer el archivo: " + e.getMessage());
+       //}
     }
 }

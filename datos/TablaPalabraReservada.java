@@ -34,8 +34,3 @@ public class TablaPalabraReservada {
         return TPR.get(clave);
     }
 }
-
-// Esto se usa asi:
-// if (TablaPalabraReservada.TPR.contains(lexema)) {
-//      es palabra reservada
-// }
