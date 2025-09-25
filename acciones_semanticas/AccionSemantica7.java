@@ -16,8 +16,8 @@ public class AccionSemantica7 implements AccionSemantica{
         posicionLectura.decrementar();
         int idToken = tpr.getID(lexema.toString());
         if (idToken == -1) {
-            System.out.println("Error Léxico: Palabra reservada inválida '" + lexema.toString() + "' en la línea " + lineaCodigoActual);
-            System.out.println("Quizás quisiste escribir: '" + tpr.mejorMatchPorPrefijo(lexema.toString()) + "'");
+            System.err.println("Error Léxico: Palabra reservada inválida '" + lexema.toString() + "' en la línea " + lineaCodigoActual);
+            System.err.println("Quizás quisiste escribir: '" + tpr.mejorMatchPorPrefijo(lexema.toString()) + "'");
             return null; // o lanzar excepción
         }
         Token token = new Token(tpr.getID(lexema.toString()), null);

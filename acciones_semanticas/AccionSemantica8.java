@@ -24,7 +24,7 @@ public class AccionSemantica8 implements AccionSemantica{
             Token token = new Token(tablaIDToken.getID("CTE"), entrada);
             return token;
         } else {
-            System.out.println("Error Léxico: Constante numérica entera fuera de rango '" + lexema.toString() + "' en la línea " + lineaCodigoActual);
+            System.err.println("Error Léxico: Constante numérica entera fuera de rango '" + lexema.toString() + "' en la línea " + lineaCodigoActual);
             return null;
         }
     }
