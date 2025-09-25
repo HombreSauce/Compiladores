@@ -56,6 +56,8 @@ public class MiniTokenizador {
             return "espacio";
         } else if (ch == '\n') {
             return "salto";
+        } else if (ch == '\r') {
+            return "salto";
         }
         return null; // si no lo reconocés
     }

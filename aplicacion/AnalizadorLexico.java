@@ -1,6 +1,9 @@
 package aplicacion;
 import acciones_semanticas.AccionSemantica;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Map;
 import aplicacion.funcionalidades.MiniTokenizador;
@@ -39,7 +42,7 @@ public class AnalizadorLexico {
         StringBuilder lexema = new StringBuilder();   // Inicia el lexema vacio
         Token token = null;
 
-        while (inicioIns.getPosicion() < ins.length()) {      // Recorre las instrucciones // MIRAR DE PASAR A WHILE
+        while (inicioIns.getPosicion() < ins.length()) {      // Recorre las instrucciones 
             char simboloCrudo = ins.charAt(inicioIns.getPosicion());    // Caracter por caracter
             String simbolo = MiniTokenizador.miniTokenizar(simboloCrudo); // Convierte el simbolo leido a simbolo reconocible por el Alfabeto
             int col = alfabeto.get(simbolo);     // Ubicas el indice columna para la matriz de transicion 
@@ -51,7 +54,6 @@ public class AnalizadorLexico {
                 inicioIns.incrementar();   
                 controlSaltoLinea(simboloCrudo); // CONTROL DE LINEA
             } else {
-                // System.out.println("linea :" + lineaPos.getPosicion()+"-"+lexema+"-");
                 break; // corta el bucle
             }
         }
@@ -65,26 +67,21 @@ public class AnalizadorLexico {
     }
 
     public static void main(String[] args){
-
         // Verificamos que el usuario pase un archivo como argumento
-        //if (args.length < 1) {
-        //    System.err.println("Uso: java AnalizadorLexico <archivo>");
-        //    System.exit(1);
-        //}
+        if (args.length < 1) {
+           System.err.println("Uso: java AnalizadorLexico <archivo>");
+           System.exit(1);
+        }
 
-        //try {//esto carga lo que hay en ese path y lo mete en un string
-        //    String contenido = Files.readString(Paths.get(args[0]));
-        //    System.out.println("Contenido del archivo:");
-        //    System.out.println(contenido);
-        //                       109,101,116,117
-            String contenido = "if ( 3I > 2I) { X = 3I;} else { X := 2I; \n" + //
-                                "\n" + //
-                                " 3I if}"; // Ejemplo            
+        try {//esto carga lo que hay en ese path y lo mete en un string
+            String contenido = Files.readString(Paths.get(args[0]));
+            System.out.println("Contenido del archivo:");
+            System.out.println(contenido);
             //creo la instancia del lexico con el programa leido como un string
             AnalizadorLexico analizadorLexico = new AnalizadorLexico(contenido); 
             Token token = null;
 
-            while ((token = analizadorLexico.getToken()) != null) { // Pido tokens hasta que se acabe el string
+            while ((token = analizadorLexico.getToken()) != null) { // Pido tokens hasta que se acabe el string (devuelve null)
                 System.out.println("Token ID: " + token.getIDToken());
                 if (token.getIDToken() == 101 || token.getIDToken() == 100 || token.getIDToken() == 102) {
                     System.out.println("Lexema: '" + token.getEntradaTS().getLexema());
@@ -93,9 +90,8 @@ public class AnalizadorLexico {
                 }
             }
             System.out.println("Fin del análisis léxico.");
-
-       //} catch (IOException e) {
-       //    System.err.println("Error al leer el archivo: " + e.getMessage());
-       //}
+        } catch (IOException e) {
+          System.err.println("Error al leer el archivo: " + e.getMessage());
+        }
     }
 }
