@@ -5,7 +5,7 @@ import aplicacion.Token;
 
 public class AccionSemantica1 implements AccionSemantica{ 
     @Override
-    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura) {
+    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
         lexema.delete(0, lexema.length());
         lexema.append(simbolo);
         return null;

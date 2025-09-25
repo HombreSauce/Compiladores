@@ -19,7 +19,7 @@ public class AccionSemantica9 implements AccionSemantica {
     }
     
     @Override
-    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura) {
+    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
         posicionLectura.decrementar();
         StringBuilder numero = new StringBuilder(lexema);
         float num;
@@ -34,7 +34,7 @@ public class AccionSemantica9 implements AccionSemantica {
             num = Float.parseFloat(numero.toString());
         }
         if((num >= MIN_NORMAL && num <= MAX_VALUE || num == 0.0)) {
-            EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString());
+            EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);
             Token token = new Token(tablaIDToken.getID("CTE"), entrada);
             return token;
         } else {

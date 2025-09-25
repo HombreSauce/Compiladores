@@ -12,7 +12,7 @@ public class AccionSemantica5 implements AccionSemantica{
     }
 
     @Override
-    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura) {
+    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
         StringBuilder aux = new StringBuilder(); 
         aux.append(simbolo);
         Token token = new Token(tablaIDToken.getID(aux.toString()), null);

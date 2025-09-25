@@ -19,11 +19,13 @@ public class TablaSimbolos {
         return tablaSimbolos.get(lexema);
     }
 
-    public EntradaTablaSimbolos insertar(String lexema) {
+    public EntradaTablaSimbolos insertar(String lexema, int nroLinea) {
         if (tablaSimbolos.containsKey(lexema)) {
+            EntradaTablaSimbolos entrada = tablaSimbolos.get(lexema);
+            entrada.agregarLinea(nroLinea);
             return tablaSimbolos.get(lexema);
         } else {
-            EntradaTablaSimbolos nuevaEntrada = new EntradaTablaSimbolos(lexema);
+            EntradaTablaSimbolos nuevaEntrada = new EntradaTablaSimbolos(lexema, nroLinea);
             tablaSimbolos.put(lexema, nuevaEntrada);
             return nuevaEntrada;
         }
