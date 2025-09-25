@@ -5,7 +5,7 @@ import aplicacion.ControlPosicion;
 
 public class AccionSemanticaNULL implements AccionSemantica {
     @Override
-    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura) {
+    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
         return null;
     }
 }

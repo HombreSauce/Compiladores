@@ -12,7 +12,7 @@ public class AccionSemantica7 implements AccionSemantica{
     }
 
     @Override
-    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura) {
+    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
         posicionLectura.decrementar();
         Token token = new Token(tpr.getID(lexema.toString()), null);
         return token;

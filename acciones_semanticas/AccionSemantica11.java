@@ -16,11 +16,11 @@ public class AccionSemantica11 implements AccionSemantica{
     }
 
     @Override
-    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura) {
+    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
         String lexemaSinSaltos = lexema.toString().replace("\n", " ").replace("\r", " ");
         lexema.setLength(0);
         lexema.append(lexemaSinSaltos);
-        EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString());
+        EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);
         Token token = new Token(tablaIDToken.getID("CTESTR"), entrada);
         return token;
     }

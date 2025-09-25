@@ -23,19 +23,19 @@ public class MatrizAccionSemantica {
 
     
     public static final AccionSemantica[][] MATRIZ_AS = {
-        //  L     num    %    +    *    /     -     :     =     <     >     l     .    @     &     Tab    \n    espacio   ,     ;    (    )     {     }   _    I     D    !    C
-        {  AS1,   AS1,  err, AS5, AS5, AS5,  AS1,  AS1,  AS1,  AS1,  AS1,  AS1,  AS1, ASnull, AS10,  ASnull,  ASnull,  ASnull,   AS5,  AS5, AS5, AS5,  AS5, AS5, AS5, AS1,  AS1, err, err }, // Estado 0
-        {  AS2,   AS2,  AS2, AS3, AS3, AS3,  AS3,  AS3,  AS3,  AS3,  AS3,  AS3,  AS3,  AS3,  AS3,   AS3,   AS3,   AS3,   AS3,  AS3, AS3, AS3,  AS3, AS3, AS3, AS2,  AS2, AS3, AS3 }, // Estado 1
-        {  err,   err,  err, err, err, err,  err,  err,  AS6,  err,  err,  err,  err,  err,  err,   err,   err,   err,   err,  err, err, err,  err, err, err, err,  err, err, err }, // Estado 2
-        {  AS4,   AS4,  AS4, AS4, AS4, AS4,  AS4,  AS4,  AS6,  AS4,  AS4,  AS4,  AS4,  AS4,  AS4,   AS4,   AS4,   AS4,   AS4,  AS4, AS4, AS4,  AS4, AS4, AS4,  AS4, AS4, AS4, AS4 }, // Estado 3
-        {  AS4,   AS4,  AS4, AS4, AS4, AS4,  AS4,  AS4,  AS6,  AS4,  AS4,  AS4,  AS4,  AS4,  AS4,   AS4,   AS4,   AS4,   AS4,  AS4, AS4, AS4,  AS4, AS4, AS4,  AS4, AS4, AS4, AS4 }, // Estado 4
-        {  AS4,   AS4,  AS4, AS4, AS4, AS4,  AS4,  AS4,  AS4,  AS4,  AS6,  AS4,  AS4,  AS4,  AS4,   AS4,   AS4,   AS4,   AS4,  AS4, AS4, AS4,  AS4, AS4, AS4,  AS4, AS4, AS4, AS4 }, // Estado 5
-        {  AS7,   AS7,  AS7, AS7, AS7, AS7,  AS7,  AS7,  AS7,  AS7,  AS7,  AS2,  AS7,  AS7,  AS7,   AS7,   AS7,   AS7,   AS7,  AS7, AS7, AS7,  AS7, AS7, AS7,  AS7, AS7, AS7, AS7 }, // Estado 6
-        {  err,   AS2,  err, err, err, err,  err,  err,  err,  err,  err,  err,  AS2,  err,  err,   err,   err,   err,   err,  err, err, err,  err, err, err,  AS8, err, err, err }, // Estado 7
-        {  AS9,   AS2,  err, AS9, AS9, AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,   AS9,   AS9,   AS9,   AS9,  AS9, AS9, AS9,  AS9, AS9, AS9,  AS9, AS2, AS9, AS9 }, // Estado 8
-        {  err,   err,  err, AS2, err, err,  AS2,  err,  err,  err,  err,  err,  err,  err,  err,   err,   err,   err,   err,  err, err, err,  err, err, err,  err, err, err, err }, // Estado 9
-        {  AS9,   AS2,  AS9, AS9, AS9, AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,   AS9,   AS9,   AS9,   AS9,  AS9, AS9, AS9,  AS9, AS9, AS9,  AS9, AS9, AS9, AS9 }, // Estado 10
-        {  AS2,   AS2,  AS2, AS2, AS2, AS2,  AS2,  AS2,  AS2,  AS2,  AS2,  AS2,  AS2,  AS2, AS11,   AS2,   AS2,   AS2,   AS2,  AS2, AS2, AS2,  AS2, AS2, AS2,  AS2, AS2, AS2, AS2 }, // Estado 11
+        //  L     num    %    +    *    /     -     :     =     <     >     l     .    @     &     Tab    \n    espacio   ,     ;    (    )     {     }   _    I     D    !    C  \EOF
+        {  AS1,   AS1,  err, AS5, AS5, AS5,  AS1,  AS1,  AS1,  AS1,  AS1,  AS1,  AS1, ASnull, AS10,  ASnull,  ASnull,  ASnull,   AS5,  AS5, AS5, AS5,  AS5, AS5, AS5, AS1,  AS1, err, err, ASnull }, // Estado 0
+        {  AS2,   AS2,  AS2, AS3, AS3, AS3,  AS3,  AS3,  AS3,  AS3,  AS3,  AS3,  AS3,  AS3,  AS3,   AS3,   AS3,   AS3,   AS3,  AS3, AS3, AS3,  AS3, AS3, AS3, AS2,  AS2, AS3, AS3, AS3 }, // Estado 1
+        {  err,   err,  err, err, err, err,  err,  err,  AS6,  err,  err,  err,  err,  err,  err,   err,   err,   err,   err,  err, err, err,  err, err, err, err,  err, err, err, err }, // Estado 2
+        {  AS4,   AS4,  AS4, AS4, AS4, AS4,  AS4,  AS4,  AS6,  AS4,  AS4,  AS4,  AS4,  AS4,  AS4,   AS4,   AS4,   AS4,   AS4,  AS4, AS4, AS4,  AS4, AS4, AS4,  AS4, AS4, AS4, AS4, AS4 }, // Estado 3
+        {  AS4,   AS4,  AS4, AS4, AS4, AS4,  AS4,  AS4,  AS6,  AS4,  AS4,  AS4,  AS4,  AS4,  AS4,   AS4,   AS4,   AS4,   AS4,  AS4, AS4, AS4,  AS4, AS4, AS4,  AS4, AS4, AS4, AS4, AS4 }, // Estado 4
+        {  AS4,   AS4,  AS4, AS4, AS4, AS4,  AS4,  AS4,  AS4,  AS4,  AS6,  AS4,  AS4,  AS4,  AS4,   AS4,   AS4,   AS4,   AS4,  AS4, AS4, AS4,  AS4, AS4, AS4,  AS4, AS4, AS4, AS4, AS4 }, // Estado 5
+        {  AS7,   AS7,  AS7, AS7, AS7, AS7,  AS7,  AS7,  AS7,  AS7,  AS7,  AS2,  AS7,  AS7,  AS7,   AS7,   AS7,   AS7,   AS7,  AS7, AS7, AS7,  AS7, AS7, AS7,  AS7, AS7, AS7, AS7, AS7 }, // Estado 6
+        {  err,   AS2,  err, err, err, err,  err,  err,  err,  err,  err,  err,  AS2,  err,  err,   err,   err,   err,   err,  err, err, err,  err, err, err,  AS8, err, err, err, err }, // Estado 7
+        {  AS9,   AS2,  AS9, AS9, AS9, AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,   AS9,   AS9,   AS9,   AS9,  AS9, AS9, AS9,  AS9, AS9, AS9,  AS9, AS2, AS9, AS9, AS9 }, // Estado 8
+        {  err,   err,  err, AS2, err, err,  AS2,  err,  err,  err,  err,  err,  err,  err,  err,   err,   err,   err,   err,  err, err, err,  err, err, err,  err, err, err, err, err }, // Estado 9
+        {  AS9,   AS2,  AS9, AS9, AS9, AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,  AS9,   AS9,   AS9,   AS9,   AS9,  AS9, AS9, AS9,  AS9, AS9, AS9,  AS9, AS9, AS9, AS9, AS9 }, // Estado 10
+        {  AS2,   AS2,  AS2, AS2, AS2, AS2,  AS2,  AS2,  AS2,  AS2,  AS2,  AS2,  AS2,  AS2, AS11,   AS2,   AS2,   AS2,   AS2,  AS2, AS2, AS2,  AS2, AS2, AS2,  AS2, AS2, AS2, AS2, err }, // Estado 11
         { ASnull,  ASnull, ASnull,ASnull,ASnull,ASnull, ASnull, ASnull, ASnull, ASnull, ASnull, ASnull, ASnull, ASnull, ASnull,  ASnull,  ASnull,  ASnull,  ASnull,  ASnull,ASnull,ASnull, ASnull,ASnull,ASnull, ASnull,ASnull,ASnull,ASnull }, // Estado 12
         //El estado 13 no está porque una vez que nos dé estado actual 13 sabemos que es estado final
     };

@@ -16,12 +16,12 @@ public class AccionSemantica3 implements AccionSemantica{
     }
 
     @Override
-    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura) {
+    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
         posicionLectura.decrementar();
         if (lexema.length() > 20) {
             lexema.setLength(20);
         }
-        EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString());
+        EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);
         Token token = new Token(tablaIDToken.getID("ID"), entrada);
         return token;
     }
