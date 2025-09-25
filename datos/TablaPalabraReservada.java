@@ -31,6 +31,29 @@ public class TablaPalabraReservada {
     }
 
     public int getID(String clave) {
-        return TPR.get(clave);
+        return TPR.getOrDefault(clave, -1); // Retorna -1 si no se encuentra la clave
+    }
+
+    public String mejorMatchPorPrefijo(String clave) {
+        String mejorCoincidencia = null;
+        int maxPrefijo = -1;
+
+        for (String palabra : TPR.keySet()) {
+            int prefijo = prefijoComun(clave, palabra);
+            if (prefijo > maxPrefijo) {
+                maxPrefijo = prefijo;
+                mejorCoincidencia = palabra;
+            }
+        }
+
+        return mejorCoincidencia;
+    }
+
+    private int prefijoComun(String a, String b) {
+        int i = 0;
+        while (i < a.length() && i < b.length() && a.charAt(i) == b.charAt(i)) {
+            i++;
+        }
+        return i;
     }
 }
