@@ -24,7 +24,6 @@ public class MatrizAccionSemantica {
     private static final AccionSemantica ASErr4 = new AccionSemanticaError4();
     private static final AccionSemantica ASErr2_2 = new AccionSemanticaError2("+' o '-");
     private static final AccionSemantica ASErr2_3 = new AccionSemanticaError2("&");
-    private static final AccionSemantica err = new AccionSemanticaNULL();
     private static final AccionSemantica ASnull = new AccionSemanticaNULL(); 
 
     
