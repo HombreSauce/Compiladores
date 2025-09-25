@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Map;
 import aplicacion.funcionalidades.MiniTokenizador;
 import datos.*;
 public class AnalizadorLexico {
@@ -75,7 +74,7 @@ public class AnalizadorLexico {
 
         try {//esto carga lo que hay en ese path y lo mete en un string
             String contenido = Files.readString(Paths.get(args[0]));
-            // String contenido = "if HOLA else 4I";
+            // String contenido = "&un string que no termina";
             System.out.println("Contenido del archivo:");
             System.out.println(contenido);
             //creo la instancia del lexico con el programa leido como un string
@@ -85,7 +84,7 @@ public class AnalizadorLexico {
             while ((token = analizadorLexico.getToken()) != null) { // Pido tokens hasta que se acabe el string (devuelve null)
                 System.out.println("Token ID: " + token.getIDToken());
                 if (token.getIDToken() == 101 || token.getIDToken() == 100 || token.getIDToken() == 102) {
-                    System.out.println("Lexema: '" + token.getEntradaTS().getLexema());
+                    System.out.println("Lexema: " + token.getEntradaTS().getLexema());
                     ArrayList<Integer> lineas = token.getEntradaTS().getNroLineas();
                     System.out.println("  Aparece en las líneas: " + lineas);
                 }

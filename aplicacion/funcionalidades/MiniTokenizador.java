@@ -59,6 +59,6 @@ public class MiniTokenizador {
         } else if (ch == '\r') {
             return "salto";
         }
-        return null; // si no lo reconocés
+        return "C"; // si no lo reconoce
     }
 }
