@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class Alfabeto {
-
-    public static final Map<String, Integer> alfabeto = new HashMap<>();
+    private static Alfabeto instancia;
+    private static final Map<String, Integer> alfabeto = new HashMap<>();
 
     static {
         // clases
@@ -41,5 +41,16 @@ public final class Alfabeto {
         alfabeto.put("tab", 15);  // idem con '\t'
         alfabeto.put("salto", 16);  // usa "\\n" si tu miniTokenizar devuelve "\\n"
         alfabeto.put("espacio", 17);
+    }
+
+    public static Alfabeto getInstancia() {
+        if (instancia == null) {
+            instancia = new Alfabeto();
+        }
+        return instancia;
+    }
+
+    public int getColumna(String clave) {
+        return alfabeto.get(clave);
     }
 }
