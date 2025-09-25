@@ -19,12 +19,12 @@ public class AccionSemantica8 implements AccionSemantica{
     public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
         int num = Integer.parseInt(lexema.toString());
         if(num < 32768) { //si es negativo está bien, si es positivo damos error en la etapa sintactica
-            lexema.append(simbolo); //agregamos la I
+            lexema.append("I"); //agregamos la I
             EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);
             Token token = new Token(tablaIDToken.getID("CTE"), entrada);
             return token;
         } else {
-            //No sé tirar error
+            System.err.println("Error Léxico: Constante numérica entera fuera de rango '" + lexema.toString() + "' en la línea " + lineaCodigoActual);
             return null;
         }
     }

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Map;
 import aplicacion.funcionalidades.MiniTokenizador;
 import datos.*;
 public class AnalizadorLexico {
@@ -15,7 +14,7 @@ public class AnalizadorLexico {
     private ControlPosicion lineaPos;
 
 
-    private static final Map<String, Integer> alfabeto = Alfabeto.alfabeto; // MIRAR DE PONER UN GET INSTANCIA
+    private static final Alfabeto alfabeto = Alfabeto.getInstancia();
 
     private final int[][] matEstados;
     private AccionSemantica[][] matAcciones;
@@ -31,7 +30,7 @@ public class AnalizadorLexico {
     }
     
     private void  controlSaltoLinea(char simboloCrudo) {
-        if ( simboloCrudo == '\n' ) {
+        if ( simboloCrudo == '\n' ) { //habría que poner '\r' tmb?
             lineaPos.incrementar();
         }  
     }
@@ -45,7 +44,7 @@ public class AnalizadorLexico {
         while (inicioIns.getPosicion() < ins.length()) {      // Recorre las instrucciones 
             char simboloCrudo = ins.charAt(inicioIns.getPosicion());    // Caracter por caracter
             String simbolo = MiniTokenizador.miniTokenizar(simboloCrudo); // Convierte el simbolo leido a simbolo reconocible por el Alfabeto
-            int col = alfabeto.get(simbolo);     // Ubicas el indice columna para la matriz de transicion 
+            int col = alfabeto.getColumna(simbolo);     // Ubicas el indice columna para la matriz de transicion 
 
             if (estadoActual != EstadoFinal) {            
                 // System.out.println("Estado actual: " + estadoActual + ", simbolo: '" + simboloCrudo + "' (" + simbolo + "), columna: " + col + " lexema-" + lexema +"-");
@@ -59,7 +58,7 @@ public class AnalizadorLexico {
         }
         if (token == null && inicioIns.getPosicion() == ins.length()) {
             char vacio = ' ';
-            int col = alfabeto.get("EOF");
+            int col = alfabeto.getColumna("EOF");
             token = matAcciones[estadoActual][col].ejecutar(vacio, lexema, inicioIns, lineaPos.getPosicion()); // EJECUTA LA ACCION SEMANTICA
             inicioIns.incrementar(); //se incrementa porque la AS anterior devuelve el caracter que consumio de más, pero al ser el final de archivo no es necesario.
         }
@@ -75,6 +74,7 @@ public class AnalizadorLexico {
 
         try {//esto carga lo que hay en ese path y lo mete en un string
             String contenido = Files.readString(Paths.get(args[0]));
+            // String contenido = "&un string que no termina";
             System.out.println("Contenido del archivo:");
             System.out.println(contenido);
             //creo la instancia del lexico con el programa leido como un string
@@ -84,7 +84,7 @@ public class AnalizadorLexico {
             while ((token = analizadorLexico.getToken()) != null) { // Pido tokens hasta que se acabe el string (devuelve null)
                 System.out.println("Token ID: " + token.getIDToken());
                 if (token.getIDToken() == 101 || token.getIDToken() == 100 || token.getIDToken() == 102) {
-                    System.out.println("Lexema: '" + token.getEntradaTS().getLexema());
+                    System.out.println("Lexema: " + token.getEntradaTS().getLexema());
                     ArrayList<Integer> lineas = token.getEntradaTS().getNroLineas();
                     System.out.println("  Aparece en las líneas: " + lineas);
                 }
