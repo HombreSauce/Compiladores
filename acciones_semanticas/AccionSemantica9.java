@@ -38,7 +38,7 @@ public class AccionSemantica9 implements AccionSemantica {
             Token token = new Token(tablaIDToken.getID("CTE"), entrada);
             return token;
         } else {
-            System.err.println("Error Léxico: Constante numérica real fuera de rango '" + lexema.toString() + "' en la línea " + lineaCodigoActual);
+            System.err.println("Linea " + lineaCodigoActual + ". Error Léxico: Constante numérica real fuera de rango '" + lexema.toString() + "'.");
             return null;
         }
     }
