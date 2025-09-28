@@ -22,16 +22,16 @@ public class AccionSemantica9 implements AccionSemantica {
     public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
         posicionLectura.decrementar();
         StringBuilder numero = new StringBuilder(lexema);
-        float num;
+        double num;
         if(lexema.toString().startsWith(".")) {
             numero.setLength(0);
             numero.append("0").append(lexema);
         }
         if(lexema.toString().contains("D")) {
             String numNotacionJava = numero.toString().replace("D", "E").replace("+", "");
-            num = Float.parseFloat(numNotacionJava);
+            num = Double.parseDouble(numNotacionJava);
         } else {
-            num = Float.parseFloat(numero.toString());
+            num = Double.parseDouble(numero.toString());
         }
         if((num >= MIN_NORMAL && num <= MAX_VALUE || num == 0.0)) {
             EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);
