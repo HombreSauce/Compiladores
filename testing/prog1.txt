@@ -1,0 +1,5 @@
+if (3I > 2I) then {
+    X = 3I;
+} else {
+    X := 2I;
+}
