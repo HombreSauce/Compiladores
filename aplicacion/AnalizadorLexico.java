@@ -47,7 +47,7 @@ public class AnalizadorLexico {
             int col = alfabeto.getColumna(simbolo); // Ubica el indice columna para la matriz de transicion utilizando el simbolo del Alfabeto
 
             if (estadoActual != EstadoFinal) {            
-                System.out.println("Estado actual: " + estadoActual + ", simbolo: '" + simboloCrudo + "' (" + simbolo + "), columna: " + col + " lexema-" + lexema +"-");
+                // System.out.println("Estado actual: " + estadoActual + ", simbolo: '" + simboloCrudo + "' (" + simbolo + "), columna: " + col + " lexema-" + lexema +"-");
                 token = matAcciones[estadoActual][col].ejecutar(simboloCrudo, lexema, inicioInstruccion, lineaPosicion.getPosicion()); // Ejecuta la accion semantica
                 estadoActual = matEstados[estadoActual][col];
                 inicioInstruccion.incrementar();   
