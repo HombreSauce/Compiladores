@@ -35,7 +35,7 @@ public class AccionSemantica9 implements AccionSemantica {
         }
         if((num >= MIN_NORMAL && num <= MAX_VALUE || num == 0.0)) {
             EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);
-            Token token = new Token(tablaIDToken.getID("CTE"), entrada);
+            Token token = new Token(tablaIDToken.getID("CTEFLOAT"), entrada);
             return token;
         } else {
             System.err.println("Linea " + lineaCodigoActual + ". Error Léxico: Constante numérica real fuera de rango '" + lexema.toString() + "'.");

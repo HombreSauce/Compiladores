@@ -25,4 +25,9 @@ public class EntradaTablaSimbolos {
     public ArrayList<Integer> getNroLineas() {
         return nroLineas;
     }
+
+    @Override
+    public String toString() {
+        return "Lexema: " + lexema + ", líneas: " + getNroLineas(); 
+    }
 }

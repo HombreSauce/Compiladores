@@ -47,7 +47,7 @@ public class AnalizadorLexico {
             int col = alfabeto.getColumna(simbolo); // Ubica el indice columna para la matriz de transicion utilizando el simbolo del Alfabeto
 
             if (estadoActual != EstadoFinal) {            
-                // System.out.println("Estado actual: " + estadoActual + ", simbolo: '" + simboloCrudo + "' (" + simbolo + "), columna: " + col + " lexema-" + lexema +"-");
+                System.out.println("Estado actual: " + estadoActual + ", simbolo: '" + simboloCrudo + "' (" + simbolo + "), columna: " + col + " lexema-" + lexema +"-");
                 token = matAcciones[estadoActual][col].ejecutar(simboloCrudo, lexema, inicioInstruccion, lineaPosicion.getPosicion()); // Ejecuta la accion semantica
                 estadoActual = matEstados[estadoActual][col];
                 inicioInstruccion.incrementar();   
@@ -71,6 +71,10 @@ public class AnalizadorLexico {
     }
 
     public static void main(String[] args){
+        TablaIdentificadorToken tablaIdentificadorToken = TablaIdentificadorToken.getInstancia();
+        TablaPalabraReservada tablaPalabraReservada = TablaPalabraReservada.getInstancia();
+        TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
+
         // Verifica que el usuario pase un archivo como argumento
         if (args.length < 1) {
            System.err.println("Uso: java AnalizadorLexico <archivo>");
@@ -88,13 +92,22 @@ public class AnalizadorLexico {
 
             while ((token = analizadorLexico.getToken()) != null) { 
                 // Pide tokens hasta que se acabe el string (devuelve null)
-                System.out.println("Token ID: " + token.getIDToken());
-                if (token.getIDToken() == 101 || token.getIDToken() == 100 || token.getIDToken() == 102) {
-                    System.out.println("Lexema: " + token.getEntradaTS().getLexema());
-                    ArrayList<Integer> lineas = token.getEntradaTS().getNroLineas();
-                    System.out.println("  Aparece en las líneas: " + lineas);
+                System.out.print("Token ID: " + token.getIDToken() + ". ");
+                if (token.getIDToken() < 100) {
+                    System.out.println("Palabra reservada: " + tablaPalabraReservada.getClave(token.getIDToken()));
+                } else if (token.getIDToken() == 100) {
+                    System.out.println("Identificador: " + token.getEntradaTS().getLexema());
+                } else if (token.getIDToken() == 101) {
+                    System.out.println("Constante entera: " + token.getEntradaTS().getLexema());
+                } else if (token.getIDToken() == 102) {
+                    System.out.println("Constante flotante: " + token.getEntradaTS().getLexema());
+                } else if (token.getIDToken() == 103) {
+                    System.out.println("Cadena multilinea: " + token.getEntradaTS().getLexema());
+                } else {
+                    System.out.println(tablaIdentificadorToken.getClave(token.getIDToken()));
                 }
             }
+            tablaSimbolos.mostrarTabla();
             System.out.println("Fin del análisis léxico.");
         } catch (IOException e) {
           System.err.println("Error al leer el archivo: " + e.getMessage());
