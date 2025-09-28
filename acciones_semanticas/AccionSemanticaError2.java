@@ -11,8 +11,8 @@ public class AccionSemanticaError2 implements AccionSemantica {
     }
 
     @Override
-    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigo) {
-        System.err.println("Error Léxico: Se esperaba '" + simboloEsperado + "' luego de '" + lexema + "', pero se encontró '" + simbolo + "' en la línea " + lineaCodigo);
+    public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
+        System.err.println("Linea " + lineaCodigoActual + ". Error Léxico: Se esperaba '" + simboloEsperado + "' luego de '" + lexema + "', pero se encontró '" + simbolo + "'.");
         return null;
     }
     

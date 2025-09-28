@@ -34,10 +34,11 @@ public class TablaPalabraReservada {
         return TPR.getOrDefault(clave, -1); // Retorna -1 si no se encuentra la clave
     }
 
+    
     public String mejorMatchPorPrefijo(String clave) {
         String mejorCoincidencia = null;
         int maxPrefijo = -1;
-
+        
         for (String palabra : TPR.keySet()) {
             int prefijo = prefijoComun(clave, palabra);
             if (prefijo > maxPrefijo) {
@@ -45,15 +46,25 @@ public class TablaPalabraReservada {
                 mejorCoincidencia = palabra;
             }
         }
-
+        
         return mejorCoincidencia;
     }
-
+    
     private int prefijoComun(String a, String b) {
         int i = 0;
         while (i < a.length() && i < b.length() && a.charAt(i) == b.charAt(i)) {
             i++;
         }
         return i;
+    }
+    
+    //solo utilizado para el print que piden en la parte 1
+    public String getClave(int id) {
+        for (Map.Entry<String, Integer> entry : TPR.entrySet()) {
+            if (entry.getValue() == id) {
+                return entry.getKey();
+            }
+        }
+        return null; // Retorna null si no se encuentra el id
     }
 }

@@ -20,7 +20,7 @@ public class AccionSemantica3 implements AccionSemantica{
         posicionLectura.decrementar();
         if (lexema.length() > 20) {
             lexema.setLength(20);
-            System.out.println("Warning: El identificador se ha truncado a 20 caracteres en la línea " + lineaCodigoActual);
+            System.out.println("Linea " + lineaCodigoActual + ". Warning: El identificador se ha truncado a 20 caracteres.");
             System.out.println("Identificador truncado: '" + lexema.toString() + "'");
         }
         EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);

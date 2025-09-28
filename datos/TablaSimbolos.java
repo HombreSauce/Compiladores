@@ -30,4 +30,12 @@ public class TablaSimbolos {
             return nuevaEntrada;
         }
     }
+
+    public void mostrarTabla() {
+        System.out.println("----- TABLA DE SÍMBOLOS -----");
+        for (Map.Entry<String, EntradaTablaSimbolos> entrada : tablaSimbolos.entrySet()) {
+            System.out.println(entrada.getValue());
+        }
+        System.out.println("-----------------------------");
+    }
 }
