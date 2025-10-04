@@ -9,8 +9,8 @@ public class TablaIdentificadorToken {
 
     static {
         int id = 100;
-        mapa_token.put("ID", id++); //100
-        mapa_token.put("CTEINT", id++); //101
+        mapa_token.put("ID", 270); //100
+        mapa_token.put("CTEINT", 270); //101
         mapa_token.put("CTEFLOAT", id++); //102
         mapa_token.put("CTESTR", id++); //103
         mapa_token.put("+", id++); //104

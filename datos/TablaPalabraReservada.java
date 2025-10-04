@@ -8,19 +8,19 @@ public class TablaPalabraReservada {
     private static final Map<String, Integer> TPR = new HashMap<>();
 
     static {
-        TPR.put("if",     1);
-        TPR.put("else",   2);
-        TPR.put("return", 3);
-        TPR.put("endif",  4);
-        TPR.put("print",  5);
-        TPR.put("int",    6);
-        TPR.put("dfloat", 7);
-        TPR.put("for",    8);
-        TPR.put("from",   9);
-        TPR.put("to",    10);
-        TPR.put("lambda",11);
-        TPR.put("cv",    12);
-        TPR.put("trunc", 13);
+        TPR.put("if",     257);
+        TPR.put("else",   258);
+        TPR.put("endif",  259);
+        TPR.put("print",  260);
+        TPR.put("return", 261);
+        TPR.put("int",    262);
+        TPR.put("dfloat", 263);
+        TPR.put("for",    264);
+        TPR.put("from",   265);
+        TPR.put("to",    266);
+        TPR.put("lambda", 267);
+        TPR.put("cv",    268);
+        TPR.put("trunc", 269);
     }
 
     public static TablaPalabraReservada getInstancia() {

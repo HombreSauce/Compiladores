@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import aplicacion.funcionalidades.MiniTokenizador;
 import datos.*;
 
-public class mainaso {
+public class mainaso {        /////////////////// ESTO NO VA ACA, VA EN EL Constructor del AnalizadorLexico /////////////////
      public static void main(String[] args){
         TablaIdentificadorToken tablaIdentificadorToken = TablaIdentificadorToken.getInstancia();
         TablaPalabraReservada tablaPalabraReservada = TablaPalabraReservada.getInstancia();

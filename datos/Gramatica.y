@@ -9,7 +9,7 @@
 %token TRUNC
 
 /* ===== Identificadores y literales ===== */
-%token ID CTE CADENA
+%token ID CTEINT CTEFLOAT CTESTR
 
 /* ===== Operadores multi-caracter ===== */
 %token ASIGN        /* ':=' */
@@ -40,11 +40,6 @@ bloque		: /* vacío */
 bloque_ejec	: /* vacío */
   		| bloque_ejec sentencia_ejec
   		;
-
-
-
-
-
 
 /* ========= Sentencias ========= */
 
@@ -79,7 +74,7 @@ lista_ids		: var_ref
   			;
 /* ========= Asignaciones ========= */
 /* Asignación simple y expresión aritmética SIN paréntesis de agrupación */			  		  
-asign_simple		: var_ref ':=' expresion
+asign_simple		: var_ref ASIGN expresion
   			;
 
 /* Tema 18 */ /* LHS puede tener más elementos que RHS.  RHS sólo constantes */
@@ -94,7 +89,9 @@ lista_ctes		: cte
   			;	
 /* ========= Constante ========= */
 
-cte	: CTE
+cte	: CTEFLOAT
+	| CTEINT
+	| CTESTR
   	;
 
 /* ========= Expresiones aritméticas (sin '()' de agrupación) ========= */
@@ -129,7 +126,7 @@ lista_params_reales		: param_real_map
  				;
 
 /* Cada parámetro real debe mapear a un formal con '->' */
-param_real_map		: parametro_real '->' ID
+param_real_map		: parametro_real FLECHA ID
   				;	
 
 parametro_real		: expresion                     /* sin paréntesis de agrupación */
@@ -172,13 +169,18 @@ cuerpo_item			: sentencia_decl
   				;
 /* ========= If (selección) ========= */
 
-bloque_if		: IF '(' condicion ')' rama_if opt_else ENDIF ';'
+bloque_if	: IF '(' condicion ')' rama_if opt_else ENDIF ';'
   			;
 
-condicion		: expresion relop expresion
+condicion	: expresion relop expresion
   			;
 
-relop			: '<' | '>' | IGUAL | DISTINTO | MENORIGUAL | MAYORIGUAL
+relop		: '<' 
+			| '>' 
+			| IGUAL 
+			| DISTINTO 
+			| MENORIGUAL 
+			| MAYORIGUAL
   			;
 
 rama_if		: sentencia_ejec
@@ -190,7 +192,7 @@ opt_else		: /* vacío */
   			;
 /* ========= For (tema 15) ========= */
 
-bloque_for		: FOR '(' ID FROM CTE TO CTE ')' rama_for ';'
+bloque_for		: FOR '(' ID FROM CTEINT TO CTEINT ')' rama_for ';'
   			;
 
 rama_for		: sentencia_ejec
@@ -199,7 +201,7 @@ rama_for		: sentencia_ejec
 
 /* ========= Print (tema 8) ========= */
 
-print_sent		: PRINT '(' CADENA ')' ';' 
+print_sent		: PRINT '(' cte ')' ';' 
   			| PRINT '(' expresion ')' ';'       
   ;
 
@@ -208,7 +210,36 @@ print_sent		: PRINT '(' CADENA ')' ';'
 lambda_expr		: '(' INT ID ')' '{' bloque_ejec '}' '(' argumento ')'
  			;
 
-argumento		: ID
-  			| CTE
+argumento	: ID
+  			| cte
   			;
 
+%%
+
+/* ---- Seccion de código ---- */
+
+static AnalizadorLexico lex = null;
+static Parser par = null;
+
+public static void main (String [] args) {
+    System.out.println("Iniciando compilacion...");
+    lex = new AnalizadorLexico (args[0]);
+    par = new Parser (false);
+    par.run();
+    System.out.println("Fin compilacion");
+}
+
+int yylex (){
+        Token token = null;
+        if ((token = lex.getToken()) != null) { 
+            yylval = new ParserVal(token.getEntradaTS());
+            System.out.print("Token ID: " + token.getIDToken() + ". ");
+            return token.getIDToken();
+        } else {
+            return 0; // Indica que no hay más tokens
+        }
+}
+
+void yyerror (String mensaje){
+    System.err.println("Error sintactico en linea " + lex.getLineaActual() + ": " + mensaje);
+}
