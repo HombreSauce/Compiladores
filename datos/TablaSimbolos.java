@@ -32,7 +32,7 @@ public class TablaSimbolos {
     }
 
     public void mostrarTabla() {
-        System.out.println("----- TABLA DE SÍMBOLOS -----");
+        System.out.println("----- TABLA DE SIMBOLOS -----");
         for (Map.Entry<String, EntradaTablaSimbolos> entrada : tablaSimbolos.entrySet()) {
             System.out.println(entrada.getValue());
         }

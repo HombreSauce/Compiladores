@@ -1,0 +1,43 @@
+/* ===== TOKENS DE SÍMBOLOS ===== */
+%token LBRACE       /* llave izquierda   { */
+%token RBRACE       /* llave derecha     } */
+%token LPAREN       /* paréntesis abre   ( */
+%token RPAREN       /* paréntesis cierra ) */
+%token SEMI         /* punto y coma      ; */
+%token COMMA        /* coma              , */
+%token DOT          /* punto             . */
+%token PLUS         /* suma              + */
+%token MINUS        /* resta             - */
+%token STAR         /* multiplicación    * */
+%token SLASH        /* división          / */
+%token LT           /* menor que         < */
+%token GT           /* mayor que         > */
+%token EQ           /* signo igual       = */
+
+/* ===== TOKENS DE OPERADORES MULTICARACTER ===== */
+%token ASSIGN       /* asignación        := */
+%token ARROW        /* flecha            -> */
+
+/* ===== TOKENS DE OPERADORES RELACIONALES ===== */
+%token IGUAL        /* igual a           == */
+%token DISTINTO     /* distinto de       != */
+%token MENORIGUAL   /* menor o igual     <= */
+%token MAYORIGUAL   /* mayor o igual     >= */
+
+/* ===== TOKENS DE PALABRAS RESERVADAS ===== */
+%token IF ELSE ENDIF
+%token FOR FROM TO
+%token PRINT RETURN TRUNC
+%token INT CV
+
+/* ===== TOKENS LÉXICOS ===== */
+%token ID           /* identificador */
+%token CTE          /* constante numérica */
+%token CADENA       /* cadena de texto */
+ 
+ EJEMPLO:
+ prog : ID LBRACE bloque RBRACE ;
+
+asign_simple : var_ref ASSIGN expresion ;
+
+param_real_map : parametro_real ARROW ID ;

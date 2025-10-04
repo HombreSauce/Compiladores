@@ -1,0 +1,8 @@
+programa {
+  int A, B;
+  A := 3;
+  B := 4;
+  A, B = 1I, 2I;
+  if (A == B) print("iguales"); endif;
+  for (I from 1I to 5I) { print(A); }
+}
