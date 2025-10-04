@@ -4,19 +4,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TablaSimbolos {
-    private static final Map<String, EntradaTablaSimbolos> tabla = new HashMap<>();
+    private static TablaSimbolos instancia;
+    private static final Map<String, EntradaTablaSimbolos> tablaSimbolos = new HashMap<>();
 
-    public EntradaTablaSimbolos obtener(String lexema) {
-        return tabla.get(lexema);
+    public static TablaSimbolos getInstancia() {
+        if (instancia == null) {
+            instancia = new TablaSimbolos();
+        }
+        return instancia;
     }
 
-    public EntradaTablaSimbolos insertar(String lexema) {
-        if (tabla.containsKey(lexema)) {
-            return tabla.get(lexema);
+
+    public EntradaTablaSimbolos obtener(String lexema) {
+        return tablaSimbolos.get(lexema);
+    }
+
+    public EntradaTablaSimbolos insertar(String lexema, int nroLinea) {
+        if (tablaSimbolos.containsKey(lexema)) {
+            EntradaTablaSimbolos entrada = tablaSimbolos.get(lexema);
+            entrada.agregarLinea(nroLinea);
+            return tablaSimbolos.get(lexema);
         } else {
-            EntradaTablaSimbolos nuevaEntrada = new EntradaTablaSimbolos(lexema);
-            tabla.put(lexema, nuevaEntrada);
+            EntradaTablaSimbolos nuevaEntrada = new EntradaTablaSimbolos(lexema, nroLinea);
+            tablaSimbolos.put(lexema, nuevaEntrada);
             return nuevaEntrada;
         }
+    }
+
+    public void mostrarTabla() {
+        System.out.println("----- TABLA DE SÍMBOLOS -----");
+        for (Map.Entry<String, EntradaTablaSimbolos> entrada : tablaSimbolos.entrySet()) {
+            System.out.println(entrada.getValue());
+        }
+        System.out.println("-----------------------------");
     }
 }

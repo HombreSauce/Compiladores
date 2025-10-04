@@ -1,0 +1,6 @@
+ID = &Esto es una cadena&
+OTRO = &Las cadenas
+pueden ser
+multilineas
+&
+NUM = 8I
