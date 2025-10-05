@@ -14,13 +14,13 @@ public class TablaPalabraReservada {
         TPR.put("print",  260);
         TPR.put("return", 261);
         TPR.put("int",    262);
-        TPR.put("dfloat", 263);
-        TPR.put("for",    264);
-        TPR.put("from",   265);
-        TPR.put("to",    266);
-        TPR.put("lambda", 267);
-        TPR.put("cv",    268);
-        TPR.put("trunc", 269);
+        //TPR.put("dfloat", ); la dejo para no romper lo que ya estaba
+        TPR.put("for",    263);
+        TPR.put("from",   264);
+        TPR.put("to",    265);
+        TPR.put("lambda", 266);
+        TPR.put("cv",    267);
+        TPR.put("trunc", 268);
     }
 
     public static TablaPalabraReservada getInstancia() {

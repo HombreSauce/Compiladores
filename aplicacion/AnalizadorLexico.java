@@ -2,11 +2,12 @@ package aplicacion;
 import acciones_semanticas.AccionSemantica;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import aplicacion.funcionalidades.MiniTokenizador;
 import datos.*;
+
 public class AnalizadorLexico {
 
     private String instrucciones;  // CODIGO QUE LEE EL ARCHIVO
@@ -20,14 +21,19 @@ public class AnalizadorLexico {
     private AccionSemantica[][] matAcciones;
     private int EstadoFinal = MatrizTransicion.FINAL;
 
-    public AnalizadorLexico(String instrucciones){
-        this.instrucciones = instrucciones;
+    public AnalizadorLexico(String pathArchivo){
+        try {
+            this.instrucciones = Files.readString(Paths.get(pathArchivo), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al leer la RUTA del archivo: " + pathArchivo, e);
+        }
         inicioInstruccion = new ControlPosicion();
         this.matEstados = MatrizTransicion.MATRIZ_ESTADOS; 
         this.matAcciones = MatrizAccionSemantica.MATRIZ_AS;
         lineaPosicion = new ControlPosicion(); // inicia en cero porque no leyo nada
         lineaPosicion.incrementar(); // la primera linea es la 1
     }
+
 
     public int getLineaActual() {
         return lineaPosicion.getPosicion();
@@ -71,6 +77,7 @@ public class AnalizadorLexico {
             token = matAcciones[estadoActual][col].ejecutar(vacio, lexema, inicioInstruccion, lineaPosicion.getPosicion());
             inicioInstruccion.incrementar(); //Se incrementa porque la AS anterior devuelve el caracter que consumio de más, pero al ser el final de archivo no es necesario.
         }
+        //token.mostrarToken();
         return token;
     }
 }
