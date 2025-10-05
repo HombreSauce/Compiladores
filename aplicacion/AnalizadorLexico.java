@@ -2,16 +2,17 @@ package aplicacion;
 import acciones_semanticas.AccionSemantica;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import aplicacion.funcionalidades.MiniTokenizador;
 import datos.*;
+
 public class AnalizadorLexico {
 
     private String instrucciones;  // CODIGO QUE LEE EL ARCHIVO
     private ControlPosicion inicioInstruccion;
-    private ControlPosicion lineaPosicion;
+    private ControlPosicion lineaPosicion;  // Es el nro de linea actual
 
 
     private static final Alfabeto alfabeto = Alfabeto.getInstancia();
@@ -20,13 +21,22 @@ public class AnalizadorLexico {
     private AccionSemantica[][] matAcciones;
     private int EstadoFinal = MatrizTransicion.FINAL;
 
-    private AnalizadorLexico(String instrucciones){
-        this.instrucciones = instrucciones;
+    public AnalizadorLexico(String pathArchivo){
+        try {
+            this.instrucciones = Files.readString(Paths.get(pathArchivo), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al leer la RUTA del archivo: " + pathArchivo, e);
+        }
         inicioInstruccion = new ControlPosicion();
         this.matEstados = MatrizTransicion.MATRIZ_ESTADOS; 
         this.matAcciones = MatrizAccionSemantica.MATRIZ_AS;
         lineaPosicion = new ControlPosicion(); // inicia en cero porque no leyo nada
         lineaPosicion.incrementar(); // la primera linea es la 1
+    }
+
+
+    public int getLineaActual() {
+        return lineaPosicion.getPosicion();
     }
     
     private void  controlSaltoLinea(char simboloCrudo) {
@@ -67,50 +77,7 @@ public class AnalizadorLexico {
             token = matAcciones[estadoActual][col].ejecutar(vacio, lexema, inicioInstruccion, lineaPosicion.getPosicion());
             inicioInstruccion.incrementar(); //Se incrementa porque la AS anterior devuelve el caracter que consumio de más, pero al ser el final de archivo no es necesario.
         }
+        //token.mostrarToken();
         return token;
-    }
-
-    public static void main(String[] args){
-        TablaIdentificadorToken tablaIdentificadorToken = TablaIdentificadorToken.getInstancia();
-        TablaPalabraReservada tablaPalabraReservada = TablaPalabraReservada.getInstancia();
-        TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
-
-        // Verifica que el usuario pase un archivo como argumento
-        if (args.length < 1) {
-           System.err.println("Uso: java AnalizadorLexico <archivo>");
-           System.exit(1);
-        }
-
-        try {
-            // Carga lo que hay en el archivo a un string
-            String contenido = Files.readString(Paths.get(args[0]));
-            // String contenido = "&un string que no termina";
-            System.out.println("Contenido del archivo:");
-            System.out.println(contenido);
-            AnalizadorLexico analizadorLexico = new AnalizadorLexico(contenido); 
-            Token token = null;
-
-            while ((token = analizadorLexico.getToken()) != null) { 
-                // Pide tokens hasta que se acabe el string (devuelve null)
-                System.out.print("Token ID: " + token.getIDToken() + ". ");
-                if (token.getIDToken() < 100) {
-                    System.out.println("Palabra reservada: " + tablaPalabraReservada.getClave(token.getIDToken()));
-                } else if (token.getIDToken() == 100) {
-                    System.out.println("Identificador: " + token.getEntradaTS().getLexema());
-                } else if (token.getIDToken() == 101) {
-                    System.out.println("Constante entera: " + token.getEntradaTS().getLexema());
-                } else if (token.getIDToken() == 102) {
-                    System.out.println("Constante flotante: " + token.getEntradaTS().getLexema());
-                } else if (token.getIDToken() == 103) {
-                    System.out.println("Cadena multilinea: " + token.getEntradaTS().getLexema());
-                } else {
-                    System.out.println(tablaIdentificadorToken.getClave(token.getIDToken()));
-                }
-            }
-            tablaSimbolos.mostrarTabla();
-            System.out.println("Fin del análisis léxico.");
-        } catch (IOException e) {
-          System.err.println("Error al leer el archivo: " + e.getMessage());
-        }
     }
 }

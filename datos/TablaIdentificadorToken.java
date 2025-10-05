@@ -9,30 +9,32 @@ public class TablaIdentificadorToken {
 
     static {
         int id = 100;
-        mapa_token.put("ID", id++); //100
-        mapa_token.put("CTEINT", id++); //101
-        mapa_token.put("CTEFLOAT", id++); //102
-        mapa_token.put("CTESTR", id++); //103
-        mapa_token.put("+", id++); //104
-        mapa_token.put("-", id++); //105
-        mapa_token.put("*", id++); //106
-        mapa_token.put("/", id++); //107
-        mapa_token.put("=", id++); //108
-        mapa_token.put(":=", id++); //109
-        mapa_token.put(">", id++); //110
-        mapa_token.put("<", id++); //111
-        mapa_token.put(">=", id++); //112
-        mapa_token.put("<=", id++); //113
-        mapa_token.put("==", id++); //114
-        mapa_token.put("=!", id++); //115
-        mapa_token.put("(", id++); //116
-        mapa_token.put(")", id++); //117
-        mapa_token.put("{", id++); //118
-        mapa_token.put("}", id++); //119
-        mapa_token.put("_", id++); //120
-        mapa_token.put(";", id++); //121
-        mapa_token.put(",", id++); //122
-        mapa_token.put("->", id++); //123
+        mapa_token.put("ID", 269); 
+        mapa_token.put("CTEINT", 270); 
+        mapa_token.put("CTEFLOAT", 271); 
+        mapa_token.put("CTESTR", 272); 
+        mapa_token.put(":=", 273); 
+        mapa_token.put("->", 274); 
+        mapa_token.put("==", 275); 
+        mapa_token.put("=!", 276); 
+        mapa_token.put("<=", 277);
+        mapa_token.put(">=", 278);
+        mapa_token.put("+", 279); 
+        mapa_token.put("*", 280);
+        mapa_token.put("/", 281); 
+        mapa_token.put("-", 282); 
+        mapa_token.put("=", 283); 
+        mapa_token.put(">", 284);
+        mapa_token.put("<", 285); 
+        mapa_token.put(".", 286); 
+        mapa_token.put(",", 287); 
+        mapa_token.put(";", 288); 
+        mapa_token.put("(", 289);
+        mapa_token.put(")", 290); 
+        mapa_token.put("{", 291); 
+        mapa_token.put("}", 292); 
+        //mapa_token.put("_", 2);  PARCHE ARREGLA DSP
+        
     }
 
     public static TablaIdentificadorToken getInstancia() {
@@ -46,6 +48,7 @@ public class TablaIdentificadorToken {
         return mapa_token.get(clave);
     }
 
+    // HAY QUE VER COMO DEVOLVER CHAR
     //solo utilizado para el print que piden en la parte 1
     public String getClave(int id) {
         for (Map.Entry<String, Integer> entry : mapa_token.entrySet()) {
