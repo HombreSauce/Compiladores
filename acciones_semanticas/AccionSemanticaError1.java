@@ -7,7 +7,7 @@ public class AccionSemanticaError1 implements AccionSemantica {
     
     @Override
     public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
-        System.err.println("Linea " + lineaCodigoActual + ": Error Léxico: Símbolo no reconocido '" + simbolo + "'. Será ignorado.");
+        System.err.println("Linea " + lineaCodigoActual + ": Error Lexico: Simbolo no reconocido '" + simbolo + "'. Sera ignorado.");
         return null;
     }
     

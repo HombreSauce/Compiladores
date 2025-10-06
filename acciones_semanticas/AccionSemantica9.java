@@ -38,7 +38,7 @@ public class AccionSemantica9 implements AccionSemantica {
             Token token = new Token(tablaIDToken.getID("CTEFLOAT"), entrada);
             return token;
         } else {
-            System.err.println("Linea " + lineaCodigoActual + ". Error Léxico: Constante numérica real fuera de rango '" + lexema.toString() + "'.");
+            System.err.println("Linea " + lineaCodigoActual + ". Error Lexico: Constante numerica real fuera de rango '" + lexema.toString() + "'.");
             return null;
         }
     }

@@ -28,6 +28,6 @@ public class EntradaTablaSimbolos {
 
     @Override
     public String toString() {
-        return "Lexema: " + lexema + ", líneas: " + getNroLineas(); 
+        return "Lexema: " + lexema + ", lineas: " + getNroLineas(); 
     }
 }
