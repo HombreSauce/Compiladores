@@ -16,11 +16,11 @@
 
 
 
-//#line 4 "gramatica.y"
+//#line 4 ".\gramatica.y"
 	package aplicacion;
 	import aplicacion.AnalizadorLexico;
 	import aplicacion.Token;
-
+	import datos.TablaSimbolos;
 //#line 22 "Parser.java"
 
 
@@ -440,7 +440,7 @@ final static String yyrule[] = {
 "argumento : cte",
 };
 
-//#line 228 "gramatica.y"
+//#line 228 ".\gramatica.y"
 
 /* ---- Seccion de código ---- */
 
@@ -448,10 +448,12 @@ static AnalizadorLexico lex = null;
 static Parser par = null;
 
 public static void main (String [] args) {
+	TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
     System.out.println("Iniciando compilacion...");
     lex = new AnalizadorLexico (args[0]);
     par = new Parser (false);
     par.run();
+	tablaSimbolos.mostrarTabla();
     System.out.println("Fin compilacion");
 }
 
@@ -459,7 +461,10 @@ int yylex (){
         Token token = null;
         if ((token = lex.getToken()) != null) { 
             yylval = new ParserVal(token.getEntradaTS());
-            System.out.print("Token ID: " + token.getIDToken() + ". ");
+            System.out.println("Token ID: " + token.getIDToken() + ". ");
+			if(token != null) {
+				token.mostrarToken();
+			}
             return token.getIDToken();
         } else {
             return 0; // Indica que no hay más tokens
@@ -469,7 +474,7 @@ int yylex (){
 void yyerror (String mensaje){
     System.err.println("Error sintactico en linea " + lex.getLineaActual() + ": " + mensaje);
 }
-//#line 401 "Parser.java"
+//#line 406 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -624,10 +629,10 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 22:
-//#line 107 "gramatica.y"
+//#line 107 ".\gramatica.y"
 {System.out.println("Esto es una asign_simple");}
 break;
-//#line 554 "Parser.java"
+//#line 559 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

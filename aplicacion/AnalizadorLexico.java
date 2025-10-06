@@ -77,7 +77,6 @@ public class AnalizadorLexico {
             token = matAcciones[estadoActual][col].ejecutar(vacio, lexema, inicioInstruccion, lineaPosicion.getPosicion());
             inicioInstruccion.incrementar(); //Se incrementa porque la AS anterior devuelve el caracter que consumio de más, pero al ser el final de archivo no es necesario.
         }
-        //token.mostrarToken();
         return token;
     }
 }

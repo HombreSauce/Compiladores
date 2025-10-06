@@ -4,7 +4,7 @@
 	package aplicacion;
 	import aplicacion.AnalizadorLexico;
 	import aplicacion.Token;
-
+	import datos.TablaSimbolos;
 %}
 
 /* ===== Palabras reservadas ===== */
@@ -232,10 +232,12 @@ static AnalizadorLexico lex = null;
 static Parser par = null;
 
 public static void main (String [] args) {
+	TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
     System.out.println("Iniciando compilacion...");
     lex = new AnalizadorLexico (args[0]);
     par = new Parser (false);
     par.run();
+	tablaSimbolos.mostrarTabla();
     System.out.println("Fin compilacion");
 }
 
@@ -243,7 +245,10 @@ int yylex (){
         Token token = null;
         if ((token = lex.getToken()) != null) { 
             yylval = new ParserVal(token.getEntradaTS());
-            System.out.print("Token ID: " + token.getIDToken() + ". ");
+            System.out.println("Token ID: " + token.getIDToken() + ". ");
+			if(token != null) {
+				token.mostrarToken();
+			}
             return token.getIDToken();
         } else {
             return 0; // Indica que no hay más tokens
