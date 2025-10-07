@@ -100,6 +100,7 @@ var_ref		: ID					/* tema 22 */
 
 lista_ids	: var_ref {n_var++;}
  			| lista_ids COMA var_ref {n_var++;}
+			| lista_ids COMA error { yyerror("Error: falta identificador después de coma");}
   			;
 
 /* ========= Asignaciones ========= */
@@ -118,10 +119,14 @@ asign_multiple	: lista_ids IGUALUNICO lista_ctes {
 					}
 					n_var = n_cte = 0;  /* reset para la próxima */
 				}
+				| IGUALUNICO lista_ctes { yyerror("Error: falta lista de variables antes del '='"); }
+				| lista_ids lista_ctes { yyerror("Error: falta '=' entre la lista de variables y la lista de constantes"); }
+				| lista_ids IGUALUNICO error { yyerror("Error: falta lista de constantes después del '='");}
   				;
 
 lista_ctes	: cte {n_cte++;}
   			| lista_ctes COMA cte {n_cte++;}
+			| lista_ctes COMA error { yyerror("Error: falta una constante después de coma");}
   			;	
 			
 /* ========= Constante ========= */
