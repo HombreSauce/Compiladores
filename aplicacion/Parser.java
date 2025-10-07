@@ -445,13 +445,15 @@ final static String yyrule[] = {
 "argumento : cte",
 };
 
-//#line 257 ".\gramatica.y"
+//#line 264 ".\gramatica.y"
 
 /* ---- Seccion de código ---- */
 
 static AnalizadorLexico lex = null;
 static Parser par = null;
 static TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
+static int n_var = 0; //para contar variables en asignaciones multiples
+static int n_cte = 0; //para contar ctes en asignaciones multiples
 
 public static void main (String [] args) {
     System.out.println("Iniciando compilacion...");
@@ -479,7 +481,7 @@ int yylex (){
 void yyerror (String mensaje){
     System.err.println("Error sintactico en linea " + lex.getLineaActual() + ": " + mensaje);
 }
-//#line 411 "Parser.java"
+//#line 413 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -633,12 +635,43 @@ boolean doaction;
     switch(yyn)
       {
 //########## USER-SUPPLIED ACTIONS ##########
+case 9:
+//#line 81 ".\gramatica.y"
+{n_var = 0;}
+break;
+case 20:
+//#line 101 ".\gramatica.y"
+{n_var++;}
+break;
+case 21:
+//#line 102 ".\gramatica.y"
+{n_var++;}
+break;
 case 22:
 //#line 108 ".\gramatica.y"
 {System.out.println("Esto es una asign_simple");}
 break;
-case 27:
+case 23:
+//#line 113 ".\gramatica.y"
+{
+					if (n_var < n_cte) {
+						yyerror("Error: más constantes que variables en la asignación");
+					} else {
+						System.out.println("Asignación válida (" + n_var + ", " + n_cte + ")");
+					}
+					n_var = n_cte = 0;  /* reset para la próxima */
+				}
+break;
+case 24:
 //#line 123 ".\gramatica.y"
+{n_cte++;}
+break;
+case 25:
+//#line 124 ".\gramatica.y"
+{n_cte++;}
+break;
+case 27:
+//#line 130 ".\gramatica.y"
 {
 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)val_peek(0).obj;
 			String valor_negativo = '-' + entrada.getLexema();
@@ -648,7 +681,7 @@ case 27:
 		}
 break;
 case 28:
-//#line 130 ".\gramatica.y"
+//#line 137 ".\gramatica.y"
 {
 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)val_peek(0).obj;
 			String valor = entrada.getLexema();
@@ -665,7 +698,7 @@ case 28:
 		}
 break;
 case 29:
-//#line 144 ".\gramatica.y"
+//#line 151 ".\gramatica.y"
 {
 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)val_peek(0).obj;
 			String valor_negativo = '-' + entrada.getLexema();
@@ -675,7 +708,7 @@ case 29:
 			yyval = val_peek(0);
 		}
 break;
-//#line 602 "Parser.java"
+//#line 635 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

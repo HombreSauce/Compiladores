@@ -16,7 +16,7 @@ Y := 32768I;
 Z := -2I;
 FLOTANTE := -33.456;
 H := 32768;
-X, Y, Z = 1I, 2I, 3I;
+X, Y = 1I, 2I, 3I;
 
 if ( X > Y ) { print( X ); } else print( Y ); endif;
 
