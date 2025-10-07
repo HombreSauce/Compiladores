@@ -11,9 +11,11 @@ int APLICA ( int V, int CB ) {
     return ( V );
 }
 
-X := 3 + 4 * 5I;
-Y := 2;
-X, Y, Z = 1, 2, 3;
+X := 3I + 4I * 5I;
+Y := -2I;
+FLOTANTE := -33.456;
+H := 4000;
+X, Y, Z = 1I, 2I, 3I;
 
 if ( X > Y ) { print( X ); } else print( Y ); endif;
 

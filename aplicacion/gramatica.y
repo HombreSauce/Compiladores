@@ -5,6 +5,7 @@
 	import aplicacion.AnalizadorLexico;
 	import aplicacion.Token;
 	import datos.TablaSimbolos;
+	import datos.EntradaTablaSimbolos;
 %}
 
 /* ===== Palabras reservadas ===== */
@@ -118,8 +119,33 @@ lista_ctes	: cte
 			
 /* ========= Constante ========= */
 
-cte		: CTEFLOAT 
-		| CTEINT
+cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos ni negativos porque ya lo hace la AS9
+		| MENOS CTEFLOAT {
+			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$2.obj;
+			String valor_negativo = '-' + entrada.getLexema();
+			entrada.setLexema(valor_negativo);
+			yyval = $2; //se reduce por CTEFLOAT
+		}
+		| CTEINT {
+			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$1.obj;
+			String valor = entrada.getLexema();
+			valor = valor.substring(0, valor.length() - 1); //nos quedamos con el numero sin el I final
+			int num = Integer.parseInt(valor);
+			int max = 32767;
+			//al ser positivo debemos chequear el maximo
+			if (num > max) {
+				System.err.println("Error léxico: constante entera fuera de rango en línea " + lex.getLineaActual() + ": " + num);
+			}
+
+			yyval = $1;
+		}
+		| MENOS CTEINT {
+			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$2.obj;
+			String valor_negativo = '-' + entrada.getLexema();
+			entrada.setLexema(valor_negativo);
+
+			yyval = $2;
+		}
 		| CTESTR
   		;
 
@@ -230,9 +256,9 @@ argumento	: ID
 
 static AnalizadorLexico lex = null;
 static Parser par = null;
+static TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
 
 public static void main (String [] args) {
-	TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
     System.out.println("Iniciando compilacion...");
     lex = new AnalizadorLexico (args[0]);
     par = new Parser (false);

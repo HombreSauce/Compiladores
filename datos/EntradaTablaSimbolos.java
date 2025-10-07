@@ -22,6 +22,10 @@ public class EntradaTablaSimbolos {
         return lexema;
     }
 
+    public void setLexema(String lexema) {
+        this.lexema = lexema;
+    }
+
     public ArrayList<Integer> getNroLineas() {
         return nroLineas;
     }
