@@ -76,6 +76,7 @@ bloque_ejec		: /* vacío */
 sentencia	: sentencia_ejec PUNTOYCOMA
             | sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
   			| INT ID decl_func
+            | INT error decl_func {yyerror("Falta identificador despues de 'int'");}
   			;
 
 sentencia_ejec	: asign_simple
@@ -188,6 +189,7 @@ factor		: var_ref
 /* Params reales pueden ser expr, lambda (tema 28) o trunc (expr) (tema 31) */
 
 llamada_funcion	: ID PARENTINIC lista_params_reales PARENTFIN
+                | error PARENTINIC lista_params_reales PARENTFIN{ yyerror("Llamada a función sin nombre");}
   				;
 
 lista_params_reales		: param_real_map
@@ -237,7 +239,7 @@ relop		: MENOR
 			| MAYORIGUAL
 			;
 
-rama_if		: sentencia_ejec
+rama_if		: sentencia
   			| LLAVEINIC bloque_ejec LLAVEFIN
   			;
 
@@ -260,7 +262,7 @@ print_sent		: PRINT PARENTINIC expresion PARENTFIN
 
 /* ========= Lambda como parámetro (tema 28) ========= */
 
-lambda_expr		: PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN COMA PARENTINIC argumento PARENTFIN
+lambda_expr		: PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN
                 ;
 
 argumento	: ID

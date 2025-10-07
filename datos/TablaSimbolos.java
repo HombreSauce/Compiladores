@@ -1,10 +1,7 @@
 package datos;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
-=======
 import java.io.PrintWriter;
->>>>>>> origin/frank
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;

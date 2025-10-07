@@ -1,12 +1,16 @@
 PROG {
 
-X:=1I
+X:=1I;
 Y:=2I;
 
 int APLICA ( int V, int CB ) {
     print( V );
     return ( V );
 }
+
+int (int A, int B) { X:=3I;}
+
+(A -> A);
 
 X := 3I + 4I * 5I;
 Y := 32768I;
