@@ -20,7 +20,8 @@ public class Token {
     public EntradaTablaSimbolos getEntradaTS() {
         return entradaTS;
     }
-        public void mostrarToken() {
+    
+    public void mostrarToken() {
         TablaIdentificadorToken tablaIdentificadorToken = TablaIdentificadorToken.getInstancia();
         TablaPalabraReservada tablaPalabraReservada = TablaPalabraReservada.getInstancia();
         if (this.getIDToken() < 269) {
@@ -34,7 +35,7 @@ public class Token {
         } else if (this.getIDToken() == 272) {
             System.out.println("String: " + this.getEntradaTS().getLexema());
         } else {
-            System.out.println(tablaIdentificadorToken.getClave(this.getIDToken()));
+            System.out.println("Simbolo literal: " + tablaIdentificadorToken.getClave(this.getIDToken()));
         }
     }
 }

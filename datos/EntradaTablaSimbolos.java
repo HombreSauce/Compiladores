@@ -22,12 +22,23 @@ public class EntradaTablaSimbolos {
         return lexema;
     }
 
+    public void setLexema(String lexema) {
+        this.lexema = lexema;
+    }
+
     public ArrayList<Integer> getNroLineas() {
         return nroLineas;
     }
 
+    public int getUltimaLinea() {
+        if (!nroLineas.isEmpty()) {
+            return nroLineas.get(nroLineas.size() - 1);
+        }
+        return -1; //si no hay lineas guardadas
+    }
+
     @Override
     public String toString() {
-        return "Lexema: " + lexema + ", líneas: " + getNroLineas(); 
+        return "Lexema: " + lexema + ", lineas: " + getNroLineas(); 
     }
 }

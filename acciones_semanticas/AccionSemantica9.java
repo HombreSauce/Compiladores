@@ -33,12 +33,13 @@ public class AccionSemantica9 implements AccionSemantica {
         } else {
             num = Double.parseDouble(numero.toString());
         }
-        if((num >= MIN_NORMAL && num <= MAX_VALUE || num == 0.0)) {
+        //Como el rango es simétrico chequeamos por el absoluto
+        if((Math.abs(num) >= MIN_NORMAL && Math.abs(num) <= MAX_VALUE || num == 0.0)) {
             EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);
             Token token = new Token(tablaIDToken.getID("CTEFLOAT"), entrada);
             return token;
         } else {
-            System.err.println("Linea " + lineaCodigoActual + ". Error Léxico: Constante numérica real fuera de rango '" + lexema.toString() + "'.");
+            System.err.println("Linea " + lineaCodigoActual + ". Error Lexico: Constante numerica real fuera de rango '" + lexema.toString() + "'.");
             return null;
         }
     }

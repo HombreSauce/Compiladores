@@ -43,6 +43,6 @@ public class MatrizAccionSemantica {
         {  AS2,          AS2,     AS2,      AS2,      AS2,      AS2,       AS2,       AS2,     AS2,       AS2,       AS2,       AS2,       AS2,       AS2,      AS11,        AS2,        AS2,        AS2,        AS2,       AS2,      AS2,      AS2,       AS2,      AS2,      AS2,      AS2,       AS2,      AS2,      AS2, ASErr2_3 }, // Estado 11
         { ASnull,     ASnull,  ASnull,   ASnull,   ASnull,   ASnull,    ASnull,    ASnull,  ASnull,    ASnull,    ASnull,    ASnull,    ASnull,    ASnull,    ASnull,     ASnull,     ASnull,     ASnull,     ASnull,    ASnull,   ASnull,   ASnull,    ASnull,   ASnull,   ASnull,   ASnull,    ASnull,   ASnull,   ASnull,    ASnull}, // Estado 12
         {  AS9,          AS2,     AS9,      AS9,      AS9,      AS9,       AS9,       AS9,     AS9,       AS9,       AS9,       AS9,       AS9,       AS9,       AS9,        AS9,        AS9,        AS9,        AS9,       AS9,      AS9,      AS9,       AS9,      AS9,      AS9,      AS9,       AS9,      AS9,      AS9,      AS9 }, // Estado 13
-        //El estado 13 no está porque una vez que nos dé estado actual 13 sabemos que es estado final
+        //El estado 14 no está porque una vez que nos dé estado actual 14 sabemos que es estado final
     };
 }
