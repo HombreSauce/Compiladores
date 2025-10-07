@@ -55,10 +55,7 @@
 
 /* ========= Programa ========= */ /* programa: nombre + cuerpo */
 
-prog	: ID LLAVEINIC bloque LLAVEFIN                   {System.out.println("")}                
- 		| error LLAVEINIC bloque LLAVEFIN { yyerror("Ocurrio algo inesperado al inicio del programa. Sugerencia: Falta el nombre del programa."); }
- 		| ID error bloque LLAVEFIN 		  { yyerror("Ocurrio algo inesperado al inicio del programa. Sugerencia: Falta '{' "); }
- 		| ID LLAVEINIC bloque error 	  { yyerror("Ocurrio algo inesperado al final del programa. Sugerencia: Falta '}'"); }	
+prog	: ID LLAVEINIC bloque LLAVEFIN             
 		;
 /* ========= Bloques ========= */ /* Mezcla declarativas + ejecutables */   
 
@@ -69,33 +66,31 @@ bloque	: /* vacío */
 /* Sólo ejecutables: se usa en if/for y en cuerpos lambda */
 
 bloque_ejec		: /* vacío */
-  				| bloque_ejec sentencia_ejec
+  				| bloque_ejec sentencia_ejec PUNTOYCOMA
+                | bloque_ejec sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
   				;
 
 /* ========= Sentencias ========= */
 
-sentencia	: sentencia_ejec
+sentencia	: sentencia_ejec PUNTOYCOMA
+            | sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
   			| INT ID decl_func
-			| INT error PUNTOYCOMA{ yyerror("Ocurrio algo inesperado. Sugerencia: Falta el nombre de la funcion o variable"); }
   			;
+
+sentencia_ejec	: asign_simple
+  				| asign_multiple            /* tema 18 */
+  				| bloque_if 
+  				| bloque_for                      /* tema 15 */
+  				| print_sent                       /* tema 8 */
+  				| llamada_funcion               /* invocación como sentencia */
+  				| return_sent                    /* termina en PUNTOYCOMA adentro */
+				;
 
 decl_func	: PUNTOYCOMA
 			| COMA lista_ids PUNTOYCOMA
 			| PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
-			| error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }
-			| COMA lista_ids error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }
 			;
 
-sentencia_ejec	: asign_simple PUNTOYCOMA
-  				| asign_multiple PUNTOYCOMA            /* tema 18 */
-  				| bloque_if                        
-  				| bloque_for                      /* tema 15 */
-  				| print_sent                       /* tema 8 */
-  				| llamada_funcion PUNTOYCOMA              /* invocación como sentencia */
-  				| return_sent                    /* termina en PUNTOYCOMA adentro */
-				| asign_simple error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }
-  				| llamada_funcion error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }
-				;
 
 /* ========= Declaraciones ========= */
 
@@ -105,8 +100,6 @@ var_ref		: ID					/* tema 22 */
 
 lista_ids	: var_ref
  			| lista_ids COMA var_ref
-			| lista_ids COMA error { yyerror("Ocurrio algo inesperado se esperaba un ID despues de la ',' "); }
-			| lista_ids error var_ref { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ',' "); }	
   			;
 
 /* ========= Asignaciones ========= */
@@ -122,7 +115,6 @@ asign_multiple	: lista_ids IGUALUNICO lista_ctes
 
 lista_ctes	: cte
   			| lista_ctes COMA cte
-			| lista_ctes COMA error { yyerror("Ocurrio algo inesperado. Se esperaba un CTE despues de la ',' "); }
 			;	
 			
 /* ========= Constante ========= */
@@ -154,47 +146,32 @@ factor		: var_ref
 /* Params reales pueden ser expr, lambda (tema 28) o trunc (expr) (tema 31) */
 
 llamada_funcion	: ID PARENTINIC lista_params_reales PARENTFIN
-  				| ID PARENTINIC error PARENTFIN { yyerror("Error en lista de parámetros reales"); }
   				;
 
 lista_params_reales		: param_real_map
   						| lista_params_reales COMA param_real_map
-						| lista_params_reales COMA error { yyerror("Ocurrio algo inesperado. Se esperaba un parametro despues de la ',' "); }
- 						| lista_params_reales error param_real_map { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ',' "); }
- 						| lista_params_reales error COMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ',' "); }
 						;
 
 /* Cada parámetro real debe mapear a un formal con '->' */
 param_real_map		: parametro_real FLECHA ID
-					| parametro_real error  { yyerror("Ocurrio algo inesperado. Sugerencia: Falta '->' "); }
-  					| parametro_real FLECHA error  { yyerror("Ocurrio algo inesperado. Sugerencia: Falta 'ID' "); }
 					;	
 
 parametro_real	: expresion                    
   				| TRUNC PARENTINIC expresion PARENTFIN                		 /* tema 31 */
   				| lambda_expr                                     	 /* tema 28 */
-  				| TRUNC error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta trunc '(' "); }
-  				| TRUNC PARENTINIC expresion error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ')' del trunc "); }
 				;
 
 /* ========= Retorno ========= */
-return_sent		: RETURN PARENTINIC expresion PARENTFIN PUNTOYCOMA
-				| RETURN PARENTINIC expresion PARENTFIN error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }
+return_sent		: RETURN PARENTINIC expresion PARENTFIN
   				;
 
 /* ========= Funciones (declaración) ========= */
 
 lista_params_formales	: param_formal
 						| lista_params_formales COMA param_formal
-						| lista_params_formales error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ',' "); }
-						| lista_params_formales error COMA 		{ yyerror("Ocurrio algo inesperado. Sugerencia: Falta ',' "); }
 						;
 
 param_formal		: sem_pasaje_opt INT ID            /* tema 24 */
-					| sem_pasaje_opt INT error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el nombre del parámetro"); }
-					| sem_pasaje_opt error PARENTFIN 	 { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el tipo del parámetro"); }                 
-					| sem_pasaje_opt INT error COMA 	 { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el nombre del parámetro"); }
-					| sem_pasaje_opt error COMA 	 	 { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el tipo del parámetro"); }                 
 					;
 
 sem_pasaje_opt		: /* vacío */                
@@ -203,11 +180,8 @@ sem_pasaje_opt		: /* vacío */
 
 /* ========= If (selección) ========= */
 
-bloque_if	: IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF PUNTOYCOMA
-			| IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF error PUNTOYCOMA{ yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }	
-			| IF error PUNTOYCOMA { yyerror ("Ocurrio algo inesperado. Sugerencia: Falta if '(' "); }
-  			| IF PARENTINIC condicion error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ')' del if "); }
-			| IF PARENTINIC condicion PARENTFIN rama_if opt_else error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta 'endif' "); }	
+bloque_if	: IF PARENTINIC condicion PARENTFIN rama_if ENDIF
+            | IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF
 			;
 
 condicion	: expresion relop expresion
@@ -225,48 +199,30 @@ rama_if		: sentencia_ejec
   			| LLAVEINIC bloque_ejec LLAVEFIN
   			;
 
-opt_else		: /* vacío */
-				| ELSE rama_if
+opt_else		: ELSE rama_if
 				;
 
 /* ========= For (tema 15) ========= */
 
-bloque_for		: FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for PUNTOYCOMA
-				| FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for error PUNTOYCOMA{ yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }
-  				| FOR error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta for '(' "); }
-				| FOR PARENTINIC ID FROM CTEINT TO CTEINT error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ')' del for "); }
-				| FOR PARENTINIC error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el control del for (el mitico 'i') "); }
-				| FOR PARENTINIC ID error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta 'from' "); }
-				| FOR PARENTINIC ID FROM error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el valor inicial del for "); }
-				| FOR PARENTINIC ID FROM CTEINT error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta 'to' "); }
-				| FOR PARENTINIC ID FROM CTEINT TO error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el valor final del for "); }
+bloque_for		: FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for 
 				;
 
 rama_for		: sentencia_ejec
 				| LLAVEINIC bloque_ejec LLAVEFIN
-				| LLAVEINIC error LLAVEFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el cuerpo del for "); }
 				;
 
 /* ========= Print (tema 8) ========= */
 
-print_sent		: PRINT PARENTINIC expresion PARENTFIN PUNTOYCOMA
-				| PRINT PARENTINIC expresion PARENTFIN error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }	  
-				| PRINT PARENTINIC error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta la expresión a imprimir "); }	  
+print_sent		: PRINT PARENTINIC expresion PARENTFIN
   				;
 
 /* ========= Lambda como parámetro (tema 28) ========= */
 
-lambda_expr		: PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN
-				| PARENTINIC INT ID error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ')' "); }
-				| PARENTINIC INT ID PARENTFIN error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta '{' "); }
-				| PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta '}' "); }
-				| PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta '(' "); }
-				| PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec	LLAVEFIN PARENTINIC argumento error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ')' "); } 
-				;
+lambda_expr		: PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN COMA PARENTINIC argumento PARENTFIN
+                ;
 
 argumento	: ID
   			| cte
-			| error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta un argumento "); }
   			;
 
 %%
@@ -458,5 +414,5 @@ int yylex (){
 
 void yyerror(String mensaje){
     if ("syntax error".equals(mensaje)) return;  // suprime el genérico
-    System.err.println("Error sintáctico en línea " + lex.getLineaActual() + ": " + mensaje);
+    System.err.println("Error sintactico en linea " + lex.getLineaActual() + ": " + mensaje);
 }

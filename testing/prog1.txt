@@ -1,25 +1,6 @@
 PROG {
-int X, Y, Z;
-int I;
 
-int SUMA ( int A, cv int B + A ) {
-    return ( A + B );
-}
+X:=1I
+Y:=2I;
 
-int APLICA ( int V, int CB ) {
-    print( V );
-    return ( V );
-}
-
-X := 3 + 4 * 5I;
-Y := 2;
-X, Y, Z = 1, 2, 3;
-
-if ( X > Y ) { print( X ); } else print( Y ); endif;
-
-for ( I from 1 to 3I ) { print( I ); };
-
-print( SUMA( 12 -> A, trunc( 7I / 3I ) -> B ) );
-
-APLICA( 99I -> V, (int T){ print( T ); }(5) -> CB );
 }
