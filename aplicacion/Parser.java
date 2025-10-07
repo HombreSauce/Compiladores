@@ -445,7 +445,7 @@ final static String yyrule[] = {
 "argumento : cte",
 };
 
-//#line 254 ".\gramatica.y"
+//#line 256 ".\gramatica.y"
 
 /* ---- Seccion de código ---- */
 
@@ -642,12 +642,13 @@ case 27:
 {
 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)val_peek(0).obj;
 			String valor_negativo = '-' + entrada.getLexema();
-			entrada.setLexema(valor_negativo);
+			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
+			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); /*eliminamos la entrada del positivo que se creo en el lexico*/
 			yyval = val_peek(0); /*se reduce por CTEFLOAT*/
 		}
 break;
 case 28:
-//#line 129 ".\gramatica.y"
+//#line 130 ".\gramatica.y"
 {
 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)val_peek(0).obj;
 			String valor = entrada.getLexema();
@@ -663,16 +664,17 @@ case 28:
 		}
 break;
 case 29:
-//#line 142 ".\gramatica.y"
+//#line 143 ".\gramatica.y"
 {
 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)val_peek(0).obj;
 			String valor_negativo = '-' + entrada.getLexema();
-			entrada.setLexema(valor_negativo);
+			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
+			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); /*eliminamos la entrada del positivo que se creo en el lexico*/
 
 			yyval = val_peek(0);
 		}
 break;
-//#line 599 "Parser.java"
+//#line 601 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

@@ -13,15 +13,16 @@ int APLICA ( int V, int CB ) {
 
 X := 3I + 4I * 5I;
 Y := -2I;
+Z := -2I;
 FLOTANTE := -33.456;
-H := 4000;
+H := 32768;
 X, Y, Z = 1I, 2I, 3I;
 
 if ( X > Y ) { print( X ); } else print( Y ); endif;
 
 for ( I from 1 to 3I ) { print( I ); };
 
-print( SUMA( 12 -> A, trunc( 7I / 3I ) -> B ) );
+print( SUMA( 12 -> A, trunc( 7I / -3I ) -> B ) );
 
 APLICA( 99I -> V, (int T){ print( T ); }(5) -> CB );
 }

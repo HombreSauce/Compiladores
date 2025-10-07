@@ -30,6 +30,13 @@ public class EntradaTablaSimbolos {
         return nroLineas;
     }
 
+    public int getUltimaLinea() {
+        if (!nroLineas.isEmpty()) {
+            return nroLineas.get(nroLineas.size() - 1);
+        }
+        return -1; //si no hay lineas guardadas
+    }
+
     @Override
     public String toString() {
         return "Lexema: " + lexema + ", lineas: " + getNroLineas(); 

@@ -123,7 +123,8 @@ cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos n
 		| MENOS CTEFLOAT {
 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$2.obj;
 			String valor_negativo = '-' + entrada.getLexema();
-			entrada.setLexema(valor_negativo);
+			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
+			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); //eliminamos la entrada del positivo que se creo en el lexico
 			yyval = $2; //se reduce por CTEFLOAT
 		}
 		| CTEINT {
@@ -142,7 +143,8 @@ cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos n
 		| MENOS CTEINT {
 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$2.obj;
 			String valor_negativo = '-' + entrada.getLexema();
-			entrada.setLexema(valor_negativo);
+			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
+			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); //eliminamos la entrada del positivo que se creo en el lexico
 
 			yyval = $2;
 		}

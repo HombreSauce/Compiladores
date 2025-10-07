@@ -1,5 +1,6 @@
 package datos;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,14 @@ public class TablaSimbolos {
             EntradaTablaSimbolos nuevaEntrada = new EntradaTablaSimbolos(lexema, nroLinea);
             tablaSimbolos.put(lexema, nuevaEntrada);
             return nuevaEntrada;
+        }
+    }
+
+    //Este metodo se utiliza para borrar las entradas que se crearon y luego se descubrió que es un num negativo
+    public void eliminarEntrada(String lexema, int nroLinea) {
+        ArrayList<Integer> lineasLexema = tablaSimbolos.get(lexema).getNroLineas();
+        if(lineasLexema.size() == 1 && lineasLexema.get(0) == nroLinea) { //si la unica linea que hay es la pasada por parametro se elimina la entrada
+            tablaSimbolos.remove(lexema);
         }
     }
 
