@@ -4,6 +4,12 @@
 	package aplicacion;
 	import aplicacion.AnalizadorLexico;
 	import aplicacion.Token;
+	import datos.TablaSimbolos;
+	import datos.TablaIdentificadorToken;
+	import datos.TablaPalabraReservada;
+	import java.io.*;
+	import java.nio.charset.StandardCharsets;
+	import java.nio.file.*;
 
 %}
 
@@ -45,19 +51,15 @@
 %token LLAVEINIC	/* '{' */
 %token LLAVEFIN		/* '}' */
 
+%% 
 
-
-
-/* ===== Precedencias ===== */
-%left MAS MENOS
-%left MUL DIV
-
-%%
 /* ========= Programa ========= */ /* programa: nombre + cuerpo */
 
-prog	: ID LLAVEINIC bloque LLAVEFIN                                   
-  		;
-
+prog	: ID LLAVEINIC bloque LLAVEFIN                   {System.out.println("")}                
+ 		| error LLAVEINIC bloque LLAVEFIN { yyerror("Ocurrio algo inesperado al inicio del programa. Sugerencia: Falta el nombre del programa."); }
+ 		| ID error bloque LLAVEFIN 		  { yyerror("Ocurrio algo inesperado al inicio del programa. Sugerencia: Falta '{' "); }
+ 		| ID LLAVEINIC bloque error 	  { yyerror("Ocurrio algo inesperado al final del programa. Sugerencia: Falta '}'"); }	
+		;
 /* ========= Bloques ========= */ /* Mezcla declarativas + ejecutables */   
 
 bloque	: /* vacío */
@@ -74,13 +76,15 @@ bloque_ejec		: /* vacío */
 
 sentencia	: sentencia_ejec
   			| INT ID decl_func
+			| INT error PUNTOYCOMA{ yyerror("Ocurrio algo inesperado. Sugerencia: Falta el nombre de la funcion o variable"); }
   			;
 
 decl_func	: PUNTOYCOMA
 			| COMA lista_ids PUNTOYCOMA
 			| PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
+			| error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }
+			| COMA lista_ids error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }
 			;
-
 
 sentencia_ejec	: asign_simple PUNTOYCOMA
   				| asign_multiple PUNTOYCOMA            /* tema 18 */
@@ -89,7 +93,9 @@ sentencia_ejec	: asign_simple PUNTOYCOMA
   				| print_sent                       /* tema 8 */
   				| llamada_funcion PUNTOYCOMA              /* invocación como sentencia */
   				| return_sent                    /* termina en PUNTOYCOMA adentro */
-  				;
+				| asign_simple error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }
+  				| llamada_funcion error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }
+				;
 
 /* ========= Declaraciones ========= */
 
@@ -99,12 +105,14 @@ var_ref		: ID					/* tema 22 */
 
 lista_ids	: var_ref
  			| lista_ids COMA var_ref
+			| lista_ids COMA error { yyerror("Ocurrio algo inesperado se esperaba un ID despues de la ',' "); }
+			| lista_ids error var_ref { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ',' "); }	
   			;
 
 /* ========= Asignaciones ========= */
 /* Asignación simple y expresión aritmética SIN paréntesis de agrupación */	
 
-asign_simple	: var_ref ASIGN expresion {System.out.println("Esto es una asign_simple");}
+asign_simple	: var_ref ASIGN expresion
   				;
 
 /* Tema 18 */ /* LHS puede tener más elementos que RHS.  RHS sólo constantes */
@@ -114,7 +122,8 @@ asign_multiple	: lista_ids IGUALUNICO lista_ctes
 
 lista_ctes	: cte
   			| lista_ctes COMA cte
-  			;	
+			| lista_ctes COMA error { yyerror("Ocurrio algo inesperado. Se esperaba un CTE despues de la ',' "); }
+			;	
 			
 /* ========= Constante ========= */
 
@@ -123,17 +132,17 @@ cte		: CTEFLOAT
 		| CTESTR
   		;
 
-/* ========= Expresiones aritméticas (sin '()' de agrupación) ========= */
+/* ========= Expresiones aritméticas (sin '()' ) ========= */
 
 expresion	: expresion MAS termino
   			| expresion MENOS termino
   			| termino
-  			;
+			;
 
 termino		: termino MUL factor
   			| termino DIV factor
   			| factor
-  			;
+			;
 
 factor		: var_ref
   			| llamada_funcion
@@ -145,42 +154,61 @@ factor		: var_ref
 /* Params reales pueden ser expr, lambda (tema 28) o trunc (expr) (tema 31) */
 
 llamada_funcion	: ID PARENTINIC lista_params_reales PARENTFIN
+  				| ID PARENTINIC error PARENTFIN { yyerror("Error en lista de parámetros reales"); }
   				;
 
 lista_params_reales		: param_real_map
   						| lista_params_reales COMA param_real_map
- 						;
+						| lista_params_reales COMA error { yyerror("Ocurrio algo inesperado. Se esperaba un parametro despues de la ',' "); }
+ 						| lista_params_reales error param_real_map { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ',' "); }
+ 						| lista_params_reales error COMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ',' "); }
+						;
 
 /* Cada parámetro real debe mapear a un formal con '->' */
 param_real_map		: parametro_real FLECHA ID
-  					;	
+					| parametro_real error  { yyerror("Ocurrio algo inesperado. Sugerencia: Falta '->' "); }
+  					| parametro_real FLECHA error  { yyerror("Ocurrio algo inesperado. Sugerencia: Falta 'ID' "); }
+					;	
 
-parametro_real	: expresion                     /* sin paréntesis de agrupación */
+parametro_real	: expresion                    
   				| TRUNC PARENTINIC expresion PARENTFIN                		 /* tema 31 */
   				| lambda_expr                                     	 /* tema 28 */
-  				;
+  				| TRUNC error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta trunc '(' "); }
+  				| TRUNC PARENTINIC expresion error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ')' del trunc "); }
+				;
 
 /* ========= Retorno ========= */
 return_sent		: RETURN PARENTINIC expresion PARENTFIN PUNTOYCOMA
+				| RETURN PARENTINIC expresion PARENTFIN error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }
   				;
 
 /* ========= Funciones (declaración) ========= */
 
 lista_params_formales	: param_formal
 						| lista_params_formales COMA param_formal
+						| lista_params_formales error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ',' "); }
+						| lista_params_formales error COMA 		{ yyerror("Ocurrio algo inesperado. Sugerencia: Falta ',' "); }
 						;
 
 param_formal		: sem_pasaje_opt INT ID            /* tema 24 */
-  					;
+					| sem_pasaje_opt INT error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el nombre del parámetro"); }
+					| sem_pasaje_opt error PARENTFIN 	 { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el tipo del parámetro"); }                 
+					| sem_pasaje_opt INT error COMA 	 { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el nombre del parámetro"); }
+					| sem_pasaje_opt error COMA 	 	 { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el tipo del parámetro"); }                 
+					;
 
 sem_pasaje_opt		: /* vacío */                
-					| CV             
+					| CV
 					;
 
 /* ========= If (selección) ========= */
 
 bloque_if	: IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF PUNTOYCOMA
-  			;
+			| IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF error PUNTOYCOMA{ yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }	
+			| IF error PUNTOYCOMA { yyerror ("Ocurrio algo inesperado. Sugerencia: Falta if '(' "); }
+  			| IF PARENTINIC condicion error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ')' del if "); }
+			| IF PARENTINIC condicion PARENTFIN rama_if opt_else error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta 'endif' "); }	
+			;
 
 condicion	: expresion relop expresion
   			;
@@ -191,7 +219,7 @@ relop		: MENOR
 			| DISTINTO 
 			| MENORIGUAL 
 			| MAYORIGUAL
-  			;
+			;
 
 rama_if		: sentencia_ejec
   			| LLAVEINIC bloque_ejec LLAVEFIN
@@ -204,24 +232,41 @@ opt_else		: /* vacío */
 /* ========= For (tema 15) ========= */
 
 bloque_for		: FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for PUNTOYCOMA
-  				;
+				| FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for error PUNTOYCOMA{ yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }
+  				| FOR error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta for '(' "); }
+				| FOR PARENTINIC ID FROM CTEINT TO CTEINT error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ')' del for "); }
+				| FOR PARENTINIC error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el control del for (el mitico 'i') "); }
+				| FOR PARENTINIC ID error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta 'from' "); }
+				| FOR PARENTINIC ID FROM error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el valor inicial del for "); }
+				| FOR PARENTINIC ID FROM CTEINT error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta 'to' "); }
+				| FOR PARENTINIC ID FROM CTEINT TO error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el valor final del for "); }
+				;
 
 rama_for		: sentencia_ejec
 				| LLAVEINIC bloque_ejec LLAVEFIN
+				| LLAVEINIC error LLAVEFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta el cuerpo del for "); }
 				;
 
 /* ========= Print (tema 8) ========= */
 
-print_sent		: PRINT PARENTINIC expresion PARENTFIN PUNTOYCOMA   
-				;
+print_sent		: PRINT PARENTINIC expresion PARENTFIN PUNTOYCOMA
+				| PRINT PARENTINIC expresion PARENTFIN error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ';' "); }	  
+				| PRINT PARENTINIC error PUNTOYCOMA { yyerror("Ocurrio algo inesperado. Sugerencia: Falta la expresión a imprimir "); }	  
+  				;
 
 /* ========= Lambda como parámetro (tema 28) ========= */
 
 lambda_expr		: PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN
- 				;
+				| PARENTINIC INT ID error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ')' "); }
+				| PARENTINIC INT ID PARENTFIN error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta '{' "); }
+				| PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta '}' "); }
+				| PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta '(' "); }
+				| PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec	LLAVEFIN PARENTINIC argumento error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta ')' "); } 
+				;
 
 argumento	: ID
   			| cte
+			| error PARENTFIN { yyerror("Ocurrio algo inesperado. Sugerencia: Falta un argumento "); }
   			;
 
 %%
@@ -231,25 +276,187 @@ argumento	: ID
 static AnalizadorLexico lex = null;
 static Parser par = null;
 
-public static void main (String [] args) {
-    System.out.println("Iniciando compilacion...");
-    lex = new AnalizadorLexico (args[0]);
-    par = new Parser (false);
-    par.run();
-    System.out.println("Fin compilacion");
+// writers de salida
+static BufferedWriter wTokens = null;   // para los tokens
+static BufferedWriter wTabla  = null;   // para la tabla de símbolos
+static BufferedWriter wSint = null;     // para las estructuras sintacticas
+
+// helpers de ruta
+static Path rutaLexico(Path fuente, boolean acentos) {
+    String base = quitarExt(fuente.getFileName().toString());
+    String suf  = acentos ? "-léxico" : "-lexico";
+    return (fuente.getParent() == null ? Paths.get(".") : fuente.getParent())
+            .resolve(base + suf + ".txt");
 }
+static Path rutaTabla(Path fuente, boolean acentos) {
+    String base = quitarExt(fuente.getFileName().toString());
+    String suf  = acentos ? "-tabla-de-símbolos" : "-tabla-simbolos";
+    return (fuente.getParent() == null ? Paths.get(".") : fuente.getParent())
+            .resolve(base + suf + ".txt");
+}
+static Path rutaSintactico(Path fuente, boolean acentos) {
+    String base = quitarExt(fuente.getFileName().toString());
+    String suf  = acentos ? "-sintáctico" : "-sintactico";
+    return (fuente.getParent() == null ? Paths.get(".") : fuente.getParent())
+            .resolve(base + suf + ".txt");
+}
+static String quitarExt(String s) {
+    int i = s.lastIndexOf('.');
+    return (i > 0) ? s.substring(0, i) : s;
+}
+
+
+
+//para el archivo de tokens
+static void escribirHeaderTokens(BufferedWriter w) throws IOException {
+    w.write(encabezado("TOKENS DETECTADOS")); w.newLine();
+    w.write(String.format("%-6s | %-18s | %-28s | %-4s", "Linea", "Token", "Lexema", "ID")); w.newLine();
+    w.write("------ | ------------------ | ---------------------------- | ----"); w.newLine();
+}
+static String filaToken(Token t, int linea) {
+    String[] tl = tipoYLexema(t);
+    String tipo   = humanizeTipo(tl[0]);                              
+    String lexema = tl[1].replace("\n","\\n").replace("\r","\\r").replace("\t","\\t");
+    lexema = trunc(lexema, 28);                                       // evita que desborde la columna
+    return String.format("%6d | %-18s | %-28s | %4d", linea, tipo, lexema, t.getIDToken());
+}
+// Mapea los IDs a (tipo, lexema) usando las tablas
+static String[] tipoYLexema(Token t) {
+    TablaIdentificadorToken tid = TablaIdentificadorToken.getInstancia();
+    TablaPalabraReservada  tpr  = TablaPalabraReservada.getInstancia();
+    int id = t.getIDToken();
+
+    if (id < 269) {                            // Palabra reservada
+        String kw = tpr.getClave(id);          // ej: IF
+        return new String[]{ kw, kw.toLowerCase() }; // tipo=IF, lexema="if"
+    } else if (id == 269) {
+        return new String[]{ "ID",           t.getEntradaTS()!=null ? t.getEntradaTS().getLexema() : "" };
+    } else if (id == 270) {
+        return new String[]{ "CONST_INT",    t.getEntradaTS()!=null ? t.getEntradaTS().getLexema() : "" };
+    } else if (id == 271) {
+        return new String[]{ "CONST_FLOAT",  t.getEntradaTS()!=null ? t.getEntradaTS().getLexema() : "" };
+    } else if (id == 272) {
+        return new String[]{ "CONST_STRING", t.getEntradaTS()!=null ? t.getEntradaTS().getLexema() : "" };
+    } else {
+        String raw = tid.getClave(id); // puede ser "(", "ASIGNACION", ";", etc.
+        String lex = (t.getEntradaTS()!=null) ? t.getEntradaTS().getLexema() : raw;
+        return new String[]{ raw, lex };
+    }
+}
+// Cambia simbolos sueltos para que la columna Token se vea prolija
+static String humanizeTipo(String raw) {
+    return switch (raw) {
+        case "if" -> "IF";
+        case "else" -> "ELSE";
+        case "endif" -> "ENDIF";
+        case "print" -> "PRINT";
+        case "return" -> "RETURN";
+        case "int" -> "INT";
+        case "for" -> "FOR";
+        case "from" -> "FROM";
+        case "to" -> "TO";
+        case "lambda" -> "LAMBDA";
+        case "cv" -> "CV";
+        case "trunc" -> "TRUNC";
+        case ":=" -> "ASIGN";
+        case "->" -> "FLECHA";
+        case "==" -> "IGUAL";
+        case "=!" -> "DISTINTO";
+        case "<=" -> "MENORIGUAL";
+        case "=>" -> "MAYORIGUAL";
+        case "+" -> "MAS";
+        case "*" -> "MUL";
+        case "/" -> "DIV";
+        case "-" -> "MENOS";
+        case "=" -> "IGUALUNICO";
+        case ">" -> "MAYOR";
+        case "<" -> "MENOR";
+        case "." -> "PUNTO";
+        case "(" -> "PARENTINIC";
+        case ")" -> "PARENTFIN";
+        case "{" -> "LLAVEINIC";
+        case "}" -> "LLAVEFIN";
+        case ";" -> "PUNTOYCOMA";
+        case "," -> "COMA";
+        default -> raw;
+    };
+}
+// Recorta con puntos si el lexema es muy largo
+static String trunc(String s, int max) {
+    if (s == null) return "";
+    if (s.length() <= max) return s;
+    if (max <= 1) return s.substring(0, max);
+    return s.substring(0, max-1) + "…";
+}
+
+
+public static void main (String [] args) {
+    try {
+        System.out.println("Iniciando compilacion...");
+        TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
+
+        Path fuente = Paths.get(args[0]);
+
+        // abrir archivos de salida
+        wTokens = Files.newBufferedWriter(
+                rutaLexico(fuente, false), StandardCharsets.UTF_8,
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+        escribirHeaderTokens(wTokens);
+
+        // (opcional) abrimos el de tabla ahora o despues — aca lo abrimos ahora
+        wTabla = Files.newBufferedWriter(
+                rutaTabla(fuente, false), StandardCharsets.UTF_8,
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+
+        // correr analisis
+        lex = new AnalizadorLexico(args[0]);
+        par = new Parser(false);
+        par.run();
+
+        // volcar TABLA DE SIMBOLOS a archivo
+        wTabla.write(encabezado("TABLA DE SIMBOLOS"));
+        wTabla.newLine();
+        PrintWriter pw = new PrintWriter(wTabla, true);
+        tablaSimbolos.mostrarTabla(pw); 
+
+        System.out.println("Fin compilacion");
+        
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    } finally {
+        try { if (wTokens != null) { wTokens.flush(); wTokens.close(); } } catch (IOException ignored) {}
+        try { if (wTabla  != null) { wTabla.flush();  wTabla.close();  } } catch (IOException ignored) {}
+    }
+}
+
+static String encabezado(String titulo) {
+    String barra = "=".repeat(Math.max(24, titulo.length() + 8));
+    return barra + "\n" + "=== " + titulo + " ===\n" + barra;
+}
+
 
 int yylex (){
-        Token token = null;
-        if ((token = lex.getToken()) != null) { 
-            yylval = new ParserVal(token.getEntradaTS());
-            System.out.print("Token ID: " + token.getIDToken() + ". ");
-            return token.getIDToken();
-        } else {
-            return 0; // Indica que no hay más tokens
+    Token token = null;
+    if ((token = lex.getToken()) != null) {
+        yylval = new ParserVal(token.getEntradaTS());
+
+        // --- escribir al archivo de tokens ---
+        if (wTokens != null) {
+            try {
+				int lineaTok = lex.getLineaActual(); 
+                wTokens.write(filaToken(token, lineaTok)); 
+                wTokens.newLine();
+            } catch (IOException e) {
+                throw new RuntimeException("Error escribiendo token", e);
+            }
         }
+        return token.getIDToken();
+    } else {
+        return 0; // no hay más tokens
+    }
 }
 
-void yyerror (String mensaje){
-    System.err.println("Error sintactico en linea " + lex.getLineaActual() + ": " + mensaje);
+void yyerror(String mensaje){
+    if ("syntax error".equals(mensaje)) return;  // suprime el genérico
+    System.err.println("Error sintáctico en línea " + lex.getLineaActual() + ": " + mensaje);
 }

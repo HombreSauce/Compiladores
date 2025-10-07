@@ -2,7 +2,7 @@ PROG {
 int X, Y, Z;
 int I;
 
-int SUMA ( int A, cv int B ) {
+int SUMA ( int A, cv int B + A ) {
     return ( A + B );
 }
 
