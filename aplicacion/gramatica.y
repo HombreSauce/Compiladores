@@ -78,7 +78,7 @@ sentencia	: sentencia_ejec
   			;
 
 decl_func	: PUNTOYCOMA
-			| COMA lista_ids PUNTOYCOMA
+			| COMA lista_ids PUNTOYCOMA {n_var = 0;} // se reinician el contador de variables por si lo debe usar la asignacion multiple
 			| PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
 			;
 
@@ -98,8 +98,9 @@ var_ref		: ID					/* tema 22 */
 			| var_ref PUNTO ID
   			;	
 
-lista_ids	: var_ref
- 			| lista_ids COMA var_ref
+lista_ids	: var_ref {n_var++;}
+ 			| lista_ids COMA var_ref {n_var++;}
+			| lista_ids COMA error { yyerror("Error: falta identificador después de coma");}
   			;
 
 /* ========= Asignaciones ========= */
@@ -110,11 +111,22 @@ asign_simple	: var_ref ASIGN expresion {System.out.println("Esto es una asign_si
 
 /* Tema 18 */ /* LHS puede tener más elementos que RHS.  RHS sólo constantes */
 
-asign_multiple	: lista_ids IGUALUNICO lista_ctes
+asign_multiple	: lista_ids IGUALUNICO lista_ctes {
+					if (n_var < n_cte) {
+						yyerror("Error: más constantes que variables en la asignación");
+					} else {
+						System.out.println("Asignación válida (" + n_var + ", " + n_cte + ")");
+					}
+					n_var = n_cte = 0;  /* reset para la próxima */
+				}
+				| IGUALUNICO lista_ctes { yyerror("Error: falta lista de variables antes del '='"); }
+				| lista_ids lista_ctes { yyerror("Error: falta '=' entre la lista de variables y la lista de constantes"); }
+				| lista_ids IGUALUNICO error { yyerror("Error: falta lista de constantes después del '='");}
   				;
 
-lista_ctes	: cte
-  			| lista_ctes COMA cte
+lista_ctes	: cte {n_cte++;}
+  			| lista_ctes COMA cte {n_cte++;}
+			| lista_ctes COMA error { yyerror("Error: falta una constante después de coma");}
   			;	
 			
 /* ========= Constante ========= */
@@ -260,6 +272,8 @@ argumento	: ID
 static AnalizadorLexico lex = null;
 static Parser par = null;
 static TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
+static int n_var = 0; //para contar variables en asignaciones multiples
+static int n_cte = 0; //para contar ctes en asignaciones multiples
 
 public static void main (String [] args) {
     System.out.println("Iniciando compilacion...");
