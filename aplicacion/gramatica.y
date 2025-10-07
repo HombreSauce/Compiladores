@@ -136,6 +136,7 @@ cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos n
 			//al ser positivo debemos chequear el maximo
 			if (num > max) {
 				System.err.println("Error léxico: constante entera fuera de rango en línea " + lex.getLineaActual() + ": " + num);
+				tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea());
 			}
 
 			yyval = $1;

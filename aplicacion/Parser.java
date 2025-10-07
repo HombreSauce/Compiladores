@@ -445,7 +445,7 @@ final static String yyrule[] = {
 "argumento : cte",
 };
 
-//#line 256 ".\gramatica.y"
+//#line 257 ".\gramatica.y"
 
 /* ---- Seccion de código ---- */
 
@@ -658,13 +658,14 @@ case 28:
 			/*al ser positivo debemos chequear el maximo*/
 			if (num > max) {
 				System.err.println("Error léxico: constante entera fuera de rango en línea " + lex.getLineaActual() + ": " + num);
+				tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea());
 			}
 
 			yyval = val_peek(0);
 		}
 break;
 case 29:
-//#line 143 ".\gramatica.y"
+//#line 144 ".\gramatica.y"
 {
 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)val_peek(0).obj;
 			String valor_negativo = '-' + entrada.getLexema();
@@ -674,7 +675,7 @@ case 29:
 			yyval = val_peek(0);
 		}
 break;
-//#line 601 "Parser.java"
+//#line 602 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

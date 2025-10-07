@@ -12,7 +12,7 @@ int APLICA ( int V, int CB ) {
 }
 
 X := 3I + 4I * 5I;
-Y := -2I;
+Y := 32768I;
 Z := -2I;
 FLOTANTE := -33.456;
 H := 32768;
