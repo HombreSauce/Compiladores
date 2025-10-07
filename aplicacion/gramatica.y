@@ -101,6 +101,7 @@ var_ref		: ID					/* tema 22 */
 lista_ids	: var_ref {n_var++;}
  			| lista_ids COMA var_ref {n_var++;}
 			| lista_ids COMA error { yyerror("Error: falta identificador después de coma");}
+			| lista_ids var_ref {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
   			;
 
 /* ========= Asignaciones ========= */
