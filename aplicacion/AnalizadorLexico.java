@@ -34,7 +34,6 @@ public class AnalizadorLexico {
         lineaPosicion.incrementar(); // la primera linea es la 1
     }
 
-
     public int getLineaActual() {
         return lineaPosicion.getPosicion();
     }

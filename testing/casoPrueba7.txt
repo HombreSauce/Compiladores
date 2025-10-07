@@ -1,3 +1,0 @@
-@Este es un comentario bien escrito
-@ Este tmb es un comentario && bien escrito con *!= cosas adentro
-@ No se si hay forma de escribir un comentario mal @

@@ -1,10 +1,7 @@
 PROG {
-int X, Y, Z;
-int I;
 
-int SUMA ( int A, cv int B ) {
-    return ( A + B );
-}
+X:=1I
+Y:=2I;
 
 int APLICA ( int V, int CB ) {
     print( V );
