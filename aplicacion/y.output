@@ -1,54 +1,54 @@
    0  $accept : prog $end
 
    1  prog : ID LLAVEINIC bloque LLAVEFIN
-   2       | error LLAVEINIC bloque LLAVEFIN
-   3       | ID error bloque LLAVEFIN
-   4       | ID LLAVEINIC bloque error
 
-   5  bloque :
-   6         | bloque sentencia
+   2  bloque :
+   3         | bloque sentencia
 
-   7  bloque_ejec :
-   8              | bloque_ejec sentencia_ejec
+   4  bloque_ejec :
+   5              | bloque_ejec sentencia_ejec PUNTOYCOMA
+   6              | bloque_ejec sentencia_ejec
 
-   9  sentencia : sentencia_ejec
-  10            | INT ID decl_func
-  11            | INT error PUNTOYCOMA
+   7  sentencia : sentencia_ejec PUNTOYCOMA
+   8            | sentencia_ejec
+   9            | INT ID decl_func
+  10            | INT error decl_func
 
-  12  decl_func : PUNTOYCOMA
-  13            | COMA lista_ids PUNTOYCOMA
-  14            | PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
-  15            | error PUNTOYCOMA
-  16            | COMA lista_ids error PUNTOYCOMA
+  11  sentencia_ejec : asign_simple
+  12                 | asign_multiple
+  13                 | bloque_if
+  14                 | bloque_for
+  15                 | print_sent
+  16                 | llamada_funcion
+  17                 | return_sent
 
-  17  sentencia_ejec : asign_simple PUNTOYCOMA
-  18                 | asign_multiple PUNTOYCOMA
-  19                 | bloque_if
-  20                 | bloque_for
-  21                 | print_sent
-  22                 | llamada_funcion PUNTOYCOMA
-  23                 | return_sent
-  24                 | asign_simple error PUNTOYCOMA
-  25                 | llamada_funcion error PUNTOYCOMA
+  18  decl_func : PUNTOYCOMA
+  19            | COMA lista_ids PUNTOYCOMA
+  20            | PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
 
-  26  var_ref : ID
-  27          | var_ref PUNTO ID
+  21  var_ref : ID
+  22          | var_ref PUNTO ID
 
-  28  lista_ids : var_ref
-  29            | lista_ids COMA var_ref
-  30            | lista_ids COMA error
-  31            | lista_ids error var_ref
+  23  lista_ids : var_ref
+  24            | lista_ids COMA var_ref
+  25            | lista_ids COMA error
+  26            | lista_ids var_ref
 
-  32  asign_simple : var_ref ASIGN expresion
+  27  asign_simple : var_ref ASIGN expresion
 
-  33  asign_multiple : lista_ids IGUALUNICO lista_ctes
+  28  asign_multiple : lista_ids IGUALUNICO lista_ctes
+  29                 | IGUALUNICO lista_ctes
+  30                 | lista_ids lista_ctes
+  31                 | lista_ids IGUALUNICO error
 
-  34  lista_ctes : cte
-  35             | lista_ctes COMA cte
-  36             | lista_ctes COMA error
+  32  lista_ctes : cte
+  33             | lista_ctes COMA cte
+  34             | lista_ctes COMA error
 
-  37  cte : CTEFLOAT
-  38      | CTEINT
+  35  cte : CTEFLOAT
+  36      | MENOS CTEFLOAT
+  37      | CTEINT
+  38      | MENOS CTEINT
   39      | CTESTR
 
   40  expresion : expresion MAS termino
@@ -64,677 +64,655 @@
   48         | cte
 
   49  llamada_funcion : ID PARENTINIC lista_params_reales PARENTFIN
-  50                  | ID PARENTINIC error PARENTFIN
+  50                  | error PARENTINIC lista_params_reales PARENTFIN
 
   51  lista_params_reales : param_real_map
   52                      | lista_params_reales COMA param_real_map
-  53                      | lista_params_reales COMA error
-  54                      | lista_params_reales error param_real_map
-  55                      | lista_params_reales error COMA
 
-  56  param_real_map : parametro_real FLECHA ID
-  57                 | parametro_real error
-  58                 | parametro_real FLECHA error
+  53  param_real_map : parametro_real FLECHA ID
 
-  59  parametro_real : expresion
-  60                 | TRUNC PARENTINIC expresion PARENTFIN
-  61                 | lambda_expr
-  62                 | TRUNC error PARENTFIN
-  63                 | TRUNC PARENTINIC expresion error PARENTFIN
+  54  parametro_real : expresion
+  55                 | TRUNC PARENTINIC expresion PARENTFIN
+  56                 | lambda_expr
 
-  64  return_sent : RETURN PARENTINIC expresion PARENTFIN PUNTOYCOMA
-  65              | RETURN PARENTINIC expresion PARENTFIN error PUNTOYCOMA
+  57  return_sent : RETURN PARENTINIC expresion PARENTFIN
 
-  66  lista_params_formales : param_formal
-  67                        | lista_params_formales COMA param_formal
-  68                        | lista_params_formales error PARENTFIN
-  69                        | lista_params_formales error COMA
+  58  lista_params_formales : param_formal
+  59                        | lista_params_formales COMA param_formal
 
-  70  param_formal : sem_pasaje_opt INT ID
-  71               | sem_pasaje_opt INT error PARENTFIN
-  72               | sem_pasaje_opt error PARENTFIN
-  73               | sem_pasaje_opt INT error COMA
-  74               | sem_pasaje_opt error COMA
+  60  param_formal : sem_pasaje_opt INT ID
 
-  75  sem_pasaje_opt :
-  76                 | CV
+  61  sem_pasaje_opt :
+  62                 | CV
 
-  77  bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF PUNTOYCOMA
-  78            | IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF error PUNTOYCOMA
-  79            | IF error PUNTOYCOMA
-  80            | IF PARENTINIC condicion error PUNTOYCOMA
-  81            | IF PARENTINIC condicion PARENTFIN rama_if opt_else error PUNTOYCOMA
+  63  bloque_if : IF PARENTINIC condicion PARENTFIN rama_if ENDIF
+  64            | IF PARENTINIC condicion PARENTFIN rama_if error
+  65            | IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF
+  66            | IF PARENTINIC condicion PARENTFIN rama_if opt_else error
+  67            | IF PARENTINIC condicion PARENTFIN error opt_else ENDIF
 
-  82  condicion : expresion relop expresion
+  68  condicion : expresion relop expresion
+  69            | expresion error expresion
 
-  83  relop : MENOR
-  84        | MAYOR
-  85        | IGUAL
-  86        | DISTINTO
-  87        | MENORIGUAL
-  88        | MAYORIGUAL
+  70  relop : MENOR
+  71        | MAYOR
+  72        | IGUAL
+  73        | DISTINTO
+  74        | MENORIGUAL
+  75        | MAYORIGUAL
 
-  89  rama_if : sentencia_ejec
-  90          | LLAVEINIC bloque_ejec LLAVEFIN
+  76  rama_if : sentencia
+  77          | LLAVEINIC bloque_ejec LLAVEFIN
 
-  91  opt_else :
-  92           | ELSE rama_if
+  78  opt_else : ELSE rama_if
+  79           | ELSE error
 
-  93  bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for PUNTOYCOMA
-  94             | FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for error PUNTOYCOMA
-  95             | FOR error PUNTOYCOMA
-  96             | FOR PARENTINIC ID FROM CTEINT TO CTEINT error PUNTOYCOMA
-  97             | FOR PARENTINIC error PUNTOYCOMA
-  98             | FOR PARENTINIC ID error PUNTOYCOMA
-  99             | FOR PARENTINIC ID FROM error PUNTOYCOMA
- 100             | FOR PARENTINIC ID FROM CTEINT error PUNTOYCOMA
- 101             | FOR PARENTINIC ID FROM CTEINT TO error PUNTOYCOMA
+  80  bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for
 
- 102  rama_for : sentencia_ejec
- 103           | LLAVEINIC bloque_ejec LLAVEFIN
- 104           | LLAVEINIC error LLAVEFIN
+  81  rama_for : sentencia_ejec PUNTOYCOMA
+  82           | LLAVEINIC bloque_ejec LLAVEFIN
 
- 105  print_sent : PRINT PARENTINIC expresion PARENTFIN PUNTOYCOMA
- 106             | PRINT PARENTINIC expresion PARENTFIN error PUNTOYCOMA
- 107             | PRINT PARENTINIC error PUNTOYCOMA
+  83  print_sent : PRINT PARENTINIC expresion PARENTFIN
 
- 108  lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN
- 109              | PARENTINIC INT ID error PARENTFIN
- 110              | PARENTINIC INT ID PARENTFIN error PARENTFIN
- 111              | PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec error PARENTFIN
- 112              | PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN error PARENTFIN
- 113              | PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento error PARENTFIN
+  84  lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN
 
- 114  argumento : ID
- 115            | cte
- 116            | error PARENTFIN
+  85  argumento : ID
+  86            | cte
 
 state 0
 	$accept : . prog $end  (0)
 
-	error  shift 1
-	ID  shift 2
+	ID  shift 1
 	.  error
 
-	prog  goto 3
+	prog  goto 2
 
 
 state 1
-	prog : error . LLAVEINIC bloque LLAVEFIN  (2)
+	prog : ID . LLAVEINIC bloque LLAVEFIN  (1)
 
-	LLAVEINIC  shift 4
+	LLAVEINIC  shift 3
 	.  error
 
 
 state 2
-	prog : ID . LLAVEINIC bloque LLAVEFIN  (1)
-	prog : ID . error bloque LLAVEFIN  (3)
-	prog : ID . LLAVEINIC bloque error  (4)
-
-	error  shift 5
-	LLAVEINIC  shift 6
-	.  error
-
-
-state 3
 	$accept : prog . $end  (0)
 
 	$end  accept
 
 
+state 3
+	prog : ID LLAVEINIC . bloque LLAVEFIN  (1)
+	bloque : .  (2)
+
+	.  reduce 2
+
+	bloque  goto 4
+
+
 state 4
-	prog : error LLAVEINIC . bloque LLAVEFIN  (2)
-	bloque : .  (5)
+	prog : ID LLAVEINIC bloque . LLAVEFIN  (1)
+	bloque : bloque . sentencia  (3)
 
-	.  reduce 5
+	error  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	RETURN  shift 8
+	INT  shift 9
+	FOR  shift 10
+	ID  shift 11
+	IGUALUNICO  shift 12
+	LLAVEFIN  shift 13
+	.  error
 
-	bloque  goto 7
+	sentencia  goto 14
+	sentencia_ejec  goto 15
+	asign_simple  goto 16
+	asign_multiple  goto 17
+	bloque_if  goto 18
+	bloque_for  goto 19
+	print_sent  goto 20
+	llamada_funcion  goto 21
+	return_sent  goto 22
+	lista_ids  goto 23
+	var_ref  goto 24
 
 
 state 5
-	prog : ID error . bloque LLAVEFIN  (3)
-	bloque : .  (5)
+	llamada_funcion : error . PARENTINIC lista_params_reales PARENTFIN  (50)
 
-	.  reduce 5
-
-	bloque  goto 8
+	PARENTINIC  shift 25
+	.  error
 
 
 state 6
-	prog : ID LLAVEINIC . bloque LLAVEFIN  (1)
-	prog : ID LLAVEINIC . bloque error  (4)
-	bloque : .  (5)
+	bloque_if : IF . PARENTINIC condicion PARENTFIN rama_if ENDIF  (63)
+	bloque_if : IF . PARENTINIC condicion PARENTFIN rama_if error  (64)
+	bloque_if : IF . PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF  (65)
+	bloque_if : IF . PARENTINIC condicion PARENTFIN rama_if opt_else error  (66)
+	bloque_if : IF . PARENTINIC condicion PARENTFIN error opt_else ENDIF  (67)
 
-	.  reduce 5
-
-	bloque  goto 9
+	PARENTINIC  shift 26
+	.  error
 
 
 state 7
-	prog : error LLAVEINIC bloque . LLAVEFIN  (2)
-	bloque : bloque . sentencia  (6)
+	print_sent : PRINT . PARENTINIC expresion PARENTFIN  (83)
 
-	IF  shift 10
-	PRINT  shift 11
-	RETURN  shift 12
-	INT  shift 13
-	FOR  shift 14
-	ID  shift 15
-	LLAVEFIN  shift 16
+	PARENTINIC  shift 27
 	.  error
-
-	sentencia  goto 17
-	sentencia_ejec  goto 18
-	lista_ids  goto 19
-	asign_simple  goto 20
-	asign_multiple  goto 21
-	bloque_if  goto 22
-	bloque_for  goto 23
-	print_sent  goto 24
-	llamada_funcion  goto 25
-	return_sent  goto 26
-	var_ref  goto 27
 
 
 state 8
-	prog : ID error bloque . LLAVEFIN  (3)
-	bloque : bloque . sentencia  (6)
+	return_sent : RETURN . PARENTINIC expresion PARENTFIN  (57)
 
-	IF  shift 10
-	PRINT  shift 11
-	RETURN  shift 12
-	INT  shift 13
-	FOR  shift 14
-	ID  shift 15
-	LLAVEFIN  shift 28
+	PARENTINIC  shift 28
 	.  error
-
-	sentencia  goto 17
-	sentencia_ejec  goto 18
-	lista_ids  goto 19
-	asign_simple  goto 20
-	asign_multiple  goto 21
-	bloque_if  goto 22
-	bloque_for  goto 23
-	print_sent  goto 24
-	llamada_funcion  goto 25
-	return_sent  goto 26
-	var_ref  goto 27
 
 
 state 9
-	prog : ID LLAVEINIC bloque . LLAVEFIN  (1)
-	prog : ID LLAVEINIC bloque . error  (4)
-	bloque : bloque . sentencia  (6)
+	sentencia : INT . ID decl_func  (9)
+	sentencia : INT . error decl_func  (10)
 
 	error  shift 29
-	IF  shift 10
-	PRINT  shift 11
-	RETURN  shift 12
-	INT  shift 13
-	FOR  shift 14
-	ID  shift 15
-	LLAVEFIN  shift 30
+	ID  shift 30
 	.  error
-
-	sentencia  goto 17
-	sentencia_ejec  goto 18
-	lista_ids  goto 19
-	asign_simple  goto 20
-	asign_multiple  goto 21
-	bloque_if  goto 22
-	bloque_for  goto 23
-	print_sent  goto 24
-	llamada_funcion  goto 25
-	return_sent  goto 26
-	var_ref  goto 27
 
 
 state 10
-	bloque_if : IF . PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF PUNTOYCOMA  (77)
-	bloque_if : IF . PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF error PUNTOYCOMA  (78)
-	bloque_if : IF . error PUNTOYCOMA  (79)
-	bloque_if : IF . PARENTINIC condicion error PUNTOYCOMA  (80)
-	bloque_if : IF . PARENTINIC condicion PARENTFIN rama_if opt_else error PUNTOYCOMA  (81)
+	bloque_for : FOR . PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for  (80)
 
-	error  shift 31
-	PARENTINIC  shift 32
+	PARENTINIC  shift 31
 	.  error
 
 
 state 11
-	print_sent : PRINT . PARENTINIC expresion PARENTFIN PUNTOYCOMA  (105)
-	print_sent : PRINT . PARENTINIC expresion PARENTFIN error PUNTOYCOMA  (106)
-	print_sent : PRINT . PARENTINIC error PUNTOYCOMA  (107)
+	var_ref : ID .  (21)
+	llamada_funcion : ID . PARENTINIC lista_params_reales PARENTFIN  (49)
 
-	PARENTINIC  shift 33
-	.  error
+	PARENTINIC  shift 32
+	error  reduce 21
+	IF  reduce 21
+	ELSE  reduce 21
+	ENDIF  reduce 21
+	PRINT  reduce 21
+	RETURN  reduce 21
+	INT  reduce 21
+	FOR  reduce 21
+	ID  reduce 21
+	CTEINT  reduce 21
+	CTEFLOAT  reduce 21
+	CTESTR  reduce 21
+	ASIGN  reduce 21
+	FLECHA  reduce 21
+	IGUAL  reduce 21
+	DISTINTO  reduce 21
+	MENORIGUAL  reduce 21
+	MAYORIGUAL  reduce 21
+	MAS  reduce 21
+	MUL  reduce 21
+	DIV  reduce 21
+	MENOS  reduce 21
+	IGUALUNICO  reduce 21
+	MAYOR  reduce 21
+	MENOR  reduce 21
+	PUNTO  reduce 21
+	COMA  reduce 21
+	PUNTOYCOMA  reduce 21
+	PARENTFIN  reduce 21
+	LLAVEFIN  reduce 21
 
 
 state 12
-	return_sent : RETURN . PARENTINIC expresion PARENTFIN PUNTOYCOMA  (64)
-	return_sent : RETURN . PARENTINIC expresion PARENTFIN error PUNTOYCOMA  (65)
+	asign_multiple : IGUALUNICO . lista_ctes  (29)
 
-	PARENTINIC  shift 34
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
 	.  error
+
+	lista_ctes  goto 37
+	cte  goto 38
 
 
 state 13
-	sentencia : INT . ID decl_func  (10)
-	sentencia : INT . error PUNTOYCOMA  (11)
-
-	error  shift 35
-	ID  shift 36
-	.  error
-
-
-state 14
-	bloque_for : FOR . PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for PUNTOYCOMA  (93)
-	bloque_for : FOR . PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for error PUNTOYCOMA  (94)
-	bloque_for : FOR . error PUNTOYCOMA  (95)
-	bloque_for : FOR . PARENTINIC ID FROM CTEINT TO CTEINT error PUNTOYCOMA  (96)
-	bloque_for : FOR . PARENTINIC error PUNTOYCOMA  (97)
-	bloque_for : FOR . PARENTINIC ID error PUNTOYCOMA  (98)
-	bloque_for : FOR . PARENTINIC ID FROM error PUNTOYCOMA  (99)
-	bloque_for : FOR . PARENTINIC ID FROM CTEINT error PUNTOYCOMA  (100)
-	bloque_for : FOR . PARENTINIC ID FROM CTEINT TO error PUNTOYCOMA  (101)
-
-	error  shift 37
-	PARENTINIC  shift 38
-	.  error
-
-
-state 15
-	var_ref : ID .  (26)
-	llamada_funcion : ID . PARENTINIC lista_params_reales PARENTFIN  (49)
-	llamada_funcion : ID . PARENTINIC error PARENTFIN  (50)
-
-	PARENTINIC  shift 39
-	error  reduce 26
-	ASIGN  reduce 26
-	FLECHA  reduce 26
-	IGUAL  reduce 26
-	DISTINTO  reduce 26
-	MENORIGUAL  reduce 26
-	MAYORIGUAL  reduce 26
-	MAS  reduce 26
-	MUL  reduce 26
-	DIV  reduce 26
-	MENOS  reduce 26
-	IGUALUNICO  reduce 26
-	MAYOR  reduce 26
-	MENOR  reduce 26
-	PUNTO  reduce 26
-	COMA  reduce 26
-	PUNTOYCOMA  reduce 26
-	PARENTFIN  reduce 26
-
-
-state 16
-	prog : error LLAVEINIC bloque LLAVEFIN .  (2)
-
-	.  reduce 2
-
-
-state 17
-	bloque : bloque sentencia .  (6)
-
-	.  reduce 6
-
-
-state 18
-	sentencia : sentencia_ejec .  (9)
-
-	.  reduce 9
-
-
-state 19
-	lista_ids : lista_ids . COMA var_ref  (29)
-	lista_ids : lista_ids . COMA error  (30)
-	lista_ids : lista_ids . error var_ref  (31)
-	asign_multiple : lista_ids . IGUALUNICO lista_ctes  (33)
-
-	error  shift 40
-	IGUALUNICO  shift 41
-	COMA  shift 42
-	.  error
-
-
-state 20
-	sentencia_ejec : asign_simple . PUNTOYCOMA  (17)
-	sentencia_ejec : asign_simple . error PUNTOYCOMA  (24)
-
-	error  shift 43
-	PUNTOYCOMA  shift 44
-	.  error
-
-
-state 21
-	sentencia_ejec : asign_multiple . PUNTOYCOMA  (18)
-
-	PUNTOYCOMA  shift 45
-	.  error
-
-
-state 22
-	sentencia_ejec : bloque_if .  (19)
-
-	.  reduce 19
-
-
-state 23
-	sentencia_ejec : bloque_for .  (20)
-
-	.  reduce 20
-
-
-state 24
-	sentencia_ejec : print_sent .  (21)
-
-	.  reduce 21
-
-
-state 25
-	sentencia_ejec : llamada_funcion . PUNTOYCOMA  (22)
-	sentencia_ejec : llamada_funcion . error PUNTOYCOMA  (25)
-
-	error  shift 46
-	PUNTOYCOMA  shift 47
-	.  error
-
-
-state 26
-	sentencia_ejec : return_sent .  (23)
-
-	.  reduce 23
-
-
-state 27
-	var_ref : var_ref . PUNTO ID  (27)
-	lista_ids : var_ref .  (28)
-	asign_simple : var_ref . ASIGN expresion  (32)
-
-	ASIGN  shift 48
-	PUNTO  shift 49
-	error  reduce 28
-	IGUALUNICO  reduce 28
-	COMA  reduce 28
-
-
-state 28
-	prog : ID error bloque LLAVEFIN .  (3)
-
-	.  reduce 3
-
-
-state 29
-	prog : ID LLAVEINIC bloque error .  (4)
-
-	.  reduce 4
-
-
-state 30
 	prog : ID LLAVEINIC bloque LLAVEFIN .  (1)
 
 	.  reduce 1
 
 
-state 31
-	bloque_if : IF error . PUNTOYCOMA  (79)
+state 14
+	bloque : bloque sentencia .  (3)
 
-	PUNTOYCOMA  shift 50
-	.  error
-
-
-state 32
-	bloque_if : IF PARENTINIC . condicion PARENTFIN rama_if opt_else ENDIF PUNTOYCOMA  (77)
-	bloque_if : IF PARENTINIC . condicion PARENTFIN rama_if opt_else ENDIF error PUNTOYCOMA  (78)
-	bloque_if : IF PARENTINIC . condicion error PUNTOYCOMA  (80)
-	bloque_if : IF PARENTINIC . condicion PARENTFIN rama_if opt_else error PUNTOYCOMA  (81)
-
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
-	.  error
-
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	expresion  goto 56
-	cte  goto 57
-	termino  goto 58
-	factor  goto 59
-	condicion  goto 60
+	.  reduce 3
 
 
-state 33
-	print_sent : PRINT PARENTINIC . expresion PARENTFIN PUNTOYCOMA  (105)
-	print_sent : PRINT PARENTINIC . expresion PARENTFIN error PUNTOYCOMA  (106)
-	print_sent : PRINT PARENTINIC . error PUNTOYCOMA  (107)
+state 15
+	sentencia : sentencia_ejec . PUNTOYCOMA  (7)
+	sentencia : sentencia_ejec .  (8)
 
-	error  shift 61
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
-	.  error
-
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	expresion  goto 62
-	cte  goto 57
-	termino  goto 58
-	factor  goto 59
+	PUNTOYCOMA  shift 39
+	error  reduce 8
+	IF  reduce 8
+	ELSE  reduce 8
+	ENDIF  reduce 8
+	PRINT  reduce 8
+	RETURN  reduce 8
+	INT  reduce 8
+	FOR  reduce 8
+	ID  reduce 8
+	IGUALUNICO  reduce 8
+	LLAVEFIN  reduce 8
 
 
-state 34
-	return_sent : RETURN PARENTINIC . expresion PARENTFIN PUNTOYCOMA  (64)
-	return_sent : RETURN PARENTINIC . expresion PARENTFIN error PUNTOYCOMA  (65)
+state 16
+	sentencia_ejec : asign_simple .  (11)
 
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
-	.  error
-
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	expresion  goto 63
-	cte  goto 57
-	termino  goto 58
-	factor  goto 59
+	.  reduce 11
 
 
-state 35
-	sentencia : INT error . PUNTOYCOMA  (11)
+state 17
+	sentencia_ejec : asign_multiple .  (12)
 
-	PUNTOYCOMA  shift 64
-	.  error
-
-
-state 36
-	sentencia : INT ID . decl_func  (10)
-
-	error  shift 65
-	COMA  shift 66
-	PUNTOYCOMA  shift 67
-	PARENTINIC  shift 68
-	.  error
-
-	decl_func  goto 69
+	.  reduce 12
 
 
-state 37
-	bloque_for : FOR error . PUNTOYCOMA  (95)
+state 18
+	sentencia_ejec : bloque_if .  (13)
 
-	PUNTOYCOMA  shift 70
-	.  error
-
-
-state 38
-	bloque_for : FOR PARENTINIC . ID FROM CTEINT TO CTEINT PARENTFIN rama_for PUNTOYCOMA  (93)
-	bloque_for : FOR PARENTINIC . ID FROM CTEINT TO CTEINT PARENTFIN rama_for error PUNTOYCOMA  (94)
-	bloque_for : FOR PARENTINIC . ID FROM CTEINT TO CTEINT error PUNTOYCOMA  (96)
-	bloque_for : FOR PARENTINIC . error PUNTOYCOMA  (97)
-	bloque_for : FOR PARENTINIC . ID error PUNTOYCOMA  (98)
-	bloque_for : FOR PARENTINIC . ID FROM error PUNTOYCOMA  (99)
-	bloque_for : FOR PARENTINIC . ID FROM CTEINT error PUNTOYCOMA  (100)
-	bloque_for : FOR PARENTINIC . ID FROM CTEINT TO error PUNTOYCOMA  (101)
-
-	error  shift 71
-	ID  shift 72
-	.  error
+	.  reduce 13
 
 
-state 39
-	llamada_funcion : ID PARENTINIC . lista_params_reales PARENTFIN  (49)
-	llamada_funcion : ID PARENTINIC . error PARENTFIN  (50)
+state 19
+	sentencia_ejec : bloque_for .  (14)
 
-	error  shift 73
-	TRUNC  shift 74
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
-	PARENTINIC  shift 75
-	.  error
-
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	expresion  goto 76
-	cte  goto 57
-	termino  goto 58
-	factor  goto 59
-	lista_params_reales  goto 77
-	param_real_map  goto 78
-	parametro_real  goto 79
-	lambda_expr  goto 80
+	.  reduce 14
 
 
-state 40
-	lista_ids : lista_ids error . var_ref  (31)
+state 20
+	sentencia_ejec : print_sent .  (15)
 
-	ID  shift 81
-	.  error
-
-	var_ref  goto 82
+	.  reduce 15
 
 
-state 41
-	asign_multiple : lista_ids IGUALUNICO . lista_ctes  (33)
+state 21
+	sentencia_ejec : llamada_funcion .  (16)
 
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
-	.  error
-
-	lista_ctes  goto 83
-	cte  goto 84
+	.  reduce 16
 
 
-state 42
-	lista_ids : lista_ids COMA . var_ref  (29)
-	lista_ids : lista_ids COMA . error  (30)
-
-	error  shift 85
-	ID  shift 81
-	.  error
-
-	var_ref  goto 86
-
-
-state 43
-	sentencia_ejec : asign_simple error . PUNTOYCOMA  (24)
-
-	PUNTOYCOMA  shift 87
-	.  error
-
-
-state 44
-	sentencia_ejec : asign_simple PUNTOYCOMA .  (17)
+state 22
+	sentencia_ejec : return_sent .  (17)
 
 	.  reduce 17
 
 
-state 45
-	sentencia_ejec : asign_multiple PUNTOYCOMA .  (18)
+state 23
+	lista_ids : lista_ids . COMA var_ref  (24)
+	lista_ids : lista_ids . COMA error  (25)
+	lista_ids : lista_ids . var_ref  (26)
+	asign_multiple : lista_ids . IGUALUNICO lista_ctes  (28)
+	asign_multiple : lista_ids . lista_ctes  (30)
+	asign_multiple : lista_ids . IGUALUNICO error  (31)
 
-	.  reduce 18
+	ID  shift 40
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
+	IGUALUNICO  shift 41
+	COMA  shift 42
+	.  error
+
+	var_ref  goto 43
+	lista_ctes  goto 44
+	cte  goto 38
 
 
-state 46
-	sentencia_ejec : llamada_funcion error . PUNTOYCOMA  (25)
+state 24
+	var_ref : var_ref . PUNTO ID  (22)
+	lista_ids : var_ref .  (23)
+	asign_simple : var_ref . ASIGN expresion  (27)
 
-	PUNTOYCOMA  shift 88
+	ASIGN  shift 45
+	PUNTO  shift 46
+	ID  reduce 23
+	CTEINT  reduce 23
+	CTEFLOAT  reduce 23
+	CTESTR  reduce 23
+	MENOS  reduce 23
+	IGUALUNICO  reduce 23
+	COMA  reduce 23
+
+
+state 25
+	llamada_funcion : error PARENTINIC . lista_params_reales PARENTFIN  (50)
+
+	error  shift 5
+	TRUNC  shift 47
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
+	PARENTINIC  shift 48
+	.  error
+
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	expresion  goto 51
+	cte  goto 52
+	termino  goto 53
+	factor  goto 54
+	lista_params_reales  goto 55
+	param_real_map  goto 56
+	parametro_real  goto 57
+	lambda_expr  goto 58
+
+
+state 26
+	bloque_if : IF PARENTINIC . condicion PARENTFIN rama_if ENDIF  (63)
+	bloque_if : IF PARENTINIC . condicion PARENTFIN rama_if error  (64)
+	bloque_if : IF PARENTINIC . condicion PARENTFIN rama_if opt_else ENDIF  (65)
+	bloque_if : IF PARENTINIC . condicion PARENTFIN rama_if opt_else error  (66)
+	bloque_if : IF PARENTINIC . condicion PARENTFIN error opt_else ENDIF  (67)
+
+	error  shift 5
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
+	.  error
+
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	expresion  goto 59
+	cte  goto 52
+	termino  goto 53
+	factor  goto 54
+	condicion  goto 60
+
+
+state 27
+	print_sent : PRINT PARENTINIC . expresion PARENTFIN  (83)
+
+	error  shift 5
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
+	.  error
+
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	expresion  goto 61
+	cte  goto 52
+	termino  goto 53
+	factor  goto 54
+
+
+state 28
+	return_sent : RETURN PARENTINIC . expresion PARENTFIN  (57)
+
+	error  shift 5
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
+	.  error
+
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	expresion  goto 62
+	cte  goto 52
+	termino  goto 53
+	factor  goto 54
+
+
+state 29
+	sentencia : INT error . decl_func  (10)
+
+	COMA  shift 63
+	PUNTOYCOMA  shift 64
+	PARENTINIC  shift 65
+	.  error
+
+	decl_func  goto 66
+
+
+state 30
+	sentencia : INT ID . decl_func  (9)
+
+	COMA  shift 63
+	PUNTOYCOMA  shift 64
+	PARENTINIC  shift 65
+	.  error
+
+	decl_func  goto 67
+
+
+state 31
+	bloque_for : FOR PARENTINIC . ID FROM CTEINT TO CTEINT PARENTFIN rama_for  (80)
+
+	ID  shift 68
 	.  error
 
 
-state 47
-	sentencia_ejec : llamada_funcion PUNTOYCOMA .  (22)
+state 32
+	llamada_funcion : ID PARENTINIC . lista_params_reales PARENTFIN  (49)
 
-	.  reduce 22
-
-
-state 48
-	asign_simple : var_ref ASIGN . expresion  (32)
-
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
+	error  shift 5
+	TRUNC  shift 47
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
+	PARENTINIC  shift 48
 	.  error
 
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	expresion  goto 89
-	cte  goto 57
-	termino  goto 58
-	factor  goto 59
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	expresion  goto 51
+	cte  goto 52
+	termino  goto 53
+	factor  goto 54
+	lista_params_reales  goto 69
+	param_real_map  goto 56
+	parametro_real  goto 57
+	lambda_expr  goto 58
 
 
-state 49
-	var_ref : var_ref PUNTO . ID  (27)
-
-	ID  shift 90
-	.  error
-
-
-state 50
-	bloque_if : IF error PUNTOYCOMA .  (79)
-
-	.  reduce 79
-
-
-state 51
-	cte : CTEINT .  (38)
-
-	.  reduce 38
-
-
-state 52
-	cte : CTEFLOAT .  (37)
+state 33
+	cte : CTEINT .  (37)
 
 	.  reduce 37
 
 
-state 53
+state 34
+	cte : CTEFLOAT .  (35)
+
+	.  reduce 35
+
+
+state 35
 	cte : CTESTR .  (39)
 
 	.  reduce 39
 
 
-state 54
+state 36
+	cte : MENOS . CTEFLOAT  (36)
+	cte : MENOS . CTEINT  (38)
+
+	CTEINT  shift 70
+	CTEFLOAT  shift 71
+	.  error
+
+
+state 37
+	asign_multiple : IGUALUNICO lista_ctes .  (29)
+	lista_ctes : lista_ctes . COMA cte  (33)
+	lista_ctes : lista_ctes . COMA error  (34)
+
+	COMA  shift 72
+	error  reduce 29
+	IF  reduce 29
+	ELSE  reduce 29
+	ENDIF  reduce 29
+	PRINT  reduce 29
+	RETURN  reduce 29
+	INT  reduce 29
+	FOR  reduce 29
+	ID  reduce 29
+	IGUALUNICO  reduce 29
+	PUNTOYCOMA  reduce 29
+	LLAVEFIN  reduce 29
+
+
+state 38
+	lista_ctes : cte .  (32)
+
+	.  reduce 32
+
+
+state 39
+	sentencia : sentencia_ejec PUNTOYCOMA .  (7)
+
+	.  reduce 7
+
+
+state 40
+	var_ref : ID .  (21)
+
+	.  reduce 21
+
+
+state 41
+	asign_multiple : lista_ids IGUALUNICO . lista_ctes  (28)
+	asign_multiple : lista_ids IGUALUNICO . error  (31)
+
+	error  shift 73
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
+	.  error
+
+	lista_ctes  goto 74
+	cte  goto 38
+
+
+state 42
+	lista_ids : lista_ids COMA . var_ref  (24)
+	lista_ids : lista_ids COMA . error  (25)
+
+	error  shift 75
+	ID  shift 40
+	.  error
+
+	var_ref  goto 76
+
+
+state 43
+	var_ref : var_ref . PUNTO ID  (22)
+	lista_ids : lista_ids var_ref .  (26)
+
+	PUNTO  shift 46
+	ID  reduce 26
+	CTEINT  reduce 26
+	CTEFLOAT  reduce 26
+	CTESTR  reduce 26
+	MENOS  reduce 26
+	IGUALUNICO  reduce 26
+	COMA  reduce 26
+	PUNTOYCOMA  reduce 26
+
+
+state 44
+	asign_multiple : lista_ids lista_ctes .  (30)
+	lista_ctes : lista_ctes . COMA cte  (33)
+	lista_ctes : lista_ctes . COMA error  (34)
+
+	COMA  shift 72
+	error  reduce 30
+	IF  reduce 30
+	ELSE  reduce 30
+	ENDIF  reduce 30
+	PRINT  reduce 30
+	RETURN  reduce 30
+	INT  reduce 30
+	FOR  reduce 30
+	ID  reduce 30
+	IGUALUNICO  reduce 30
+	PUNTOYCOMA  reduce 30
+	LLAVEFIN  reduce 30
+
+
+state 45
+	asign_simple : var_ref ASIGN . expresion  (27)
+
+	error  shift 5
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
+	.  error
+
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	expresion  goto 77
+	cte  goto 52
+	termino  goto 53
+	factor  goto 54
+
+
+state 46
+	var_ref : var_ref PUNTO . ID  (22)
+
+	ID  shift 78
+	.  error
+
+
+state 47
+	parametro_real : TRUNC . PARENTINIC expresion PARENTFIN  (55)
+
+	PARENTINIC  shift 79
+	.  error
+
+
+state 48
+	lambda_expr : PARENTINIC . INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN  (84)
+
+	INT  shift 80
+	.  error
+
+
+state 49
 	factor : llamada_funcion .  (47)
 
 	.  reduce 47
 
 
-state 55
-	var_ref : var_ref . PUNTO ID  (27)
+state 50
+	var_ref : var_ref . PUNTO ID  (22)
 	factor : var_ref .  (46)
 
-	PUNTO  shift 49
+	PUNTO  shift 46
 	error  reduce 46
+	IF  reduce 46
+	ELSE  reduce 46
+	ENDIF  reduce 46
+	PRINT  reduce 46
+	RETURN  reduce 46
+	INT  reduce 46
+	FOR  reduce 46
+	ID  reduce 46
 	FLECHA  reduce 46
 	IGUAL  reduce 46
 	DISTINTO  reduce 46
@@ -744,44 +722,46 @@ state 55
 	MUL  reduce 46
 	DIV  reduce 46
 	MENOS  reduce 46
+	IGUALUNICO  reduce 46
 	MAYOR  reduce 46
 	MENOR  reduce 46
 	PUNTOYCOMA  reduce 46
 	PARENTFIN  reduce 46
+	LLAVEFIN  reduce 46
 
 
-state 56
+state 51
 	expresion : expresion . MAS termino  (40)
 	expresion : expresion . MENOS termino  (41)
-	condicion : expresion . relop expresion  (82)
+	parametro_real : expresion .  (54)
 
-	IGUAL  shift 91
-	DISTINTO  shift 92
-	MENORIGUAL  shift 93
-	MAYORIGUAL  shift 94
-	MAS  shift 95
-	MENOS  shift 96
-	MAYOR  shift 97
-	MENOR  shift 98
-	.  error
-
-	relop  goto 99
+	MAS  shift 81
+	MENOS  shift 82
+	FLECHA  reduce 54
 
 
-state 57
+state 52
 	factor : cte .  (48)
 
 	.  reduce 48
 
 
-state 58
+state 53
 	expresion : termino .  (42)
 	termino : termino . MUL factor  (43)
 	termino : termino . DIV factor  (44)
 
-	MUL  shift 100
-	DIV  shift 101
+	MUL  shift 83
+	DIV  shift 84
 	error  reduce 42
+	IF  reduce 42
+	ELSE  reduce 42
+	ENDIF  reduce 42
+	PRINT  reduce 42
+	RETURN  reduce 42
+	INT  reduce 42
+	FOR  reduce 42
+	ID  reduce 42
 	FLECHA  reduce 42
 	IGUAL  reduce 42
 	DISTINTO  reduce 42
@@ -789,685 +769,619 @@ state 58
 	MAYORIGUAL  reduce 42
 	MAS  reduce 42
 	MENOS  reduce 42
+	IGUALUNICO  reduce 42
 	MAYOR  reduce 42
 	MENOR  reduce 42
 	PUNTOYCOMA  reduce 42
 	PARENTFIN  reduce 42
+	LLAVEFIN  reduce 42
 
 
-state 59
+state 54
 	termino : factor .  (45)
 
 	.  reduce 45
 
 
-state 60
-	bloque_if : IF PARENTINIC condicion . PARENTFIN rama_if opt_else ENDIF PUNTOYCOMA  (77)
-	bloque_if : IF PARENTINIC condicion . PARENTFIN rama_if opt_else ENDIF error PUNTOYCOMA  (78)
-	bloque_if : IF PARENTINIC condicion . error PUNTOYCOMA  (80)
-	bloque_if : IF PARENTINIC condicion . PARENTFIN rama_if opt_else error PUNTOYCOMA  (81)
+state 55
+	llamada_funcion : error PARENTINIC lista_params_reales . PARENTFIN  (50)
+	lista_params_reales : lista_params_reales . COMA param_real_map  (52)
 
-	error  shift 102
-	PARENTFIN  shift 103
+	COMA  shift 85
+	PARENTFIN  shift 86
+	.  error
+
+
+state 56
+	lista_params_reales : param_real_map .  (51)
+
+	.  reduce 51
+
+
+state 57
+	param_real_map : parametro_real . FLECHA ID  (53)
+
+	FLECHA  shift 87
+	.  error
+
+
+state 58
+	parametro_real : lambda_expr .  (56)
+
+	.  reduce 56
+
+
+state 59
+	expresion : expresion . MAS termino  (40)
+	expresion : expresion . MENOS termino  (41)
+	condicion : expresion . relop expresion  (68)
+	condicion : expresion . error expresion  (69)
+
+	error  shift 88
+	IGUAL  shift 89
+	DISTINTO  shift 90
+	MENORIGUAL  shift 91
+	MAYORIGUAL  shift 92
+	MAS  shift 81
+	MENOS  shift 82
+	MAYOR  shift 93
+	MENOR  shift 94
+	.  error
+
+	relop  goto 95
+
+
+state 60
+	bloque_if : IF PARENTINIC condicion . PARENTFIN rama_if ENDIF  (63)
+	bloque_if : IF PARENTINIC condicion . PARENTFIN rama_if error  (64)
+	bloque_if : IF PARENTINIC condicion . PARENTFIN rama_if opt_else ENDIF  (65)
+	bloque_if : IF PARENTINIC condicion . PARENTFIN rama_if opt_else error  (66)
+	bloque_if : IF PARENTINIC condicion . PARENTFIN error opt_else ENDIF  (67)
+
+	PARENTFIN  shift 96
 	.  error
 
 
 state 61
-	print_sent : PRINT PARENTINIC error . PUNTOYCOMA  (107)
+	expresion : expresion . MAS termino  (40)
+	expresion : expresion . MENOS termino  (41)
+	print_sent : PRINT PARENTINIC expresion . PARENTFIN  (83)
 
-	PUNTOYCOMA  shift 104
+	MAS  shift 81
+	MENOS  shift 82
+	PARENTFIN  shift 97
 	.  error
 
 
 state 62
 	expresion : expresion . MAS termino  (40)
 	expresion : expresion . MENOS termino  (41)
-	print_sent : PRINT PARENTINIC expresion . PARENTFIN PUNTOYCOMA  (105)
-	print_sent : PRINT PARENTINIC expresion . PARENTFIN error PUNTOYCOMA  (106)
+	return_sent : RETURN PARENTINIC expresion . PARENTFIN  (57)
 
-	MAS  shift 95
-	MENOS  shift 96
-	PARENTFIN  shift 105
+	MAS  shift 81
+	MENOS  shift 82
+	PARENTFIN  shift 98
 	.  error
 
 
 state 63
-	expresion : expresion . MAS termino  (40)
-	expresion : expresion . MENOS termino  (41)
-	return_sent : RETURN PARENTINIC expresion . PARENTFIN PUNTOYCOMA  (64)
-	return_sent : RETURN PARENTINIC expresion . PARENTFIN error PUNTOYCOMA  (65)
+	decl_func : COMA . lista_ids PUNTOYCOMA  (19)
 
-	MAS  shift 95
-	MENOS  shift 96
-	PARENTFIN  shift 106
+	ID  shift 40
 	.  error
+
+	lista_ids  goto 99
+	var_ref  goto 100
 
 
 state 64
-	sentencia : INT error PUNTOYCOMA .  (11)
+	decl_func : PUNTOYCOMA .  (18)
 
-	.  reduce 11
+	.  reduce 18
 
 
 state 65
-	decl_func : error . PUNTOYCOMA  (15)
+	decl_func : PARENTINIC . lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (20)
+	sem_pasaje_opt : .  (61)
 
-	PUNTOYCOMA  shift 107
-	.  error
+	CV  shift 101
+	INT  reduce 61
+
+	lista_params_formales  goto 102
+	param_formal  goto 103
+	sem_pasaje_opt  goto 104
 
 
 state 66
-	decl_func : COMA . lista_ids PUNTOYCOMA  (13)
-	decl_func : COMA . lista_ids error PUNTOYCOMA  (16)
-
-	ID  shift 81
-	.  error
-
-	lista_ids  goto 108
-	var_ref  goto 109
-
-
-state 67
-	decl_func : PUNTOYCOMA .  (12)
-
-	.  reduce 12
-
-
-state 68
-	decl_func : PARENTINIC . lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (14)
-	sem_pasaje_opt : .  (75)
-
-	CV  shift 110
-	error  reduce 75
-	INT  reduce 75
-
-	lista_params_formales  goto 111
-	param_formal  goto 112
-	sem_pasaje_opt  goto 113
-
-
-state 69
-	sentencia : INT ID decl_func .  (10)
+	sentencia : INT error decl_func .  (10)
 
 	.  reduce 10
 
 
-state 70
-	bloque_for : FOR error PUNTOYCOMA .  (95)
+state 67
+	sentencia : INT ID decl_func .  (9)
 
-	.  reduce 95
+	.  reduce 9
+
+
+state 68
+	bloque_for : FOR PARENTINIC ID . FROM CTEINT TO CTEINT PARENTFIN rama_for  (80)
+
+	FROM  shift 105
+	.  error
+
+
+state 69
+	llamada_funcion : ID PARENTINIC lista_params_reales . PARENTFIN  (49)
+	lista_params_reales : lista_params_reales . COMA param_real_map  (52)
+
+	COMA  shift 85
+	PARENTFIN  shift 106
+	.  error
+
+
+state 70
+	cte : MENOS CTEINT .  (38)
+
+	.  reduce 38
 
 
 state 71
-	bloque_for : FOR PARENTINIC error . PUNTOYCOMA  (97)
+	cte : MENOS CTEFLOAT .  (36)
 
-	PUNTOYCOMA  shift 114
-	.  error
+	.  reduce 36
 
 
 state 72
-	bloque_for : FOR PARENTINIC ID . FROM CTEINT TO CTEINT PARENTFIN rama_for PUNTOYCOMA  (93)
-	bloque_for : FOR PARENTINIC ID . FROM CTEINT TO CTEINT PARENTFIN rama_for error PUNTOYCOMA  (94)
-	bloque_for : FOR PARENTINIC ID . FROM CTEINT TO CTEINT error PUNTOYCOMA  (96)
-	bloque_for : FOR PARENTINIC ID . error PUNTOYCOMA  (98)
-	bloque_for : FOR PARENTINIC ID . FROM error PUNTOYCOMA  (99)
-	bloque_for : FOR PARENTINIC ID . FROM CTEINT error PUNTOYCOMA  (100)
-	bloque_for : FOR PARENTINIC ID . FROM CTEINT TO error PUNTOYCOMA  (101)
+	lista_ctes : lista_ctes COMA . cte  (33)
+	lista_ctes : lista_ctes COMA . error  (34)
 
-	error  shift 115
-	FROM  shift 116
+	error  shift 107
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
 	.  error
+
+	cte  goto 108
 
 
 state 73
-	llamada_funcion : ID PARENTINIC error . PARENTFIN  (50)
+	asign_multiple : lista_ids IGUALUNICO error .  (31)
 
-	PARENTFIN  shift 117
-	.  error
+	.  reduce 31
 
 
 state 74
-	parametro_real : TRUNC . PARENTINIC expresion PARENTFIN  (60)
-	parametro_real : TRUNC . error PARENTFIN  (62)
-	parametro_real : TRUNC . PARENTINIC expresion error PARENTFIN  (63)
+	asign_multiple : lista_ids IGUALUNICO lista_ctes .  (28)
+	lista_ctes : lista_ctes . COMA cte  (33)
+	lista_ctes : lista_ctes . COMA error  (34)
 
-	error  shift 118
-	PARENTINIC  shift 119
-	.  error
+	COMA  shift 72
+	error  reduce 28
+	IF  reduce 28
+	ELSE  reduce 28
+	ENDIF  reduce 28
+	PRINT  reduce 28
+	RETURN  reduce 28
+	INT  reduce 28
+	FOR  reduce 28
+	ID  reduce 28
+	IGUALUNICO  reduce 28
+	PUNTOYCOMA  reduce 28
+	LLAVEFIN  reduce 28
 
 
 state 75
-	lambda_expr : PARENTINIC . INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN  (108)
-	lambda_expr : PARENTINIC . INT ID error PARENTFIN  (109)
-	lambda_expr : PARENTINIC . INT ID PARENTFIN error PARENTFIN  (110)
-	lambda_expr : PARENTINIC . INT ID PARENTFIN LLAVEINIC bloque_ejec error PARENTFIN  (111)
-	lambda_expr : PARENTINIC . INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN error PARENTFIN  (112)
-	lambda_expr : PARENTINIC . INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento error PARENTFIN  (113)
-
-	INT  shift 120
-	.  error
-
-
-state 76
-	expresion : expresion . MAS termino  (40)
-	expresion : expresion . MENOS termino  (41)
-	parametro_real : expresion .  (59)
-
-	MAS  shift 95
-	MENOS  shift 96
-	error  reduce 59
-	FLECHA  reduce 59
-
-
-state 77
-	llamada_funcion : ID PARENTINIC lista_params_reales . PARENTFIN  (49)
-	lista_params_reales : lista_params_reales . COMA param_real_map  (52)
-	lista_params_reales : lista_params_reales . COMA error  (53)
-	lista_params_reales : lista_params_reales . error param_real_map  (54)
-	lista_params_reales : lista_params_reales . error COMA  (55)
-
-	error  shift 121
-	COMA  shift 122
-	PARENTFIN  shift 123
-	.  error
-
-
-state 78
-	lista_params_reales : param_real_map .  (51)
-
-	.  reduce 51
-
-
-state 79
-	param_real_map : parametro_real . FLECHA ID  (56)
-	param_real_map : parametro_real . error  (57)
-	param_real_map : parametro_real . FLECHA error  (58)
-
-	error  shift 124
-	FLECHA  shift 125
-	.  error
-
-
-state 80
-	parametro_real : lambda_expr .  (61)
-
-	.  reduce 61
-
-
-state 81
-	var_ref : ID .  (26)
-
-	.  reduce 26
-
-
-state 82
-	var_ref : var_ref . PUNTO ID  (27)
-	lista_ids : lista_ids error var_ref .  (31)
-
-	PUNTO  shift 49
-	error  reduce 31
-	IGUALUNICO  reduce 31
-	COMA  reduce 31
-	PUNTOYCOMA  reduce 31
-
-
-state 83
-	asign_multiple : lista_ids IGUALUNICO lista_ctes .  (33)
-	lista_ctes : lista_ctes . COMA cte  (35)
-	lista_ctes : lista_ctes . COMA error  (36)
-
-	COMA  shift 126
-	PUNTOYCOMA  reduce 33
-
-
-state 84
-	lista_ctes : cte .  (34)
-
-	.  reduce 34
-
-
-state 85
-	lista_ids : lista_ids COMA error .  (30)
-
-	.  reduce 30
-
-
-state 86
-	var_ref : var_ref . PUNTO ID  (27)
-	lista_ids : lista_ids COMA var_ref .  (29)
-
-	PUNTO  shift 49
-	error  reduce 29
-	IGUALUNICO  reduce 29
-	COMA  reduce 29
-	PUNTOYCOMA  reduce 29
-
-
-state 87
-	sentencia_ejec : asign_simple error PUNTOYCOMA .  (24)
-
-	.  reduce 24
-
-
-state 88
-	sentencia_ejec : llamada_funcion error PUNTOYCOMA .  (25)
+	lista_ids : lista_ids COMA error .  (25)
 
 	.  reduce 25
 
 
-state 89
-	asign_simple : var_ref ASIGN expresion .  (32)
+state 76
+	var_ref : var_ref . PUNTO ID  (22)
+	lista_ids : lista_ids COMA var_ref .  (24)
+
+	PUNTO  shift 46
+	ID  reduce 24
+	CTEINT  reduce 24
+	CTEFLOAT  reduce 24
+	CTESTR  reduce 24
+	MENOS  reduce 24
+	IGUALUNICO  reduce 24
+	COMA  reduce 24
+	PUNTOYCOMA  reduce 24
+
+
+state 77
+	asign_simple : var_ref ASIGN expresion .  (27)
 	expresion : expresion . MAS termino  (40)
 	expresion : expresion . MENOS termino  (41)
 
-	MAS  shift 95
-	MENOS  shift 96
-	error  reduce 32
-	PUNTOYCOMA  reduce 32
+	MAS  shift 81
+	MENOS  shift 82
+	error  reduce 27
+	IF  reduce 27
+	ELSE  reduce 27
+	ENDIF  reduce 27
+	PRINT  reduce 27
+	RETURN  reduce 27
+	INT  reduce 27
+	FOR  reduce 27
+	ID  reduce 27
+	IGUALUNICO  reduce 27
+	PUNTOYCOMA  reduce 27
+	LLAVEFIN  reduce 27
 
 
-state 90
-	var_ref : var_ref PUNTO ID .  (27)
+state 78
+	var_ref : var_ref PUNTO ID .  (22)
 
-	.  reduce 27
-
-
-state 91
-	relop : IGUAL .  (85)
-
-	.  reduce 85
+	.  reduce 22
 
 
-state 92
-	relop : DISTINTO .  (86)
+state 79
+	parametro_real : TRUNC PARENTINIC . expresion PARENTFIN  (55)
 
-	.  reduce 86
+	error  shift 5
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
+	.  error
+
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	expresion  goto 109
+	cte  goto 52
+	termino  goto 53
+	factor  goto 54
 
 
-state 93
-	relop : MENORIGUAL .  (87)
+state 80
+	lambda_expr : PARENTINIC INT . ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN  (84)
 
-	.  reduce 87
-
-
-state 94
-	relop : MAYORIGUAL .  (88)
-
-	.  reduce 88
+	ID  shift 110
+	.  error
 
 
-state 95
+state 81
 	expresion : expresion MAS . termino  (40)
 
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
+	error  shift 5
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
 	.  error
 
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	cte  goto 57
-	termino  goto 127
-	factor  goto 59
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	cte  goto 52
+	termino  goto 111
+	factor  goto 54
 
 
-state 96
+state 82
 	expresion : expresion MENOS . termino  (41)
 
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
+	error  shift 5
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
 	.  error
 
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	cte  goto 57
-	termino  goto 128
-	factor  goto 59
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	cte  goto 52
+	termino  goto 112
+	factor  goto 54
 
 
-state 97
-	relop : MAYOR .  (84)
-
-	.  reduce 84
-
-
-state 98
-	relop : MENOR .  (83)
-
-	.  reduce 83
-
-
-state 99
-	condicion : expresion relop . expresion  (82)
-
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
-	.  error
-
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	expresion  goto 129
-	cte  goto 57
-	termino  goto 58
-	factor  goto 59
-
-
-state 100
+state 83
 	termino : termino MUL . factor  (43)
 
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
+	error  shift 5
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
 	.  error
 
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	cte  goto 57
-	factor  goto 130
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	cte  goto 52
+	factor  goto 113
 
 
-state 101
+state 84
 	termino : termino DIV . factor  (44)
 
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
+	error  shift 5
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
 	.  error
 
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	cte  goto 57
-	factor  goto 131
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	cte  goto 52
+	factor  goto 114
 
 
-state 102
-	bloque_if : IF PARENTINIC condicion error . PUNTOYCOMA  (80)
+state 85
+	lista_params_reales : lista_params_reales COMA . param_real_map  (52)
 
-	PUNTOYCOMA  shift 132
+	error  shift 5
+	TRUNC  shift 47
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
+	PARENTINIC  shift 48
 	.  error
 
-
-state 103
-	bloque_if : IF PARENTINIC condicion PARENTFIN . rama_if opt_else ENDIF PUNTOYCOMA  (77)
-	bloque_if : IF PARENTINIC condicion PARENTFIN . rama_if opt_else ENDIF error PUNTOYCOMA  (78)
-	bloque_if : IF PARENTINIC condicion PARENTFIN . rama_if opt_else error PUNTOYCOMA  (81)
-
-	IF  shift 10
-	PRINT  shift 11
-	RETURN  shift 12
-	FOR  shift 14
-	ID  shift 15
-	LLAVEINIC  shift 133
-	.  error
-
-	sentencia_ejec  goto 134
-	lista_ids  goto 19
-	asign_simple  goto 20
-	asign_multiple  goto 21
-	bloque_if  goto 22
-	bloque_for  goto 23
-	print_sent  goto 24
-	llamada_funcion  goto 25
-	return_sent  goto 26
-	var_ref  goto 27
-	rama_if  goto 135
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	expresion  goto 51
+	cte  goto 52
+	termino  goto 53
+	factor  goto 54
+	param_real_map  goto 115
+	parametro_real  goto 57
+	lambda_expr  goto 58
 
 
-state 104
-	print_sent : PRINT PARENTINIC error PUNTOYCOMA .  (107)
-
-	.  reduce 107
-
-
-state 105
-	print_sent : PRINT PARENTINIC expresion PARENTFIN . PUNTOYCOMA  (105)
-	print_sent : PRINT PARENTINIC expresion PARENTFIN . error PUNTOYCOMA  (106)
-
-	error  shift 136
-	PUNTOYCOMA  shift 137
-	.  error
-
-
-state 106
-	return_sent : RETURN PARENTINIC expresion PARENTFIN . PUNTOYCOMA  (64)
-	return_sent : RETURN PARENTINIC expresion PARENTFIN . error PUNTOYCOMA  (65)
-
-	error  shift 138
-	PUNTOYCOMA  shift 139
-	.  error
-
-
-state 107
-	decl_func : error PUNTOYCOMA .  (15)
-
-	.  reduce 15
-
-
-state 108
-	decl_func : COMA lista_ids . PUNTOYCOMA  (13)
-	decl_func : COMA lista_ids . error PUNTOYCOMA  (16)
-	lista_ids : lista_ids . COMA var_ref  (29)
-	lista_ids : lista_ids . COMA error  (30)
-	lista_ids : lista_ids . error var_ref  (31)
-
-	error  shift 140
-	COMA  shift 42
-	PUNTOYCOMA  shift 141
-	.  error
-
-
-state 109
-	var_ref : var_ref . PUNTO ID  (27)
-	lista_ids : var_ref .  (28)
-
-	PUNTO  shift 49
-	error  reduce 28
-	COMA  reduce 28
-	PUNTOYCOMA  reduce 28
-
-
-state 110
-	sem_pasaje_opt : CV .  (76)
-
-	.  reduce 76
-
-
-state 111
-	decl_func : PARENTINIC lista_params_formales . PARENTFIN LLAVEINIC bloque LLAVEFIN  (14)
-	lista_params_formales : lista_params_formales . COMA param_formal  (67)
-	lista_params_formales : lista_params_formales . error PARENTFIN  (68)
-	lista_params_formales : lista_params_formales . error COMA  (69)
-
-	error  shift 142
-	COMA  shift 143
-	PARENTFIN  shift 144
-	.  error
-
-
-state 112
-	lista_params_formales : param_formal .  (66)
-
-	.  reduce 66
-
-
-state 113
-	param_formal : sem_pasaje_opt . INT ID  (70)
-	param_formal : sem_pasaje_opt . INT error PARENTFIN  (71)
-	param_formal : sem_pasaje_opt . error PARENTFIN  (72)
-	param_formal : sem_pasaje_opt . INT error COMA  (73)
-	param_formal : sem_pasaje_opt . error COMA  (74)
-
-	error  shift 145
-	INT  shift 146
-	.  error
-
-
-state 114
-	bloque_for : FOR PARENTINIC error PUNTOYCOMA .  (97)
-
-	.  reduce 97
-
-
-state 115
-	bloque_for : FOR PARENTINIC ID error . PUNTOYCOMA  (98)
-
-	PUNTOYCOMA  shift 147
-	.  error
-
-
-state 116
-	bloque_for : FOR PARENTINIC ID FROM . CTEINT TO CTEINT PARENTFIN rama_for PUNTOYCOMA  (93)
-	bloque_for : FOR PARENTINIC ID FROM . CTEINT TO CTEINT PARENTFIN rama_for error PUNTOYCOMA  (94)
-	bloque_for : FOR PARENTINIC ID FROM . CTEINT TO CTEINT error PUNTOYCOMA  (96)
-	bloque_for : FOR PARENTINIC ID FROM . error PUNTOYCOMA  (99)
-	bloque_for : FOR PARENTINIC ID FROM . CTEINT error PUNTOYCOMA  (100)
-	bloque_for : FOR PARENTINIC ID FROM . CTEINT TO error PUNTOYCOMA  (101)
-
-	error  shift 148
-	CTEINT  shift 149
-	.  error
-
-
-state 117
-	llamada_funcion : ID PARENTINIC error PARENTFIN .  (50)
+state 86
+	llamada_funcion : error PARENTINIC lista_params_reales PARENTFIN .  (50)
 
 	.  reduce 50
 
 
-state 118
-	parametro_real : TRUNC error . PARENTFIN  (62)
+state 87
+	param_real_map : parametro_real FLECHA . ID  (53)
 
-	PARENTFIN  shift 150
+	ID  shift 116
 	.  error
 
 
-state 119
-	parametro_real : TRUNC PARENTINIC . expresion PARENTFIN  (60)
-	parametro_real : TRUNC PARENTINIC . expresion error PARENTFIN  (63)
+state 88
+	condicion : expresion error . expresion  (69)
 
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
+	error  shift 5
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
 	.  error
 
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	expresion  goto 151
-	cte  goto 57
-	termino  goto 58
-	factor  goto 59
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	expresion  goto 117
+	cte  goto 52
+	termino  goto 53
+	factor  goto 54
 
 
-state 120
-	lambda_expr : PARENTINIC INT . ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN  (108)
-	lambda_expr : PARENTINIC INT . ID error PARENTFIN  (109)
-	lambda_expr : PARENTINIC INT . ID PARENTFIN error PARENTFIN  (110)
-	lambda_expr : PARENTINIC INT . ID PARENTFIN LLAVEINIC bloque_ejec error PARENTFIN  (111)
-	lambda_expr : PARENTINIC INT . ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN error PARENTFIN  (112)
-	lambda_expr : PARENTINIC INT . ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento error PARENTFIN  (113)
+state 89
+	relop : IGUAL .  (72)
 
-	ID  shift 152
+	.  reduce 72
+
+
+state 90
+	relop : DISTINTO .  (73)
+
+	.  reduce 73
+
+
+state 91
+	relop : MENORIGUAL .  (74)
+
+	.  reduce 74
+
+
+state 92
+	relop : MAYORIGUAL .  (75)
+
+	.  reduce 75
+
+
+state 93
+	relop : MAYOR .  (71)
+
+	.  reduce 71
+
+
+state 94
+	relop : MENOR .  (70)
+
+	.  reduce 70
+
+
+state 95
+	condicion : expresion relop . expresion  (68)
+
+	error  shift 5
+	ID  shift 11
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
+	.  error
+
+	llamada_funcion  goto 49
+	var_ref  goto 50
+	expresion  goto 118
+	cte  goto 52
+	termino  goto 53
+	factor  goto 54
+
+
+state 96
+	bloque_if : IF PARENTINIC condicion PARENTFIN . rama_if ENDIF  (63)
+	bloque_if : IF PARENTINIC condicion PARENTFIN . rama_if error  (64)
+	bloque_if : IF PARENTINIC condicion PARENTFIN . rama_if opt_else ENDIF  (65)
+	bloque_if : IF PARENTINIC condicion PARENTFIN . rama_if opt_else error  (66)
+	bloque_if : IF PARENTINIC condicion PARENTFIN . error opt_else ENDIF  (67)
+
+	error  shift 119
+	IF  shift 6
+	PRINT  shift 7
+	RETURN  shift 8
+	INT  shift 9
+	FOR  shift 10
+	ID  shift 11
+	IGUALUNICO  shift 12
+	LLAVEINIC  shift 120
+	.  error
+
+	sentencia  goto 121
+	sentencia_ejec  goto 15
+	asign_simple  goto 16
+	asign_multiple  goto 17
+	bloque_if  goto 18
+	bloque_for  goto 19
+	print_sent  goto 20
+	llamada_funcion  goto 21
+	return_sent  goto 22
+	lista_ids  goto 23
+	var_ref  goto 24
+	rama_if  goto 122
+
+
+state 97
+	print_sent : PRINT PARENTINIC expresion PARENTFIN .  (83)
+
+	.  reduce 83
+
+
+state 98
+	return_sent : RETURN PARENTINIC expresion PARENTFIN .  (57)
+
+	.  reduce 57
+
+
+state 99
+	decl_func : COMA lista_ids . PUNTOYCOMA  (19)
+	lista_ids : lista_ids . COMA var_ref  (24)
+	lista_ids : lista_ids . COMA error  (25)
+	lista_ids : lista_ids . var_ref  (26)
+
+	ID  shift 40
+	COMA  shift 42
+	PUNTOYCOMA  shift 123
+	.  error
+
+	var_ref  goto 43
+
+
+state 100
+	var_ref : var_ref . PUNTO ID  (22)
+	lista_ids : var_ref .  (23)
+
+	PUNTO  shift 46
+	ID  reduce 23
+	COMA  reduce 23
+	PUNTOYCOMA  reduce 23
+
+
+state 101
+	sem_pasaje_opt : CV .  (62)
+
+	.  reduce 62
+
+
+state 102
+	decl_func : PARENTINIC lista_params_formales . PARENTFIN LLAVEINIC bloque LLAVEFIN  (20)
+	lista_params_formales : lista_params_formales . COMA param_formal  (59)
+
+	COMA  shift 124
+	PARENTFIN  shift 125
 	.  error
 
 
-state 121
-	lista_params_reales : lista_params_reales error . param_real_map  (54)
-	lista_params_reales : lista_params_reales error . COMA  (55)
+state 103
+	lista_params_formales : param_formal .  (58)
 
-	TRUNC  shift 74
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
-	COMA  shift 153
-	PARENTINIC  shift 75
+	.  reduce 58
+
+
+state 104
+	param_formal : sem_pasaje_opt . INT ID  (60)
+
+	INT  shift 126
 	.  error
 
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	expresion  goto 76
-	cte  goto 57
-	termino  goto 58
-	factor  goto 59
-	param_real_map  goto 154
-	parametro_real  goto 79
-	lambda_expr  goto 80
 
+state 105
+	bloque_for : FOR PARENTINIC ID FROM . CTEINT TO CTEINT PARENTFIN rama_for  (80)
 
-state 122
-	lista_params_reales : lista_params_reales COMA . param_real_map  (52)
-	lista_params_reales : lista_params_reales COMA . error  (53)
-
-	error  shift 155
-	TRUNC  shift 74
-	ID  shift 15
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
-	PARENTINIC  shift 75
+	CTEINT  shift 127
 	.  error
 
-	llamada_funcion  goto 54
-	var_ref  goto 55
-	expresion  goto 76
-	cte  goto 57
-	termino  goto 58
-	factor  goto 59
-	param_real_map  goto 156
-	parametro_real  goto 79
-	lambda_expr  goto 80
 
-
-state 123
+state 106
 	llamada_funcion : ID PARENTINIC lista_params_reales PARENTFIN .  (49)
 
 	.  reduce 49
 
 
-state 124
-	param_real_map : parametro_real error .  (57)
+state 107
+	lista_ctes : lista_ctes COMA error .  (34)
 
-	.  reduce 57
+	.  reduce 34
 
 
-state 125
-	param_real_map : parametro_real FLECHA . ID  (56)
-	param_real_map : parametro_real FLECHA . error  (58)
+state 108
+	lista_ctes : lista_ctes COMA cte .  (33)
 
-	error  shift 157
-	ID  shift 158
+	.  reduce 33
+
+
+state 109
+	expresion : expresion . MAS termino  (40)
+	expresion : expresion . MENOS termino  (41)
+	parametro_real : TRUNC PARENTINIC expresion . PARENTFIN  (55)
+
+	MAS  shift 81
+	MENOS  shift 82
+	PARENTFIN  shift 128
 	.  error
 
 
-state 126
-	lista_ctes : lista_ctes COMA . cte  (35)
-	lista_ctes : lista_ctes COMA . error  (36)
+state 110
+	lambda_expr : PARENTINIC INT ID . PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN  (84)
 
-	error  shift 159
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
+	PARENTFIN  shift 129
 	.  error
 
-	cte  goto 160
 
-
-state 127
+state 111
 	expresion : expresion MAS termino .  (40)
 	termino : termino . MUL factor  (43)
 	termino : termino . DIV factor  (44)
 
-	MUL  shift 100
-	DIV  shift 101
+	MUL  shift 83
+	DIV  shift 84
 	error  reduce 40
+	IF  reduce 40
+	ELSE  reduce 40
+	ENDIF  reduce 40
+	PRINT  reduce 40
+	RETURN  reduce 40
+	INT  reduce 40
+	FOR  reduce 40
+	ID  reduce 40
 	FLECHA  reduce 40
 	IGUAL  reduce 40
 	DISTINTO  reduce 40
@@ -1475,20 +1389,30 @@ state 127
 	MAYORIGUAL  reduce 40
 	MAS  reduce 40
 	MENOS  reduce 40
+	IGUALUNICO  reduce 40
 	MAYOR  reduce 40
 	MENOR  reduce 40
 	PUNTOYCOMA  reduce 40
 	PARENTFIN  reduce 40
+	LLAVEFIN  reduce 40
 
 
-state 128
+state 112
 	expresion : expresion MENOS termino .  (41)
 	termino : termino . MUL factor  (43)
 	termino : termino . DIV factor  (44)
 
-	MUL  shift 100
-	DIV  shift 101
+	MUL  shift 83
+	DIV  shift 84
 	error  reduce 41
+	IF  reduce 41
+	ELSE  reduce 41
+	ENDIF  reduce 41
+	PRINT  reduce 41
+	RETURN  reduce 41
+	INT  reduce 41
+	FOR  reduce 41
+	ID  reduce 41
 	FLECHA  reduce 41
 	IGUAL  reduce 41
 	DISTINTO  reduce 41
@@ -1496,881 +1420,530 @@ state 128
 	MAYORIGUAL  reduce 41
 	MAS  reduce 41
 	MENOS  reduce 41
+	IGUALUNICO  reduce 41
 	MAYOR  reduce 41
 	MENOR  reduce 41
 	PUNTOYCOMA  reduce 41
 	PARENTFIN  reduce 41
+	LLAVEFIN  reduce 41
 
 
-state 129
-	expresion : expresion . MAS termino  (40)
-	expresion : expresion . MENOS termino  (41)
-	condicion : expresion relop expresion .  (82)
-
-	MAS  shift 95
-	MENOS  shift 96
-	error  reduce 82
-	PARENTFIN  reduce 82
-
-
-state 130
+state 113
 	termino : termino MUL factor .  (43)
 
 	.  reduce 43
 
 
-state 131
+state 114
 	termino : termino DIV factor .  (44)
 
 	.  reduce 44
 
 
-state 132
-	bloque_if : IF PARENTINIC condicion error PUNTOYCOMA .  (80)
-
-	.  reduce 80
-
-
-state 133
-	rama_if : LLAVEINIC . bloque_ejec LLAVEFIN  (90)
-	bloque_ejec : .  (7)
-
-	.  reduce 7
-
-	bloque_ejec  goto 161
-
-
-state 134
-	rama_if : sentencia_ejec .  (89)
-
-	.  reduce 89
-
-
-state 135
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if . opt_else ENDIF PUNTOYCOMA  (77)
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if . opt_else ENDIF error PUNTOYCOMA  (78)
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if . opt_else error PUNTOYCOMA  (81)
-	opt_else : .  (91)
-
-	ELSE  shift 162
-	error  reduce 91
-	ENDIF  reduce 91
-
-	opt_else  goto 163
-
-
-state 136
-	print_sent : PRINT PARENTINIC expresion PARENTFIN error . PUNTOYCOMA  (106)
-
-	PUNTOYCOMA  shift 164
-	.  error
-
-
-state 137
-	print_sent : PRINT PARENTINIC expresion PARENTFIN PUNTOYCOMA .  (105)
-
-	.  reduce 105
-
-
-state 138
-	return_sent : RETURN PARENTINIC expresion PARENTFIN error . PUNTOYCOMA  (65)
-
-	PUNTOYCOMA  shift 165
-	.  error
-
-
-state 139
-	return_sent : RETURN PARENTINIC expresion PARENTFIN PUNTOYCOMA .  (64)
-
-	.  reduce 64
-
-
-state 140
-	decl_func : COMA lista_ids error . PUNTOYCOMA  (16)
-	lista_ids : lista_ids error . var_ref  (31)
-
-	ID  shift 81
-	PUNTOYCOMA  shift 166
-	.  error
-
-	var_ref  goto 82
-
-
-state 141
-	decl_func : COMA lista_ids PUNTOYCOMA .  (13)
-
-	.  reduce 13
-
-
-state 142
-	lista_params_formales : lista_params_formales error . PARENTFIN  (68)
-	lista_params_formales : lista_params_formales error . COMA  (69)
-
-	COMA  shift 167
-	PARENTFIN  shift 168
-	.  error
-
-
-state 143
-	lista_params_formales : lista_params_formales COMA . param_formal  (67)
-	sem_pasaje_opt : .  (75)
-
-	CV  shift 110
-	error  reduce 75
-	INT  reduce 75
-
-	param_formal  goto 169
-	sem_pasaje_opt  goto 113
-
-
-state 144
-	decl_func : PARENTINIC lista_params_formales PARENTFIN . LLAVEINIC bloque LLAVEFIN  (14)
-
-	LLAVEINIC  shift 170
-	.  error
-
-
-state 145
-	param_formal : sem_pasaje_opt error . PARENTFIN  (72)
-	param_formal : sem_pasaje_opt error . COMA  (74)
-
-	COMA  shift 171
-	PARENTFIN  shift 172
-	.  error
-
-
-state 146
-	param_formal : sem_pasaje_opt INT . ID  (70)
-	param_formal : sem_pasaje_opt INT . error PARENTFIN  (71)
-	param_formal : sem_pasaje_opt INT . error COMA  (73)
-
-	error  shift 173
-	ID  shift 174
-	.  error
-
-
-state 147
-	bloque_for : FOR PARENTINIC ID error PUNTOYCOMA .  (98)
-
-	.  reduce 98
-
-
-state 148
-	bloque_for : FOR PARENTINIC ID FROM error . PUNTOYCOMA  (99)
-
-	PUNTOYCOMA  shift 175
-	.  error
-
-
-state 149
-	bloque_for : FOR PARENTINIC ID FROM CTEINT . TO CTEINT PARENTFIN rama_for PUNTOYCOMA  (93)
-	bloque_for : FOR PARENTINIC ID FROM CTEINT . TO CTEINT PARENTFIN rama_for error PUNTOYCOMA  (94)
-	bloque_for : FOR PARENTINIC ID FROM CTEINT . TO CTEINT error PUNTOYCOMA  (96)
-	bloque_for : FOR PARENTINIC ID FROM CTEINT . error PUNTOYCOMA  (100)
-	bloque_for : FOR PARENTINIC ID FROM CTEINT . TO error PUNTOYCOMA  (101)
-
-	error  shift 176
-	TO  shift 177
-	.  error
-
-
-state 150
-	parametro_real : TRUNC error PARENTFIN .  (62)
-
-	.  reduce 62
-
-
-state 151
-	expresion : expresion . MAS termino  (40)
-	expresion : expresion . MENOS termino  (41)
-	parametro_real : TRUNC PARENTINIC expresion . PARENTFIN  (60)
-	parametro_real : TRUNC PARENTINIC expresion . error PARENTFIN  (63)
-
-	error  shift 178
-	MAS  shift 95
-	MENOS  shift 96
-	PARENTFIN  shift 179
-	.  error
-
-
-state 152
-	lambda_expr : PARENTINIC INT ID . PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN  (108)
-	lambda_expr : PARENTINIC INT ID . error PARENTFIN  (109)
-	lambda_expr : PARENTINIC INT ID . PARENTFIN error PARENTFIN  (110)
-	lambda_expr : PARENTINIC INT ID . PARENTFIN LLAVEINIC bloque_ejec error PARENTFIN  (111)
-	lambda_expr : PARENTINIC INT ID . PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN error PARENTFIN  (112)
-	lambda_expr : PARENTINIC INT ID . PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento error PARENTFIN  (113)
-
-	error  shift 180
-	PARENTFIN  shift 181
-	.  error
-
-
-state 153
-	lista_params_reales : lista_params_reales error COMA .  (55)
-
-	.  reduce 55
-
-
-state 154
-	lista_params_reales : lista_params_reales error param_real_map .  (54)
-
-	.  reduce 54
-
-
-state 155
-	lista_params_reales : lista_params_reales COMA error .  (53)
-
-	.  reduce 53
-
-
-state 156
+state 115
 	lista_params_reales : lista_params_reales COMA param_real_map .  (52)
 
 	.  reduce 52
 
 
-state 157
-	param_real_map : parametro_real FLECHA error .  (58)
+state 116
+	param_real_map : parametro_real FLECHA ID .  (53)
 
-	.  reduce 58
-
-
-state 158
-	param_real_map : parametro_real FLECHA ID .  (56)
-
-	.  reduce 56
+	.  reduce 53
 
 
-state 159
-	lista_ctes : lista_ctes COMA error .  (36)
+state 117
+	expresion : expresion . MAS termino  (40)
+	expresion : expresion . MENOS termino  (41)
+	condicion : expresion error expresion .  (69)
 
-	.  reduce 36
-
-
-state 160
-	lista_ctes : lista_ctes COMA cte .  (35)
-
-	.  reduce 35
+	MAS  shift 81
+	MENOS  shift 82
+	PARENTFIN  reduce 69
 
 
-state 161
-	bloque_ejec : bloque_ejec . sentencia_ejec  (8)
-	rama_if : LLAVEINIC bloque_ejec . LLAVEFIN  (90)
+state 118
+	expresion : expresion . MAS termino  (40)
+	expresion : expresion . MENOS termino  (41)
+	condicion : expresion relop expresion .  (68)
 
-	IF  shift 10
-	PRINT  shift 11
-	RETURN  shift 12
-	FOR  shift 14
-	ID  shift 15
-	LLAVEFIN  shift 182
+	MAS  shift 81
+	MENOS  shift 82
+	PARENTFIN  reduce 68
+
+
+state 119
+	llamada_funcion : error . PARENTINIC lista_params_reales PARENTFIN  (50)
+	bloque_if : IF PARENTINIC condicion PARENTFIN error . opt_else ENDIF  (67)
+
+	ELSE  shift 130
+	PARENTINIC  shift 25
 	.  error
 
-	sentencia_ejec  goto 183
-	lista_ids  goto 19
-	asign_simple  goto 20
-	asign_multiple  goto 21
-	bloque_if  goto 22
-	bloque_for  goto 23
-	print_sent  goto 24
-	llamada_funcion  goto 25
-	return_sent  goto 26
-	var_ref  goto 27
+	opt_else  goto 131
 
 
-state 162
-	opt_else : ELSE . rama_if  (92)
+state 120
+	rama_if : LLAVEINIC . bloque_ejec LLAVEFIN  (77)
+	bloque_ejec : .  (4)
 
-	IF  shift 10
-	PRINT  shift 11
-	RETURN  shift 12
-	FOR  shift 14
-	ID  shift 15
-	LLAVEINIC  shift 133
+	.  reduce 4
+
+	bloque_ejec  goto 132
+
+
+state 121
+	rama_if : sentencia .  (76)
+
+	.  reduce 76
+
+
+state 122
+	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if . ENDIF  (63)
+	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if . error  (64)
+	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if . opt_else ENDIF  (65)
+	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if . opt_else error  (66)
+
+	error  shift 133
+	ELSE  shift 130
+	ENDIF  shift 134
 	.  error
 
-	sentencia_ejec  goto 134
-	lista_ids  goto 19
-	asign_simple  goto 20
-	asign_multiple  goto 21
-	bloque_if  goto 22
-	bloque_for  goto 23
-	print_sent  goto 24
-	llamada_funcion  goto 25
-	return_sent  goto 26
-	var_ref  goto 27
-	rama_if  goto 184
+	opt_else  goto 135
 
 
-state 163
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else . ENDIF PUNTOYCOMA  (77)
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else . ENDIF error PUNTOYCOMA  (78)
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else . error PUNTOYCOMA  (81)
+state 123
+	decl_func : COMA lista_ids PUNTOYCOMA .  (19)
 
-	error  shift 185
-	ENDIF  shift 186
-	.  error
+	.  reduce 19
 
 
-state 164
-	print_sent : PRINT PARENTINIC expresion PARENTFIN error PUNTOYCOMA .  (106)
+state 124
+	lista_params_formales : lista_params_formales COMA . param_formal  (59)
+	sem_pasaje_opt : .  (61)
 
-	.  reduce 106
+	CV  shift 101
+	INT  reduce 61
 
-
-state 165
-	return_sent : RETURN PARENTINIC expresion PARENTFIN error PUNTOYCOMA .  (65)
-
-	.  reduce 65
-
-
-state 166
-	decl_func : COMA lista_ids error PUNTOYCOMA .  (16)
-
-	.  reduce 16
+	param_formal  goto 136
+	sem_pasaje_opt  goto 104
 
 
-state 167
-	lista_params_formales : lista_params_formales error COMA .  (69)
+state 125
+	decl_func : PARENTINIC lista_params_formales PARENTFIN . LLAVEINIC bloque LLAVEFIN  (20)
 
-	.  reduce 69
-
-
-state 168
-	lista_params_formales : lista_params_formales error PARENTFIN .  (68)
-
-	.  reduce 68
-
-
-state 169
-	lista_params_formales : lista_params_formales COMA param_formal .  (67)
-
-	.  reduce 67
-
-
-state 170
-	decl_func : PARENTINIC lista_params_formales PARENTFIN LLAVEINIC . bloque LLAVEFIN  (14)
-	bloque : .  (5)
-
-	.  reduce 5
-
-	bloque  goto 187
-
-
-state 171
-	param_formal : sem_pasaje_opt error COMA .  (74)
-
-	.  reduce 74
-
-
-state 172
-	param_formal : sem_pasaje_opt error PARENTFIN .  (72)
-
-	.  reduce 72
-
-
-state 173
-	param_formal : sem_pasaje_opt INT error . PARENTFIN  (71)
-	param_formal : sem_pasaje_opt INT error . COMA  (73)
-
-	COMA  shift 188
-	PARENTFIN  shift 189
+	LLAVEINIC  shift 137
 	.  error
 
 
-state 174
-	param_formal : sem_pasaje_opt INT ID .  (70)
+state 126
+	param_formal : sem_pasaje_opt INT . ID  (60)
 
-	.  reduce 70
-
-
-state 175
-	bloque_for : FOR PARENTINIC ID FROM error PUNTOYCOMA .  (99)
-
-	.  reduce 99
-
-
-state 176
-	bloque_for : FOR PARENTINIC ID FROM CTEINT error . PUNTOYCOMA  (100)
-
-	PUNTOYCOMA  shift 190
+	ID  shift 138
 	.  error
 
 
-state 177
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO . CTEINT PARENTFIN rama_for PUNTOYCOMA  (93)
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO . CTEINT PARENTFIN rama_for error PUNTOYCOMA  (94)
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO . CTEINT error PUNTOYCOMA  (96)
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO . error PUNTOYCOMA  (101)
+state 127
+	bloque_for : FOR PARENTINIC ID FROM CTEINT . TO CTEINT PARENTFIN rama_for  (80)
 
-	error  shift 191
-	CTEINT  shift 192
+	TO  shift 139
 	.  error
 
 
-state 178
-	parametro_real : TRUNC PARENTINIC expresion error . PARENTFIN  (63)
+state 128
+	parametro_real : TRUNC PARENTINIC expresion PARENTFIN .  (55)
 
-	PARENTFIN  shift 193
+	.  reduce 55
+
+
+state 129
+	lambda_expr : PARENTINIC INT ID PARENTFIN . LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN  (84)
+
+	LLAVEINIC  shift 140
 	.  error
 
 
-state 179
-	parametro_real : TRUNC PARENTINIC expresion PARENTFIN .  (60)
+state 130
+	opt_else : ELSE . rama_if  (78)
+	opt_else : ELSE . error  (79)
 
-	.  reduce 60
+	error  shift 141
+	IF  shift 6
+	PRINT  shift 7
+	RETURN  shift 8
+	INT  shift 9
+	FOR  shift 10
+	ID  shift 11
+	IGUALUNICO  shift 12
+	LLAVEINIC  shift 120
+	.  error
+
+	sentencia  goto 121
+	sentencia_ejec  goto 15
+	asign_simple  goto 16
+	asign_multiple  goto 17
+	bloque_if  goto 18
+	bloque_for  goto 19
+	print_sent  goto 20
+	llamada_funcion  goto 21
+	return_sent  goto 22
+	lista_ids  goto 23
+	var_ref  goto 24
+	rama_if  goto 142
 
 
-state 180
-	lambda_expr : PARENTINIC INT ID error . PARENTFIN  (109)
+state 131
+	bloque_if : IF PARENTINIC condicion PARENTFIN error opt_else . ENDIF  (67)
 
-	PARENTFIN  shift 194
+	ENDIF  shift 143
 	.  error
 
 
-state 181
-	lambda_expr : PARENTINIC INT ID PARENTFIN . LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN  (108)
-	lambda_expr : PARENTINIC INT ID PARENTFIN . error PARENTFIN  (110)
-	lambda_expr : PARENTINIC INT ID PARENTFIN . LLAVEINIC bloque_ejec error PARENTFIN  (111)
-	lambda_expr : PARENTINIC INT ID PARENTFIN . LLAVEINIC bloque_ejec LLAVEFIN error PARENTFIN  (112)
-	lambda_expr : PARENTINIC INT ID PARENTFIN . LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento error PARENTFIN  (113)
+state 132
+	bloque_ejec : bloque_ejec . sentencia_ejec PUNTOYCOMA  (5)
+	bloque_ejec : bloque_ejec . sentencia_ejec  (6)
+	rama_if : LLAVEINIC bloque_ejec . LLAVEFIN  (77)
 
-	error  shift 195
-	LLAVEINIC  shift 196
+	error  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	RETURN  shift 8
+	FOR  shift 10
+	ID  shift 11
+	IGUALUNICO  shift 12
+	LLAVEFIN  shift 144
 	.  error
 
-
-state 182
-	rama_if : LLAVEINIC bloque_ejec LLAVEFIN .  (90)
-
-	.  reduce 90
-
-
-state 183
-	bloque_ejec : bloque_ejec sentencia_ejec .  (8)
-
-	.  reduce 8
-
-
-state 184
-	opt_else : ELSE rama_if .  (92)
-
-	.  reduce 92
+	sentencia_ejec  goto 145
+	asign_simple  goto 16
+	asign_multiple  goto 17
+	bloque_if  goto 18
+	bloque_for  goto 19
+	print_sent  goto 20
+	llamada_funcion  goto 21
+	return_sent  goto 22
+	lista_ids  goto 23
+	var_ref  goto 24
 
 
-state 185
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else error . PUNTOYCOMA  (81)
+state 133
+	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if error .  (64)
 
-	PUNTOYCOMA  shift 197
-	.  error
-
-
-state 186
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF . PUNTOYCOMA  (77)
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF . error PUNTOYCOMA  (78)
-
-	error  shift 198
-	PUNTOYCOMA  shift 199
-	.  error
+	.  reduce 64
 
 
-state 187
-	bloque : bloque . sentencia  (6)
-	decl_func : PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque . LLAVEFIN  (14)
-
-	IF  shift 10
-	PRINT  shift 11
-	RETURN  shift 12
-	INT  shift 13
-	FOR  shift 14
-	ID  shift 15
-	LLAVEFIN  shift 200
-	.  error
-
-	sentencia  goto 17
-	sentencia_ejec  goto 18
-	lista_ids  goto 19
-	asign_simple  goto 20
-	asign_multiple  goto 21
-	bloque_if  goto 22
-	bloque_for  goto 23
-	print_sent  goto 24
-	llamada_funcion  goto 25
-	return_sent  goto 26
-	var_ref  goto 27
-
-
-state 188
-	param_formal : sem_pasaje_opt INT error COMA .  (73)
-
-	.  reduce 73
-
-
-state 189
-	param_formal : sem_pasaje_opt INT error PARENTFIN .  (71)
-
-	.  reduce 71
-
-
-state 190
-	bloque_for : FOR PARENTINIC ID FROM CTEINT error PUNTOYCOMA .  (100)
-
-	.  reduce 100
-
-
-state 191
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO error . PUNTOYCOMA  (101)
-
-	PUNTOYCOMA  shift 201
-	.  error
-
-
-state 192
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT . PARENTFIN rama_for PUNTOYCOMA  (93)
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT . PARENTFIN rama_for error PUNTOYCOMA  (94)
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT . error PUNTOYCOMA  (96)
-
-	error  shift 202
-	PARENTFIN  shift 203
-	.  error
-
-
-state 193
-	parametro_real : TRUNC PARENTINIC expresion error PARENTFIN .  (63)
+state 134
+	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if ENDIF .  (63)
 
 	.  reduce 63
 
 
-state 194
-	lambda_expr : PARENTINIC INT ID error PARENTFIN .  (109)
+state 135
+	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else . ENDIF  (65)
+	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else . error  (66)
 
-	.  reduce 109
-
-
-state 195
-	lambda_expr : PARENTINIC INT ID PARENTFIN error . PARENTFIN  (110)
-
-	PARENTFIN  shift 204
+	error  shift 146
+	ENDIF  shift 147
 	.  error
 
 
-state 196
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC . bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN  (108)
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC . bloque_ejec error PARENTFIN  (111)
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC . bloque_ejec LLAVEFIN error PARENTFIN  (112)
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC . bloque_ejec LLAVEFIN PARENTINIC argumento error PARENTFIN  (113)
-	bloque_ejec : .  (7)
+state 136
+	lista_params_formales : lista_params_formales COMA param_formal .  (59)
 
-	.  reduce 7
-
-	bloque_ejec  goto 205
+	.  reduce 59
 
 
-state 197
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else error PUNTOYCOMA .  (81)
+state 137
+	decl_func : PARENTINIC lista_params_formales PARENTFIN LLAVEINIC . bloque LLAVEFIN  (20)
+	bloque : .  (2)
 
-	.  reduce 81
+	.  reduce 2
+
+	bloque  goto 148
 
 
-state 198
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF error . PUNTOYCOMA  (78)
+state 138
+	param_formal : sem_pasaje_opt INT ID .  (60)
 
-	PUNTOYCOMA  shift 206
+	.  reduce 60
+
+
+state 139
+	bloque_for : FOR PARENTINIC ID FROM CTEINT TO . CTEINT PARENTFIN rama_for  (80)
+
+	CTEINT  shift 149
 	.  error
 
 
-state 199
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF PUNTOYCOMA .  (77)
+state 140
+	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC . bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN  (84)
+	bloque_ejec : .  (4)
 
-	.  reduce 77
+	.  reduce 4
 
-
-state 200
-	decl_func : PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN .  (14)
-
-	.  reduce 14
+	bloque_ejec  goto 150
 
 
-state 201
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO error PUNTOYCOMA .  (101)
+state 141
+	llamada_funcion : error . PARENTINIC lista_params_reales PARENTFIN  (50)
+	opt_else : ELSE error .  (79)
 
-	.  reduce 101
-
-
-state 202
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT error . PUNTOYCOMA  (96)
-
-	PUNTOYCOMA  shift 207
-	.  error
+	PARENTINIC  shift 25
+	error  reduce 79
+	ENDIF  reduce 79
 
 
-state 203
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN . rama_for PUNTOYCOMA  (93)
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN . rama_for error PUNTOYCOMA  (94)
-
-	IF  shift 10
-	PRINT  shift 11
-	RETURN  shift 12
-	FOR  shift 14
-	ID  shift 15
-	LLAVEINIC  shift 208
-	.  error
-
-	sentencia_ejec  goto 209
-	lista_ids  goto 19
-	asign_simple  goto 20
-	asign_multiple  goto 21
-	bloque_if  goto 22
-	bloque_for  goto 23
-	print_sent  goto 24
-	llamada_funcion  goto 25
-	return_sent  goto 26
-	var_ref  goto 27
-	rama_for  goto 210
-
-
-state 204
-	lambda_expr : PARENTINIC INT ID PARENTFIN error PARENTFIN .  (110)
-
-	.  reduce 110
-
-
-state 205
-	bloque_ejec : bloque_ejec . sentencia_ejec  (8)
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec . LLAVEFIN PARENTINIC argumento PARENTFIN  (108)
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec . error PARENTFIN  (111)
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec . LLAVEFIN error PARENTFIN  (112)
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec . LLAVEFIN PARENTINIC argumento error PARENTFIN  (113)
-
-	error  shift 211
-	IF  shift 10
-	PRINT  shift 11
-	RETURN  shift 12
-	FOR  shift 14
-	ID  shift 15
-	LLAVEFIN  shift 212
-	.  error
-
-	sentencia_ejec  goto 183
-	lista_ids  goto 19
-	asign_simple  goto 20
-	asign_multiple  goto 21
-	bloque_if  goto 22
-	bloque_for  goto 23
-	print_sent  goto 24
-	llamada_funcion  goto 25
-	return_sent  goto 26
-	var_ref  goto 27
-
-
-state 206
-	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF error PUNTOYCOMA .  (78)
+state 142
+	opt_else : ELSE rama_if .  (78)
 
 	.  reduce 78
 
 
-state 207
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT error PUNTOYCOMA .  (96)
+state 143
+	bloque_if : IF PARENTINIC condicion PARENTFIN error opt_else ENDIF .  (67)
 
-	.  reduce 96
-
-
-state 208
-	rama_for : LLAVEINIC . bloque_ejec LLAVEFIN  (103)
-	rama_for : LLAVEINIC . error LLAVEFIN  (104)
-	bloque_ejec : .  (7)
-
-	error  shift 213
-	IF  reduce 7
-	PRINT  reduce 7
-	RETURN  reduce 7
-	FOR  reduce 7
-	ID  reduce 7
-	LLAVEFIN  reduce 7
-
-	bloque_ejec  goto 214
+	.  reduce 67
 
 
-state 209
-	rama_for : sentencia_ejec .  (102)
+state 144
+	rama_if : LLAVEINIC bloque_ejec LLAVEFIN .  (77)
 
-	.  reduce 102
+	.  reduce 77
 
 
-state 210
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for . PUNTOYCOMA  (93)
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for . error PUNTOYCOMA  (94)
+state 145
+	bloque_ejec : bloque_ejec sentencia_ejec . PUNTOYCOMA  (5)
+	bloque_ejec : bloque_ejec sentencia_ejec .  (6)
 
-	error  shift 215
-	PUNTOYCOMA  shift 216
+	PUNTOYCOMA  shift 151
+	error  reduce 6
+	IF  reduce 6
+	PRINT  reduce 6
+	RETURN  reduce 6
+	FOR  reduce 6
+	ID  reduce 6
+	IGUALUNICO  reduce 6
+	LLAVEFIN  reduce 6
+
+
+state 146
+	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else error .  (66)
+
+	.  reduce 66
+
+
+state 147
+	bloque_if : IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF .  (65)
+
+	.  reduce 65
+
+
+state 148
+	bloque : bloque . sentencia  (3)
+	decl_func : PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque . LLAVEFIN  (20)
+
+	error  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	RETURN  shift 8
+	INT  shift 9
+	FOR  shift 10
+	ID  shift 11
+	IGUALUNICO  shift 12
+	LLAVEFIN  shift 152
+	.  error
+
+	sentencia  goto 14
+	sentencia_ejec  goto 15
+	asign_simple  goto 16
+	asign_multiple  goto 17
+	bloque_if  goto 18
+	bloque_for  goto 19
+	print_sent  goto 20
+	llamada_funcion  goto 21
+	return_sent  goto 22
+	lista_ids  goto 23
+	var_ref  goto 24
+
+
+state 149
+	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT . PARENTFIN rama_for  (80)
+
+	PARENTFIN  shift 153
 	.  error
 
 
-state 211
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec error . PARENTFIN  (111)
+state 150
+	bloque_ejec : bloque_ejec . sentencia_ejec PUNTOYCOMA  (5)
+	bloque_ejec : bloque_ejec . sentencia_ejec  (6)
+	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec . LLAVEFIN PARENTINIC argumento PARENTFIN  (84)
 
-	PARENTFIN  shift 217
+	error  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	RETURN  shift 8
+	FOR  shift 10
+	ID  shift 11
+	IGUALUNICO  shift 12
+	LLAVEFIN  shift 154
+	.  error
+
+	sentencia_ejec  goto 145
+	asign_simple  goto 16
+	asign_multiple  goto 17
+	bloque_if  goto 18
+	bloque_for  goto 19
+	print_sent  goto 20
+	llamada_funcion  goto 21
+	return_sent  goto 22
+	lista_ids  goto 23
+	var_ref  goto 24
+
+
+state 151
+	bloque_ejec : bloque_ejec sentencia_ejec PUNTOYCOMA .  (5)
+
+	.  reduce 5
+
+
+state 152
+	decl_func : PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN .  (20)
+
+	.  reduce 20
+
+
+state 153
+	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN . rama_for  (80)
+
+	error  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	RETURN  shift 8
+	FOR  shift 10
+	ID  shift 11
+	IGUALUNICO  shift 12
+	LLAVEINIC  shift 155
+	.  error
+
+	sentencia_ejec  goto 156
+	asign_simple  goto 16
+	asign_multiple  goto 17
+	bloque_if  goto 18
+	bloque_for  goto 19
+	print_sent  goto 20
+	llamada_funcion  goto 21
+	return_sent  goto 22
+	lista_ids  goto 23
+	var_ref  goto 24
+	rama_for  goto 157
+
+
+state 154
+	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN . PARENTINIC argumento PARENTFIN  (84)
+
+	PARENTINIC  shift 158
 	.  error
 
 
-state 212
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN . PARENTINIC argumento PARENTFIN  (108)
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN . error PARENTFIN  (112)
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN . PARENTINIC argumento error PARENTFIN  (113)
+state 155
+	rama_for : LLAVEINIC . bloque_ejec LLAVEFIN  (82)
+	bloque_ejec : .  (4)
 
-	error  shift 218
-	PARENTINIC  shift 219
+	.  reduce 4
+
+	bloque_ejec  goto 159
+
+
+state 156
+	rama_for : sentencia_ejec . PUNTOYCOMA  (81)
+
+	PUNTOYCOMA  shift 160
 	.  error
 
 
-state 213
-	rama_for : LLAVEINIC error . LLAVEFIN  (104)
+state 157
+	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for .  (80)
 
-	LLAVEFIN  shift 220
+	.  reduce 80
+
+
+state 158
+	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC . argumento PARENTFIN  (84)
+
+	ID  shift 161
+	CTEINT  shift 33
+	CTEFLOAT  shift 34
+	CTESTR  shift 35
+	MENOS  shift 36
+	.  error
+
+	cte  goto 162
+	argumento  goto 163
+
+
+state 159
+	bloque_ejec : bloque_ejec . sentencia_ejec PUNTOYCOMA  (5)
+	bloque_ejec : bloque_ejec . sentencia_ejec  (6)
+	rama_for : LLAVEINIC bloque_ejec . LLAVEFIN  (82)
+
+	error  shift 5
+	IF  shift 6
+	PRINT  shift 7
+	RETURN  shift 8
+	FOR  shift 10
+	ID  shift 11
+	IGUALUNICO  shift 12
+	LLAVEFIN  shift 164
+	.  error
+
+	sentencia_ejec  goto 145
+	asign_simple  goto 16
+	asign_multiple  goto 17
+	bloque_if  goto 18
+	bloque_for  goto 19
+	print_sent  goto 20
+	llamada_funcion  goto 21
+	return_sent  goto 22
+	lista_ids  goto 23
+	var_ref  goto 24
+
+
+state 160
+	rama_for : sentencia_ejec PUNTOYCOMA .  (81)
+
+	.  reduce 81
+
+
+state 161
+	argumento : ID .  (85)
+
+	.  reduce 85
+
+
+state 162
+	argumento : cte .  (86)
+
+	.  reduce 86
+
+
+state 163
+	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento . PARENTFIN  (84)
+
+	PARENTFIN  shift 165
 	.  error
 
 
-state 214
-	bloque_ejec : bloque_ejec . sentencia_ejec  (8)
-	rama_for : LLAVEINIC bloque_ejec . LLAVEFIN  (103)
+state 164
+	rama_for : LLAVEINIC bloque_ejec LLAVEFIN .  (82)
 
-	IF  shift 10
-	PRINT  shift 11
-	RETURN  shift 12
-	FOR  shift 14
-	ID  shift 15
-	LLAVEFIN  shift 221
-	.  error
-
-	sentencia_ejec  goto 183
-	lista_ids  goto 19
-	asign_simple  goto 20
-	asign_multiple  goto 21
-	bloque_if  goto 22
-	bloque_for  goto 23
-	print_sent  goto 24
-	llamada_funcion  goto 25
-	return_sent  goto 26
-	var_ref  goto 27
+	.  reduce 82
 
 
-state 215
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for error . PUNTOYCOMA  (94)
+state 165
+	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN .  (84)
 
-	PUNTOYCOMA  shift 222
-	.  error
-
-
-state 216
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for PUNTOYCOMA .  (93)
-
-	.  reduce 93
-
-
-state 217
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec error PARENTFIN .  (111)
-
-	.  reduce 111
-
-
-state 218
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN error . PARENTFIN  (112)
-
-	PARENTFIN  shift 223
-	.  error
-
-
-state 219
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC . argumento PARENTFIN  (108)
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC . argumento error PARENTFIN  (113)
-
-	error  shift 224
-	ID  shift 225
-	CTEINT  shift 51
-	CTEFLOAT  shift 52
-	CTESTR  shift 53
-	.  error
-
-	cte  goto 226
-	argumento  goto 227
-
-
-state 220
-	rama_for : LLAVEINIC error LLAVEFIN .  (104)
-
-	.  reduce 104
-
-
-state 221
-	rama_for : LLAVEINIC bloque_ejec LLAVEFIN .  (103)
-
-	.  reduce 103
-
-
-state 222
-	bloque_for : FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for error PUNTOYCOMA .  (94)
-
-	.  reduce 94
-
-
-state 223
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN error PARENTFIN .  (112)
-
-	.  reduce 112
-
-
-state 224
-	argumento : error . PARENTFIN  (116)
-
-	PARENTFIN  shift 228
-	.  error
-
-
-state 225
-	argumento : ID .  (114)
-
-	.  reduce 114
-
-
-state 226
-	argumento : cte .  (115)
-
-	.  reduce 115
-
-
-state 227
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento . PARENTFIN  (108)
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento . error PARENTFIN  (113)
-
-	error  shift 229
-	PARENTFIN  shift 230
-	.  error
-
-
-state 228
-	argumento : error PARENTFIN .  (116)
-
-	.  reduce 116
-
-
-state 229
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento error . PARENTFIN  (113)
-
-	PARENTFIN  shift 231
-	.  error
-
-
-state 230
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN .  (108)
-
-	.  reduce 108
-
-
-state 231
-	lambda_expr : PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento error PARENTFIN .  (113)
-
-	.  reduce 113
+	.  reduce 84
 
 
 38 terminals, 34 nonterminals
-117 grammar rules, 232 states
+87 grammar rules, 166 states

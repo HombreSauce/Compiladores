@@ -21,7 +21,7 @@ X, Y, Z W = 1I, 2I, 3I;
 
 int X, Y Z;
 
-if ( X > Y ) { print( X ); } else print( Y ); endif;
+if ( X  Y ) { print( X ); } else print( Y ); endif;
 
 for ( I from 1 to 3I ) { print( I ); };
 

@@ -224,34 +224,38 @@ sem_pasaje_opt		: /* vacío */
 
 /* ========= If (selección) ========= */
 
-bloque_if	: IF PARENTINIC condicion PARENTFIN rama_if ENDIF
+bloque_if   : IF PARENTINIC condicion PARENTFIN rama_if ENDIF
+            | IF PARENTINIC condicion PARENTFIN rama_if error { yyerror("Falta 'endif' al final del bloque if."); }
             | IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF
-			;
+            | IF PARENTINIC condicion PARENTFIN rama_if opt_else error { yyerror("Falta 'endif' al final del bloque else."); }
+            | IF PARENTINIC condicion PARENTFIN error opt_else ENDIF { yyerror("Falta bloque del then."); }
+            ;
 
-condicion	: expresion relop expresion
-  			;
+condicion   : expresion relop expresion
+            | expresion error expresion { yyerror("Falta comparador en la condicion.");}
+            ;
 
-relop		: MENOR 
-			| MAYOR 
-			| IGUAL 
-			| DISTINTO 
-			| MENORIGUAL 
-			| MAYORIGUAL
-			;
+relop       : MENOR 
+            | MAYOR 
+            | IGUAL 
+            | DISTINTO 
+            | MENORIGUAL 
+            | MAYORIGUAL
+            ;
 
-rama_if		: sentencia
-  			| LLAVEINIC bloque_ejec LLAVEFIN
-  			;
+rama_if     : sentencia
+            | LLAVEINIC bloque_ejec LLAVEFIN
+            ;
 
-opt_else		: ELSE rama_if
-				;
-
+opt_else    : ELSE rama_if
+            | ELSE error { yyerror("Falta bloque del else."); }
+            ;
 /* ========= For (tema 15) ========= */
 
 bloque_for		: FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for 
 				;
 
-rama_for		: sentencia_ejec
+rama_for		: sentencia_ejec PUNTOYCOMA
 				| LLAVEINIC bloque_ejec LLAVEFIN
 				;
 
