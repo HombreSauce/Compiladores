@@ -237,6 +237,9 @@ sem_pasaje_opt		: /* vacío */
 /* ========= If (selección) ========= */
 
 bloque_if   : IF PARENTINIC condicion PARENTFIN rama_if ENDIF
+            | IF condicion PARENTFIN rama_if ENDIF { yyerror("Falta '(' en sentencia if."); }
+            | IF PARENTINIC condicion error rama_if ENDIF { yyerror("Falta ')' en sentencia if."); }
+            | IF condicion rama_if ENDIF { yyerror("Faltan los paréntesis en sentencia if."); }
             | IF PARENTINIC condicion PARENTFIN rama_if error { yyerror("Falta 'endif' al final del bloque if."); }
             | IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF
             | IF PARENTINIC condicion PARENTFIN rama_if opt_else error { yyerror("Falta 'endif' al final del bloque else."); }
@@ -247,9 +250,9 @@ bloque_if   : IF PARENTINIC condicion PARENTFIN rama_if ENDIF
 
 condicion   : expresion relop expresion
             | expresion error expresion { yyerror("Falta comparador en la condicion."); }
-            | relop expresion { yyerror("Falta operando izquierdo en la condicion."); }
-            | expresion relop { yyerror("Falta operando derecho en la condicion."); }
-            | /* vacío */ { yyerror("Falta condicion en el if."); }
+            | error relop expresion { yyerror("Falta operando izquierdo en la condicion."); }
+            | expresion relop error { yyerror("Falta operando derecho en la condicion."); }
+            // | /* vacío */ { yyerror("Falta condicion en el if."); }
             ;
 
 relop       : MENOR 
