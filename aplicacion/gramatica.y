@@ -54,6 +54,9 @@
 
 %% 
 
+expresion_error : error expresion  
+                ;
+
 /* ========= Programa ========= */ /* programa: nombre + cuerpo */
 
 prog	: ID LLAVEINIC bloque LLAVEFIN             
@@ -113,7 +116,7 @@ lista_ids	: var_ref {n_var++;}
 /* ========= Asignaciones ========= */
 /* Asignación simple y expresión aritmética SIN paréntesis de agrupación */	
 
-asign_simple	: var_ref ASIGN expresion {System.out.println("Asignación válida");}
+asign_simple	: var_ref ASIGN expresion_posible {System.out.println("Asignación válida");}
   				;
 
 /* Tema 18 */ /* LHS puede tener más elementos que RHS.  RHS sólo constantes */
@@ -177,11 +180,16 @@ cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos n
 
 /* ========= Expresiones aritméticas (sin '()' ) ========= */
 
+expresion_posible : expresion
+                  | expresion_error {yyerror("Error en la expresión, falta un operador entre los operandos.");}
+                  ; 
+
 expresion	: expresion MAS termino
             | expresion MAS error { yyerror("Falta operando derecho después de '+' en expresión."); }
   			| expresion MENOS termino
             | expresion MENOS error { yyerror("Falta operando derecho después de '-' en expresión."); }
             // | expresion termino { yyerror("Falta operador entre factores en expresión."); }
+            // | expresion_error
             | termino
 			;
 

@@ -8,11 +8,12 @@ int APLICA ( V, CB ) {
     return ( V );
 }
 
- (V, CB)  {}
+int (V, CB)  {}
+@probar esto (V, CB) {} porque no anda
 
 print();
 
-X := 3I - 4I / 5I;
+X := 3I  4I / 5I;
 Y := 32768I;
 Z := -2I;
 FLOTANTE := -33.456;
