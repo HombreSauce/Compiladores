@@ -28,7 +28,7 @@ endif;
 if ( X  Y ) { print( X ); } else print( Y ); endif;
 
 for ( I from 1 to 3I ) { print( I ); };
-for ( I from 1 to 3I ) {};
+for  I from 1 to 3I  {};
 
 print( SUMA( 12 -> A, trunc 7I / -3I  -> B ) );
 
