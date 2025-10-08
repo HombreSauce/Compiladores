@@ -3,29 +3,35 @@ PROG {
 X:=1I;
 Y:=2I;
 
-int APLICA ( int V, int CB ) {
+int APLICA ( int V,  cv CB ) {
     print( V );
     return ( V );
 }
 
 int (int A, int B) { X:=3I;}
 
-(A -> A);
+print();
 
-X := 3I + 4I * 5I;
+X := 3I - 4I / 5I;
 Y := 32768I;
 Z := -2I;
 FLOTANTE := -33.456;
 H := 32768;
-X, Y, Z W = 1I, 2I, 3I;
+X, Y, Z, W = 1I, 2I, 3I;
 
-int X, Y Z;
+int X, Y, Z;
+
+if( A > B ) {
+    X := 2I; }
+endif;
 
 if ( X  Y ) { print( X ); } else print( Y ); endif;
 
 for ( I from 1 to 3I ) { print( I ); };
+for ( I from 1 to 3I ) {};
 
-print( SUMA( 12 -> A, trunc( 7I / -3I ) -> B ) );
+print( SUMA( 12 -> A, trunc 7I / -3I  -> B ) );
 
 APLICA( 99I -> V, (int T){ print( T ); }(5) -> CB );
+APLICA( 99I -> V, (int T) print( T ); }(5) -> CB );
 }

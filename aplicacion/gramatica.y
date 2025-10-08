@@ -170,12 +170,16 @@ cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos n
 /* ========= Expresiones aritméticas (sin '()' ) ========= */
 
 expresion	: expresion MAS termino
+            | expresion MAS error { yyerror("Falta operando derecho después de '+' en expresión."); }
   			| expresion MENOS termino
+            | expresion MENOS error { yyerror("Falta operando derecho después de '-' en expresión."); }
   			| termino
 			;
 
 termino		: termino MUL factor
+            | termino MUL error { yyerror("Falta operando derecho después de '*' en expresión."); }
   			| termino DIV factor
+            | termino DIV error { yyerror("Falta operando derecho después de '/' en expresión."); }
   			| factor
 			;
 
@@ -198,10 +202,14 @@ lista_params_reales		: param_real_map
 
 /* Cada parámetro real debe mapear a un formal con '->' */
 param_real_map		: parametro_real FLECHA ID
+                    | parametro_real FLECHA error { yyerror("Falta identificador después de '->' en parámetro real");}
 					;	
 
 parametro_real	: expresion                    
   				| TRUNC PARENTINIC expresion PARENTFIN                		 /* tema 31 */
+                | TRUNC PARENTINIC expresion error { yyerror("Falta ')' en llamada a función con 'trunc'.");}
+                | TRUNC error expresion PARENTFIN { yyerror("Falta '(' en llamada a función con 'trunc'.");}
+                | TRUNC error expresion error { yyerror("Faltan los paréntesis en llamada a función con 'trunc'.");}
   				| lambda_expr                                     	 /* tema 28 */
 				;
 
@@ -216,6 +224,8 @@ lista_params_formales	: param_formal
 						;
 
 param_formal		: sem_pasaje_opt INT ID            /* tema 24 */
+            		| sem_pasaje_opt INT error { yyerror("Falta identificador después de 'int' en parámetro formal");}            
+                    | sem_pasaje_opt error ID { yyerror("Falta tipo en parámetro formal");}
 					;
 
 sem_pasaje_opt		: /* vacío */                
@@ -224,15 +234,22 @@ sem_pasaje_opt		: /* vacío */
 
 /* ========= If (selección) ========= */
 
+/* ========= If (selección) ========= */
+
 bloque_if   : IF PARENTINIC condicion PARENTFIN rama_if ENDIF
             | IF PARENTINIC condicion PARENTFIN rama_if error { yyerror("Falta 'endif' al final del bloque if."); }
             | IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF
             | IF PARENTINIC condicion PARENTFIN rama_if opt_else error { yyerror("Falta 'endif' al final del bloque else."); }
-            | IF PARENTINIC condicion PARENTFIN error opt_else ENDIF { yyerror("Falta bloque del then."); }
+            | IF PARENTINIC condicion PARENTFIN error  opt_else ENDIF { yyerror("Falta bloque del then."); }
+            | IF error rama_if ENDIF { yyerror("Falta el cuerpo de condicion en el if.");}
             ;
+            /*se podrian agregar errores por si falta alguno de los dos parentesis de la condicion*/
 
 condicion   : expresion relop expresion
-            | expresion error expresion { yyerror("Falta comparador en la condicion.");}
+            | expresion error expresion { yyerror("Falta comparador en la condicion."); }
+            | relop expresion { yyerror("Falta operando izquierdo en la condicion."); }
+            | expresion relop { yyerror("Falta operando derecho en la condicion."); }
+            | /* vacío */ { yyerror("Falta condicion en el if."); }
             ;
 
 relop       : MENOR 
@@ -250,9 +267,18 @@ rama_if     : sentencia
 opt_else    : ELSE rama_if
             | ELSE error { yyerror("Falta bloque del else."); }
             ;
+
 /* ========= For (tema 15) ========= */
 
 bloque_for		: FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for 
+                | FOR error ID FROM CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta '(' en sentencia for."); }
+                | FOR PARENTINIC error FROM CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta identificador en sentencia for."); }
+                | FOR PARENTINIC ID error CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta 'from' en sentencia for."); }
+                | FOR PARENTINIC ID FROM error TO CTEINT PARENTFIN rama_for { yyerror("Falta constante entera después de 'from' en sentencia for."); }
+                | FOR PARENTINIC ID FROM CTEINT error CTEINT PARENTFIN rama_for { yyerror("Falta 'to' en sentencia for."); }
+                | FOR PARENTINIC ID FROM CTEINT TO error PARENTFIN rama_for { yyerror("Falta constante entera después de 'to' en sentencia for."); }
+                | FOR PARENTINIC ID FROM CTEINT TO CTEINT error rama_for { yyerror("Falta ')' en sentencia for."); }
+                | FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN error { yyerror("Falta bloque del for."); }
 				;
 
 rama_for		: sentencia_ejec PUNTOYCOMA
@@ -262,11 +288,17 @@ rama_for		: sentencia_ejec PUNTOYCOMA
 /* ========= Print (tema 8) ========= */
 
 print_sent		: PRINT PARENTINIC expresion PARENTFIN
+                | PRINT PARENTINIC error PARENTFIN { yyerror("Falta argumento en sentencia print."); }
+                | PRINT error expresion PARENTFIN { yyerror("Falta '(' en sentencia print."); }
+                | PRINT PARENTINIC expresion error { yyerror("Falta ')' en sentencia print."); }
   				;
 
 /* ========= Lambda como parámetro (tema 28) ========= */
 
 lambda_expr		: PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN
+                | PARENTINIC INT ID PARENTFIN error bloque_ejec LLAVEFIN PARENTINIC argumento PARENTFIN { yyerror("Falta '{' en expresión lambda."); }
+                | PARENTINIC INT ID PARENTFIN LLAVEINIC bloque_ejec error PARENTINIC argumento PARENTFIN { yyerror("Falta '}' en expresión lambda."); }
+                | PARENTINIC INT ID PARENTFIN error bloque_ejec error PARENTINIC argumento PARENTFIN { yyerror("Faltan los delimitadores '{}' en expresión lambda."); }
                 ;
 
 argumento	: ID
