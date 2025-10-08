@@ -75,8 +75,10 @@ bloque_ejec		: /* vacío */
 
 sentencia	: sentencia_ejec PUNTOYCOMA
             | sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
+  			| INT ID decl_var
   			| INT ID decl_func
-            | INT error decl_func {yyerror("Falta identificador despues de 'int'");}
+            | INT error decl_func {yyerror("Falta identificador de función despues de 'int'");}
+            // | ID decl_func {yyerror("Falta tipo de función");} //ESTE NO ANDA COMO DEBERIA ROMPE OTRA COSA
   			;
 
 sentencia_ejec	: asign_simple
@@ -88,9 +90,11 @@ sentencia_ejec	: asign_simple
   				| return_sent                    /* termina en PUNTOYCOMA adentro */
 				;
 
-decl_func	: PUNTOYCOMA
+decl_var	: PUNTOYCOMA
 			| COMA lista_ids PUNTOYCOMA {n_var = 0;} // se reinician el contador de variables por si lo debe usar la asignacion multiple
-			| PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
+		    ;
+
+decl_func	: PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
 			;
 
 
@@ -109,17 +113,21 @@ lista_ids	: var_ref {n_var++;}
 /* ========= Asignaciones ========= */
 /* Asignación simple y expresión aritmética SIN paréntesis de agrupación */	
 
-asign_simple	: var_ref ASIGN expresion
+asign_simple	: var_ref ASIGN expresion {System.out.println("Asignación válida");}
   				;
 
 /* Tema 18 */ /* LHS puede tener más elementos que RHS.  RHS sólo constantes */
 
 asign_multiple	: lista_ids IGUALUNICO lista_ctes {
-					if (n_var < n_cte) {
-						yyerror("Error: más constantes que variables en la asignación");
-					} else {
-						System.out.println("Asignación válida (" + n_var + ", " + n_cte + ")");
-					}
+                    if (n_var == 1 && n_cte == 1) {
+                        yyerror("Error: para asignación simple use ':=' en lugar de '='");
+                    } else {
+                        if (n_var < n_cte) {
+                            yyerror("Error: más constantes que variables en la asignación");
+                        } else {
+                            System.out.println("Asignación válida (" + n_var + ", " + n_cte + ")");
+                        }
+                    }
 					n_var = n_cte = 0;  /* reset para la próxima */
 				}
 				| IGUALUNICO lista_ctes { yyerror("Error: falta lista de variables antes del '='"); }
@@ -173,7 +181,8 @@ expresion	: expresion MAS termino
             | expresion MAS error { yyerror("Falta operando derecho después de '+' en expresión."); }
   			| expresion MENOS termino
             | expresion MENOS error { yyerror("Falta operando derecho después de '-' en expresión."); }
-  			| termino
+            // | expresion termino { yyerror("Falta operador entre factores en expresión."); }
+            | termino
 			;
 
 termino		: termino MUL factor
@@ -225,14 +234,12 @@ lista_params_formales	: param_formal
 
 param_formal		: sem_pasaje_opt INT ID            /* tema 24 */
             		| sem_pasaje_opt INT error { yyerror("Falta identificador después de 'int' en parámetro formal");}            
-                    | sem_pasaje_opt error ID { yyerror("Falta tipo en parámetro formal");}
+                    | sem_pasaje_opt ID { yyerror("Falta tipo en parámetro formal");}
 					;
 
 sem_pasaje_opt		: /* vacío */                
 					| CV
 					;
-
-/* ========= If (selección) ========= */
 
 /* ========= If (selección) ========= */
 
@@ -252,7 +259,6 @@ condicion   : expresion relop expresion
             | expresion error expresion { yyerror("Falta comparador en la condicion."); }
             | error relop expresion { yyerror("Falta operando izquierdo en la condicion."); }
             | expresion relop error { yyerror("Falta operando derecho en la condicion."); }
-            // | /* vacío */ { yyerror("Falta condicion en el if."); }
             ;
 
 relop       : MENOR 

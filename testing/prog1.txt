@@ -3,12 +3,12 @@ PROG {
 X:=1I;
 Y:=2I;
 
-int APLICA ( int V,  cv CB ) {
+int APLICA ( V, CB ) {
     print( V );
     return ( V );
 }
 
-int (int A, int B) { X:=3I;}
+ (V, CB)  {}
 
 print();
 
@@ -19,13 +19,13 @@ FLOTANTE := -33.456;
 H := 32768;
 X, Y, Z, W = 1I, 2I, 3I;
 
-int X, Y, Z;
+int X, Y Z;
 
 if( A > B ) {
     X := 2I; }
 endif;
 
-if ( X  Y ) { print( X ); } else print( Y ); endif;
+if ( A B  ) { print( X ); } else print( Y ); endif;
 
 for ( I from 1 to 3I ) { print( I ); };
 for  I from 1 to 3I  {};
