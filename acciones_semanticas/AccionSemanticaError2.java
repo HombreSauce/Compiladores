@@ -2,6 +2,7 @@ package acciones_semanticas;
 
 import aplicacion.ControlPosicion;
 import aplicacion.Token;
+import aplicacion.Parser;
 
 public class AccionSemanticaError2 implements AccionSemantica {
     private String simboloEsperado;
@@ -12,7 +13,7 @@ public class AccionSemanticaError2 implements AccionSemantica {
 
     @Override
     public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
-        System.err.println("Linea " + lineaCodigoActual + ". Error Lexico: Se esperaba '" + simboloEsperado + "' luego de '" + lexema + "', pero se encontro '" + simbolo + "'.");
+        Parser.logLexError("Se esperaba '" + simboloEsperado + "' luego de '" + lexema + "', pero se encontro '" + simbolo + "'.");
         return null;
     }
     

@@ -1,0 +1,36 @@
+==========================================
+=== ESTRUCTURAS SINTACTICAS DETECTADAS ===
+==========================================
+Linea  | Estructura                    
+------ | ------------------------------
+     3 | Asignacion                    
+     5 | Asignacion                    
+     6 | Asignacion                    
+     9 | Print                         
+    10 | Return                        
+    11 | Declaracion de funcion        
+    13 | Asignacion                    
+    13 | Declaracion de funcion        
+    14 | Asignacion                    
+    21 | Asignacion                    
+    23 | Asignacion                    
+    24 | Asignacion                    
+    25 | Asignacion                    
+    26 | Asignacion                    
+    29 | Asignacion multiple           
+    31 | Declaracion de variable       
+    34 | Asignacion                    
+    35 | Sentencia if                  
+    37 | Print                         
+    37 | Print                         
+    37 | Sentencia if                  
+    37 | Sentencia else                
+    39 | Print                         
+    39 | Sentencia for                 
+    42 | Llamada a funcion             
+    42 | Print                         
+    44 | Print                         
+    44 | Lambda                        
+    44 | Llamada a funcion             
+    45 | Print                         
+    45 | Llamada a funcion             

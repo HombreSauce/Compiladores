@@ -1,14 +1,39 @@
 package aplicacion;
-import acciones_semanticas.AccionSemantica;
 
+import acciones_semanticas.AccionSemantica;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import aplicacion.funcionalidades.MiniTokenizador;
+import aplicacion.Parser;
 import datos.*;
 
 public class AnalizadorLexico {
+
+    private void errorCaracterInvalido(char ch) {
+        Parser.logLexError("carácter invalido: '" + ch + "'");
+    }
+
+    private void errorStringNoCerrado() {
+        Parser.logLexError("string sin cerrar");
+    }
+
+    private void errorEscapeInvalido(char esc) {
+        Parser.logLexError("secuencia de escape invalida: \\" + esc);
+    }
+
+    private void errorFloatFueraDeRango(String lexema) {
+        Parser.logLexError("float fuera de rango: " + lexema);
+    }
+
+    private void errorEnteroMalFormado(String lexema) {
+        Parser.logLexError("entero mal formado: " + lexema);
+    }
+
+    private void errorComentarioNoCerrado() {
+        Parser.logLexError("comentario sin cerrar");
+    }
 
     private String instrucciones;  // CODIGO QUE LEE EL ARCHIVO
     private ControlPosicion inicioInstruccion;

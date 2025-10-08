@@ -1,5 +1,7 @@
 PROG {
 
+H:=23;
+
 X:=1I;
 Y:=2I;
 
@@ -9,15 +11,22 @@ int APLICA ( int V,  cv CB ) {
 }
 
 int (int A, int B) { X:=3I;}
+X:=3I;
+
+H:=33333333;
+
 
 print();
+
+AJAJAJASJKDHASKJÑLDHASDF :=213;
 
 X := 3I - 4I / 5I;
 Y := 32768I;
 Z := -2I;
 FLOTANTE := -33.456;
-H := 32768;
-X, Y, Z, W = 1I, 2I, 3I;
+H := 327683;
+
+X, Y, Z = 1I, 2I, 3I;
 
 int X, Y, Z;
 

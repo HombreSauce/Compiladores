@@ -2,9 +2,11 @@ package acciones_semanticas;
 
 import aplicacion.ControlPosicion;
 import aplicacion.Token;
+import aplicacion.Parser;
 import datos.EntradaTablaSimbolos;
 import datos.TablaIdentificadorToken;
 import datos.TablaSimbolos;
+
 
 public class AccionSemantica3 implements AccionSemantica{ 
     private TablaSimbolos tablaSimbolos;
@@ -20,8 +22,7 @@ public class AccionSemantica3 implements AccionSemantica{
         posicionLectura.decrementar();
         if (lexema.length() > 20) {
             lexema.setLength(20);
-            System.out.println("Linea " + lineaCodigoActual + ". Warning: El identificador se ha truncado a 20 caracteres.");
-            System.out.println("Identificador truncado: '" + lexema.toString() + "'");
+            Parser.logLexWarnAt(lineaCodigoActual, "Identificador truncado a 20 caracteres: '" + lexema.toString() + "'");
         }
         EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);
         Token token = new Token(tablaIDToken.getID("ID"), entrada);

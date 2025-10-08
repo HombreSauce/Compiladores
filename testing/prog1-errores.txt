@@ -1,0 +1,27 @@
+==========================
+=== ERRORES DETECTADOS ===
+==========================
+Linea  | Descripcion
+------ | ------------------------------
+     3 | Warning: Se esperaba 'I' luego de la constante numerica '23'. Se asume '23I'
+     8 | Error sintactico: Falta tipo en parÃ¡metro formal
+    13 | Error sintactico: Falta identificador despues de 'int'
+    16 | Warning: Se esperaba 'I' luego de la constante numerica '33333333'. Se asume '33333333I'
+    16 | Error lexico: Constante numerica entera fuera de rango '33333333'.
+    16 | Error sintactico: Error: falta expresiÃ³n despuÃ©s de ':=' en asignaciÃ³n.
+    19 | Error sintactico: Falta argumento en sentencia print.
+    21 | Warning: Identificador truncado a 20 caracteres: 'AJAJAJASJKDHASKJÑLDH'
+    21 | Warning: Se esperaba 'I' luego de la constante numerica '213'. Se asume '213I'
+    24 | Error lexico: Error lexico: constante entera fuera de rango: 32768
+    27 | Warning: Se esperaba 'I' luego de la constante numerica '327683'. Se asume '327683I'
+    27 | Error lexico: Constante numerica entera fuera de rango '327683'.
+    27 | Error sintactico: Error: falta expresiÃ³n despuÃ©s de ':=' en asignaciÃ³n.
+    37 | Error sintactico: Falta comparador en la condicion.
+    39 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+    40 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+    40 | Error sintactico: Faltan los parentesis en sentencia for.
+    42 | Warning: Se esperaba 'I' luego de la constante numerica '12'. Se asume '12I'
+    42 | Error sintactico: Faltan los parÃ©ntesis en llamada a funciÃ³n con 'trunc'.
+    44 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    45 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    45 | Error sintactico: Falta '{' en expresiÃ³n lambda.
