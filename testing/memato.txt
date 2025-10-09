@@ -1,1 +1,14 @@
-P{int A.B; }
+P{
+    int A.B;
+    int A, B, C;
+    int A B, C;
+    int A, B, ;
+    int A, B
+    int A
+    int FUNCION (int A) {}
+    int FUNCION (int A, cv int B) {}
+    int  (int A, cv int B) {}
+    int FUNCION (int A, int B) {}
+    int A
+    
+}

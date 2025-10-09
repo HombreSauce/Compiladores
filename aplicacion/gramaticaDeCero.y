@@ -1,7 +1,6 @@
 %start prog
 
 %{
-	package aplicacion;
 	import aplicacion.AnalizadorLexico;
 	import aplicacion.Token;
 	import datos.TablaSimbolos;
@@ -63,15 +62,23 @@ bloque	: /* vacío */
   		;
 
 /* ========= Sentencias ========= */
+tipo    : INT
+        ;
 
-sentencia	: //sentencia_ejec PUNTOYCOMA
-            // | sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
-  			 INT lista_ids PUNTOYCOMA
-               | INT lista_ids { yyerror("Error en declaración de variables, falta ';' al final."); }
-  			// | INT ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
-            // | INT error decl_func {yyerror("Falta identificador de función despues de 'int'");}
-            // | ID decl_func {yyerror("Falta tipo de función");} //ESTE NO ANDA COMO DEBERIA ROMPE OTRA COSA
+
+sentencia	: sentencia_ejec PUNTOYCOMA
+            | sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
+  			//  tipo lista_ids PUNTOYCOMA
+            // | tipo lista_ids error { yyerror("Error en declaración de variables, falta ';' al final."); }
+  		    | declaracion_funcion
   			;
+
+declaracion_variable    :  tipo lista_ids
+                        ;
+
+sentencia_ejec	: declaracion_variable
+                // | asign_simple
+                ;
 
 lista_ids	: var_ref
  			| lista_ids COMA var_ref
@@ -82,6 +89,124 @@ lista_ids	: var_ref
 var_ref		: ID					/* tema 22 */
 			| var_ref PUNTO ID
   			;	
+
+/* ========= Funciones (declaración) ========= */
+declaracion_funcion     : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
+                        | declaracion_funcion_err
+                        ;
+
+declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN {yyerror("Error sintáctico: Falta nombre identificador de función");}
+                        // ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN {yyerror("Error sintáctico: Falta tipo de función");}
+                        // // | tipo ID lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN {yyerror("Error sintáctico: Falta paréntesis de apertura '(' en declaración de función");}
+                        // | tipo ID PARENTINIC error PARENTFIN LLAVEINIC bloque LLAVEFIN {yyerror("Error sintáctico: Error en lista de parámetros formales");}
+                        // | tipo ID PARENTINIC lista_params_formales error LLAVEINIC bloque LLAVEFIN {yyerror("Error sintáctico: Falta paréntesis de cierre ')' en declaración de función");}
+                        // | tipo ID PARENTINIC lista_params_formales PARENTFIN error bloque LLAVEFIN {yyerror("Error sintáctico: Falta llave de apertura '{' en declaración de función");}
+                        // | tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque error{yyerror("Error sintáctico: Falta llave de cierre '}' en declaración de función");}
+                        // ;
+
+lista_params_formales	: param_formal
+						| lista_params_formales COMA param_formal
+                        | lista_params_formales COMA error {yyerror("Error sintáctico: falta identificador despues de coma en parametro formal");}
+                        | lista_params_formales param_formal {yyerror("Error sintactico: falta coma entre parametros formales en declaracion de funcion");}
+						;
+
+param_formal		: sem_pasaje_opt tipo ID            /* tema 24 */
+            		| sem_pasaje_opt tipo error { yyerror("Falta identificador después de tipo en parámetro formal");}            
+                    | sem_pasaje_opt ID { yyerror("Falta tipo en parámetro formal");}
+					;
+
+sem_pasaje_opt		: /* vacío */                
+					| CV
+					;
+
+// /* ========= Asignaciones ========= */
+// /* Asignación simple y expresión aritmética SIN paréntesis de agrupación */	
+
+// asign_simple	: var_ref ASIGN expresion {System.out.println("Asignación válida");}
+//   				;
+
+// // /* Tema 18 */ /* LHS puede tener más elementos que RHS.  RHS sólo constantes */
+
+// // asign_multiple	: lista_ids IGUALUNICO lista_ctes { 
+// //                     System.out.println("n_var: " + n_var + ", n_cte: " + n_cte);
+// //                     if (n_var == 1 && n_cte == 1) {
+// //                         yyerror("Error: para asignación simple use ':=' en lugar de '='");
+// //                     } else {
+// //                         if (n_var < n_cte) {
+// //                             yyerror("Error: más constantes que variables en la asignación");
+// //                         } else {
+// //                             System.out.println("Asignación válida (" + n_var + ", " + n_cte + ")");
+// //                         }
+// //                     }
+// // 					n_var = n_cte = 0;  /* reset para la próxima */
+// // 				}
+// // 				| IGUALUNICO lista_ctes { yyerror("Error: falta lista de variables antes del '='"); }
+// // 				| lista_ids lista_ctes { yyerror("Error: falta '=' entre la lista de variables y la lista de constantes"); }
+// // 				| lista_ids IGUALUNICO error { yyerror("Error: falta lista de constantes después del '='");}
+// //   				;
+
+// // lista_ctes	: cte {n_cte++;}
+// //   			| lista_ctes COMA cte {n_cte++;}
+// // 			| lista_ctes COMA error { yyerror("Error: falta una constante después de coma");}
+// //   			;	
+
+// /* ========= Expresiones aritméticas (sin '()' ) ========= */
+
+// expresion	: termino
+//             | expresion MAS termino
+//             // | expresion MAS error { yyerror("Falta operando derecho después de '+' en expresión."); }
+//   			| expresion MENOS termino
+//             // | expresion MENOS error { yyerror("Falta operando derecho después de '-' en expresión."); }
+//             // | expresion termino { yyerror("Falta operador entre factores en expresión."); }
+//             // | expresion_error
+// 			;
+
+// termino		: factor
+//             | termino MUL factor
+//             // | termino MUL error { yyerror("Falta operando derecho después de '*' en expresión."); }
+//   			| termino DIV factor
+//             // | termino DIV error { yyerror("Falta operando derecho después de '/' en expresión."); }
+// 			;
+
+// factor		: var_ref
+//   			// | llamada_funcion
+//   			| cte
+//  			;
+
+// /* ========= Constante ========= */
+
+// cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos ni negativos porque ya lo hace la AS9
+// 		| MENOS CTEFLOAT {
+// 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$2.obj;
+// 			String valor_negativo = '-' + entrada.getLexema();
+// 			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
+// 			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); //eliminamos la entrada del positivo que se creo en el lexico
+// 			yyval = $2; //se reduce por CTEFLOAT
+// 		}
+// 		| CTEINT {
+// 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$1.obj;
+// 			String valor = entrada.getLexema();
+// 			valor = valor.substring(0, valor.length() - 1); //nos quedamos con el numero sin el I final
+// 			int num = Integer.parseInt(valor);
+// 			int max = 32767;
+// 			//al ser positivo debemos chequear el maximo
+// 			if (num > max) {
+// 				System.err.println("Error léxico: constante entera fuera de rango en línea " + lex.getLineaActual() + ": " + num);
+// 				tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea());
+// 			}
+
+// 			yyval = $1;
+// 		}
+// 		| MENOS CTEINT {
+// 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$2.obj;
+// 			String valor_negativo = '-' + entrada.getLexema();
+// 			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
+// 			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); //eliminamos la entrada del positivo que se creo en el lexico
+
+// 			yyval = $2;
+// 		}
+// 		| CTESTR
+//   		;
 
 %%
 

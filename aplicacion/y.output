@@ -5,16 +5,40 @@
    2  bloque :
    3         | bloque sentencia
 
-   4  sentencia : INT lista_ids PUNTOYCOMA
-   5            | INT lista_ids
+   4  tipo : INT
 
-   6  lista_ids : var_ref
-   7            | lista_ids COMA var_ref
-   8            | lista_ids COMA error
-   9            | lista_ids var_ref
+   5  sentencia : sentencia_ejec PUNTOYCOMA
+   6            | sentencia_ejec
+   7            | declaracion_funcion
 
-  10  var_ref : ID
-  11          | var_ref PUNTO ID
+   8  declaracion_variable : tipo lista_ids
+
+   9  sentencia_ejec : declaracion_variable
+
+  10  lista_ids : var_ref
+  11            | lista_ids COMA var_ref
+  12            | lista_ids COMA error
+  13            | lista_ids var_ref
+
+  14  var_ref : ID
+  15          | var_ref PUNTO ID
+
+  16  declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
+  17                      | declaracion_funcion_err
+
+  18  declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
+
+  19  lista_params_formales : param_formal
+  20                        | lista_params_formales COMA param_formal
+  21                        | lista_params_formales COMA error
+  22                        | lista_params_formales param_formal
+
+  23  param_formal : sem_pasaje_opt tipo ID
+  24               | sem_pasaje_opt tipo error
+  25               | sem_pasaje_opt ID
+
+  26  sem_pasaje_opt :
+  27                 | CV
 
 state 0
 	$accept : . prog $end  (0)
@@ -56,17 +80,17 @@ state 4
 	.  error
 
 	sentencia  goto 7
+	tipo  goto 8
+	sentencia_ejec  goto 9
+	declaracion_funcion  goto 10
+	declaracion_variable  goto 11
+	declaracion_funcion_err  goto 12
 
 
 state 5
-	sentencia : INT . lista_ids PUNTOYCOMA  (4)
-	sentencia : INT . lista_ids  (5)
+	tipo : INT .  (4)
 
-	ID  shift 8
-	.  error
-
-	lista_ids  goto 9
-	var_ref  goto 10
+	.  reduce 4
 
 
 state 6
@@ -82,98 +106,369 @@ state 7
 
 
 state 8
-	var_ref : ID .  (10)
+	declaracion_variable : tipo . lista_ids  (8)
+	declaracion_funcion : tipo . ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (16)
+	declaracion_funcion_err : tipo . PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (18)
 
-	.  reduce 10
-
-
-state 9
-	sentencia : INT lista_ids . PUNTOYCOMA  (4)
-	sentencia : INT lista_ids .  (5)
-	lista_ids : lista_ids . COMA var_ref  (7)
-	lista_ids : lista_ids . COMA error  (8)
-	lista_ids : lista_ids . var_ref  (9)
-
-	ID  shift 8
-	COMA  shift 11
-	PUNTOYCOMA  shift 12
-	INT  reduce 5
-	LLAVEFIN  reduce 5
-
-	var_ref  goto 13
-
-
-state 10
-	lista_ids : var_ref .  (6)
-	var_ref : var_ref . PUNTO ID  (11)
-
-	PUNTO  shift 14
-	INT  reduce 6
-	ID  reduce 6
-	COMA  reduce 6
-	PUNTOYCOMA  reduce 6
-	LLAVEFIN  reduce 6
-
-
-state 11
-	lista_ids : lista_ids COMA . var_ref  (7)
-	lista_ids : lista_ids COMA . error  (8)
-
-	error  shift 15
-	ID  shift 8
+	ID  shift 13
+	PARENTINIC  shift 14
 	.  error
 
+	lista_ids  goto 15
 	var_ref  goto 16
 
 
-state 12
-	sentencia : INT lista_ids PUNTOYCOMA .  (4)
+state 9
+	sentencia : sentencia_ejec . PUNTOYCOMA  (5)
+	sentencia : sentencia_ejec .  (6)
 
-	.  reduce 4
+	PUNTOYCOMA  shift 17
+	INT  reduce 6
+	LLAVEFIN  reduce 6
+
+
+state 10
+	sentencia : declaracion_funcion .  (7)
+
+	.  reduce 7
+
+
+state 11
+	sentencia_ejec : declaracion_variable .  (9)
+
+	.  reduce 9
+
+
+state 12
+	declaracion_funcion : declaracion_funcion_err .  (17)
+
+	.  reduce 17
 
 
 state 13
-	lista_ids : lista_ids var_ref .  (9)
-	var_ref : var_ref . PUNTO ID  (11)
+	var_ref : ID .  (14)
+	declaracion_funcion : tipo ID . PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (16)
 
-	PUNTO  shift 14
-	INT  reduce 9
-	ID  reduce 9
-	COMA  reduce 9
-	PUNTOYCOMA  reduce 9
-	LLAVEFIN  reduce 9
+	PARENTINIC  shift 18
+	INT  reduce 14
+	ID  reduce 14
+	PUNTO  reduce 14
+	COMA  reduce 14
+	PUNTOYCOMA  reduce 14
+	LLAVEFIN  reduce 14
 
 
 state 14
-	var_ref : var_ref PUNTO . ID  (11)
+	declaracion_funcion_err : tipo PARENTINIC . lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (18)
+	sem_pasaje_opt : .  (26)
 
-	ID  shift 17
-	.  error
+	CV  shift 19
+	INT  reduce 26
+	ID  reduce 26
+
+	lista_params_formales  goto 20
+	param_formal  goto 21
+	sem_pasaje_opt  goto 22
 
 
 state 15
-	lista_ids : lista_ids COMA error .  (8)
+	declaracion_variable : tipo lista_ids .  (8)
+	lista_ids : lista_ids . COMA var_ref  (11)
+	lista_ids : lista_ids . COMA error  (12)
+	lista_ids : lista_ids . var_ref  (13)
 
-	.  reduce 8
+	ID  shift 23
+	COMA  shift 24
+	INT  reduce 8
+	PUNTOYCOMA  reduce 8
+	LLAVEFIN  reduce 8
+
+	var_ref  goto 25
 
 
 state 16
-	lista_ids : lista_ids COMA var_ref .  (7)
-	var_ref : var_ref . PUNTO ID  (11)
+	lista_ids : var_ref .  (10)
+	var_ref : var_ref . PUNTO ID  (15)
 
-	PUNTO  shift 14
-	INT  reduce 7
-	ID  reduce 7
-	COMA  reduce 7
-	PUNTOYCOMA  reduce 7
-	LLAVEFIN  reduce 7
+	PUNTO  shift 26
+	INT  reduce 10
+	ID  reduce 10
+	COMA  reduce 10
+	PUNTOYCOMA  reduce 10
+	LLAVEFIN  reduce 10
 
 
 state 17
-	var_ref : var_ref PUNTO ID .  (11)
+	sentencia : sentencia_ejec PUNTOYCOMA .  (5)
 
-	.  reduce 11
+	.  reduce 5
 
 
-38 terminals, 6 nonterminals
-12 grammar rules, 18 states
+state 18
+	declaracion_funcion : tipo ID PARENTINIC . lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (16)
+	sem_pasaje_opt : .  (26)
+
+	CV  shift 19
+	INT  reduce 26
+	ID  reduce 26
+
+	lista_params_formales  goto 27
+	param_formal  goto 21
+	sem_pasaje_opt  goto 22
+
+
+state 19
+	sem_pasaje_opt : CV .  (27)
+
+	.  reduce 27
+
+
+state 20
+	declaracion_funcion_err : tipo PARENTINIC lista_params_formales . PARENTFIN LLAVEINIC bloque LLAVEFIN  (18)
+	lista_params_formales : lista_params_formales . COMA param_formal  (20)
+	lista_params_formales : lista_params_formales . COMA error  (21)
+	lista_params_formales : lista_params_formales . param_formal  (22)
+	sem_pasaje_opt : .  (26)
+
+	CV  shift 19
+	COMA  shift 28
+	PARENTFIN  shift 29
+	INT  reduce 26
+	ID  reduce 26
+
+	param_formal  goto 30
+	sem_pasaje_opt  goto 22
+
+
+state 21
+	lista_params_formales : param_formal .  (19)
+
+	.  reduce 19
+
+
+state 22
+	param_formal : sem_pasaje_opt . tipo ID  (23)
+	param_formal : sem_pasaje_opt . tipo error  (24)
+	param_formal : sem_pasaje_opt . ID  (25)
+
+	INT  shift 5
+	ID  shift 31
+	.  error
+
+	tipo  goto 32
+
+
+state 23
+	var_ref : ID .  (14)
+
+	.  reduce 14
+
+
+state 24
+	lista_ids : lista_ids COMA . var_ref  (11)
+	lista_ids : lista_ids COMA . error  (12)
+
+	error  shift 33
+	ID  shift 23
+	.  error
+
+	var_ref  goto 34
+
+
+state 25
+	lista_ids : lista_ids var_ref .  (13)
+	var_ref : var_ref . PUNTO ID  (15)
+
+	PUNTO  shift 26
+	INT  reduce 13
+	ID  reduce 13
+	COMA  reduce 13
+	PUNTOYCOMA  reduce 13
+	LLAVEFIN  reduce 13
+
+
+state 26
+	var_ref : var_ref PUNTO . ID  (15)
+
+	ID  shift 35
+	.  error
+
+
+state 27
+	declaracion_funcion : tipo ID PARENTINIC lista_params_formales . PARENTFIN LLAVEINIC bloque LLAVEFIN  (16)
+	lista_params_formales : lista_params_formales . COMA param_formal  (20)
+	lista_params_formales : lista_params_formales . COMA error  (21)
+	lista_params_formales : lista_params_formales . param_formal  (22)
+	sem_pasaje_opt : .  (26)
+
+	CV  shift 19
+	COMA  shift 28
+	PARENTFIN  shift 36
+	INT  reduce 26
+	ID  reduce 26
+
+	param_formal  goto 30
+	sem_pasaje_opt  goto 22
+
+
+state 28
+	lista_params_formales : lista_params_formales COMA . param_formal  (20)
+	lista_params_formales : lista_params_formales COMA . error  (21)
+	sem_pasaje_opt : .  (26)
+
+	error  shift 37
+	CV  shift 19
+	INT  reduce 26
+	ID  reduce 26
+
+	param_formal  goto 38
+	sem_pasaje_opt  goto 22
+
+
+state 29
+	declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN . LLAVEINIC bloque LLAVEFIN  (18)
+
+	LLAVEINIC  shift 39
+	.  error
+
+
+state 30
+	lista_params_formales : lista_params_formales param_formal .  (22)
+
+	.  reduce 22
+
+
+state 31
+	param_formal : sem_pasaje_opt ID .  (25)
+
+	.  reduce 25
+
+
+state 32
+	param_formal : sem_pasaje_opt tipo . ID  (23)
+	param_formal : sem_pasaje_opt tipo . error  (24)
+
+	error  shift 40
+	ID  shift 41
+	.  error
+
+
+state 33
+	lista_ids : lista_ids COMA error .  (12)
+
+	.  reduce 12
+
+
+state 34
+	lista_ids : lista_ids COMA var_ref .  (11)
+	var_ref : var_ref . PUNTO ID  (15)
+
+	PUNTO  shift 26
+	INT  reduce 11
+	ID  reduce 11
+	COMA  reduce 11
+	PUNTOYCOMA  reduce 11
+	LLAVEFIN  reduce 11
+
+
+state 35
+	var_ref : var_ref PUNTO ID .  (15)
+
+	.  reduce 15
+
+
+state 36
+	declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN . LLAVEINIC bloque LLAVEFIN  (16)
+
+	LLAVEINIC  shift 42
+	.  error
+
+
+state 37
+	lista_params_formales : lista_params_formales COMA error .  (21)
+
+	.  reduce 21
+
+
+state 38
+	lista_params_formales : lista_params_formales COMA param_formal .  (20)
+
+	.  reduce 20
+
+
+state 39
+	declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC . bloque LLAVEFIN  (18)
+	bloque : .  (2)
+
+	.  reduce 2
+
+	bloque  goto 43
+
+
+state 40
+	param_formal : sem_pasaje_opt tipo error .  (24)
+
+	.  reduce 24
+
+
+state 41
+	param_formal : sem_pasaje_opt tipo ID .  (23)
+
+	.  reduce 23
+
+
+state 42
+	declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC . bloque LLAVEFIN  (16)
+	bloque : .  (2)
+
+	.  reduce 2
+
+	bloque  goto 44
+
+
+state 43
+	bloque : bloque . sentencia  (3)
+	declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque . LLAVEFIN  (18)
+
+	INT  shift 5
+	LLAVEFIN  shift 45
+	.  error
+
+	sentencia  goto 7
+	tipo  goto 8
+	sentencia_ejec  goto 9
+	declaracion_funcion  goto 10
+	declaracion_variable  goto 11
+	declaracion_funcion_err  goto 12
+
+
+state 44
+	bloque : bloque . sentencia  (3)
+	declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque . LLAVEFIN  (16)
+
+	INT  shift 5
+	LLAVEFIN  shift 46
+	.  error
+
+	sentencia  goto 7
+	tipo  goto 8
+	sentencia_ejec  goto 9
+	declaracion_funcion  goto 10
+	declaracion_variable  goto 11
+	declaracion_funcion_err  goto 12
+
+
+state 45
+	declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN .  (18)
+
+	.  reduce 18
+
+
+state 46
+	declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN .  (16)
+
+	.  reduce 16
+
+
+38 terminals, 14 nonterminals
+28 grammar rules, 47 states

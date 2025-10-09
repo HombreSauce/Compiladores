@@ -13,11 +13,11 @@
 
 
 
+package aplicacion;
 
 
 
-//#line 4 ".\gramaticaDeCero.y"
-	package aplicacion;
+//#line 4 "gramaticaDeCero.y"
 	import aplicacion.AnalizadorLexico;
 	import aplicacion.Token;
 	import datos.TablaSimbolos;
@@ -28,7 +28,7 @@
 	import java.nio.charset.StandardCharsets;
 	import java.nio.file.*;
 
-//#line 29 "Parser.java"
+//#line 28 "Parser.java"
 
 
 
@@ -204,50 +204,71 @@ public final static short LLAVEINIC=291;
 public final static short LLAVEFIN=292;
 public final static short YYERRCODE=256;
 final static short yylhs[] = {                           -1,
-    0,    1,    1,    2,    2,    3,    3,    3,    3,    4,
-    4,
+    0,    1,    1,    3,    2,    2,    2,    6,    4,    7,
+    7,    7,    7,    8,    8,    5,    5,   10,    9,    9,
+    9,    9,   11,   11,   11,   12,   12,
 };
 final static short yylen[] = {                            2,
-    4,    0,    2,    3,    2,    1,    3,    3,    2,    1,
-    3,
+    4,    0,    2,    1,    2,    1,    1,    2,    1,    1,
+    3,    3,    2,    1,    3,    8,    1,    7,    1,    3,
+    3,    2,    3,    3,    2,    0,    1,
 };
 final static short yydefred[] = {                         0,
-    0,    0,    2,    0,    0,    1,    3,   10,    0,    0,
-    0,    4,    0,    0,    8,    0,   11,
+    0,    0,    2,    0,    4,    1,    3,    0,    0,    7,
+    9,   17,    0,    0,    0,    0,    5,    0,   27,    0,
+   19,    0,   14,    0,    0,    0,    0,    0,    0,   22,
+   25,    0,   12,    0,   15,    0,   21,   20,    2,   24,
+   23,    2,    0,    0,   18,   16,
 };
 final static short yydgoto[] = {                          2,
-    4,    7,    9,   10,
+    4,    7,    8,    9,   10,   11,   15,   16,   20,   12,
+   21,   22,
 };
-final static short yysindex[] = {                      -263,
- -280,    0,    0, -261, -256,    0,    0,    0, -266, -272,
- -252,    0, -272, -253,    0, -272,    0,
+final static short yysindex[] = {                      -264,
+ -285,    0,    0, -261,    0,    0,    0, -266, -270,    0,
+    0,    0, -269, -246, -265, -236,    0, -246,    0, -238,
+    0, -201,    0, -211, -236, -218, -228, -210, -226,    0,
+    0, -209,    0, -236,    0, -225,    0,    0,    0,    0,
+    0,    0, -250, -249,    0,    0,
 };
 final static short yyrindex[] = {                         0,
-    0,    0,    0,    0,    0,    0,    0,    0, -257, -262,
-    0,    0, -260,    0,    0, -254,    0,
+    0,    0,    0,    0,    0,    0,    0,    0, -248,    0,
+    0,    0, -262, -198, -251, -260,    0, -198,    0, -198,
+    0,    0,    0,    0, -254,    0, -198, -198,    0,    0,
+    0,    0,    0, -252,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,
 };
 final static short yygindex[] = {                         0,
-    0,    0,    0,    1,
+  -23,    0,   31,    0,    0,    0,    0,   39,   49,    0,
+   28,    0,
 };
-final static int YYTABLESIZE=38;
+final static int YYTABLESIZE=71;
 static short yytable[];
 static { yytable();}
 static void yytable(){
-yytable = new short[]{                          6,
-    5,    9,    8,   15,    5,    1,    6,    7,    9,   13,
-    3,   16,    8,   14,    7,   17,    8,    0,    0,    0,
-   11,   12,    0,    0,    6,    6,    9,    9,    0,    6,
-    6,    9,    7,    7,    5,    0,    0,    7,
+yytable = new short[]{                         14,
+    5,   10,   13,   23,    1,    3,   14,   13,   10,   11,
+    8,    5,    5,    6,   13,   43,   11,   17,   44,   18,
+   19,   24,   14,   14,   14,   14,   10,   10,   19,   14,
+    6,   10,   13,   13,   11,   11,    8,   13,   19,   11,
+    8,   45,   46,    6,   33,   37,   40,   30,   28,   26,
+   35,   29,   32,   25,   30,   38,   19,   23,   28,   41,
+    5,   36,   34,   26,   39,   42,   27,   31,    0,    0,
+   26,
 };
 }
 static short yycheck[];
 static { yycheck(); }
 static void yycheck() {
 yycheck = new short[] {                        262,
-  262,  262,  269,  256,  262,  269,  269,  262,  269,    9,
-  291,   11,  269,  286,  269,  269,  269,   -1,   -1,   -1,
-  287,  288,   -1,   -1,  287,  288,  287,  288,   -1,  292,
-  292,  292,  287,  288,  292,   -1,   -1,  292,
+  262,  262,  269,  269,  269,  291,  269,  262,  269,  262,
+  262,  262,  262,  262,  269,   39,  269,  288,   42,  289,
+  267,  287,  289,  286,  287,  288,  287,  288,  267,  292,
+  292,  292,  287,  288,  287,  288,  288,  292,  267,  292,
+  292,  292,  292,  292,  256,  256,  256,   20,  287,  286,
+  269,  290,   22,   15,   27,   28,  267,  269,  287,  269,
+  262,  290,   24,  262,  291,  291,   18,  269,   -1,   -1,
+  269,
 };
 }
 final static short YYFINAL=2;
@@ -280,17 +301,33 @@ final static String yyrule[] = {
 "prog : ID LLAVEINIC bloque LLAVEFIN",
 "bloque :",
 "bloque : bloque sentencia",
-"sentencia : INT lista_ids PUNTOYCOMA",
-"sentencia : INT lista_ids",
+"tipo : INT",
+"sentencia : sentencia_ejec PUNTOYCOMA",
+"sentencia : sentencia_ejec",
+"sentencia : declaracion_funcion",
+"declaracion_variable : tipo lista_ids",
+"sentencia_ejec : declaracion_variable",
 "lista_ids : var_ref",
 "lista_ids : lista_ids COMA var_ref",
 "lista_ids : lista_ids COMA error",
 "lista_ids : lista_ids var_ref",
 "var_ref : ID",
 "var_ref : var_ref PUNTO ID",
+"declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN",
+"declaracion_funcion : declaracion_funcion_err",
+"declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN",
+"lista_params_formales : param_formal",
+"lista_params_formales : lista_params_formales COMA param_formal",
+"lista_params_formales : lista_params_formales COMA error",
+"lista_params_formales : lista_params_formales param_formal",
+"param_formal : sem_pasaje_opt tipo ID",
+"param_formal : sem_pasaje_opt tipo error",
+"param_formal : sem_pasaje_opt ID",
+"sem_pasaje_opt :",
+"sem_pasaje_opt : CV",
 };
 
-//#line 87 ".\gramaticaDeCero.y"
+//#line 213 "gramaticaDeCero.y"
 
 /* ---- Seccion de código ---- */
 
@@ -484,7 +521,7 @@ void yyerror(String mensaje){
     if ("syntax error".equals(mensaje)) return;  // suprime el genérico
     System.err.println("Error sintactico en linea " + lex.getLineaActual() + ": " + mensaje);
 }
-//#line 416 "Parser.java"
+//#line 452 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -638,19 +675,39 @@ boolean doaction;
     switch(yyn)
       {
 //########## USER-SUPPLIED ACTIONS ##########
-case 5:
-//#line 70 ".\gramaticaDeCero.y"
-{ yyerror("Error en declaración de variables, falta ';' al final."); }
+case 6:
+//#line 70 "gramaticaDeCero.y"
+{ yyerror("Falta ';' al final de la sentencia."); }
 break;
-case 8:
-//#line 78 ".\gramaticaDeCero.y"
+case 12:
+//#line 86 "gramaticaDeCero.y"
 { yyerror("Error: falta identificador después de coma");}
 break;
-case 9:
-//#line 79 ".\gramaticaDeCero.y"
+case 13:
+//#line 87 "gramaticaDeCero.y"
 {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
 break;
-//#line 577 "Parser.java"
+case 18:
+//#line 99 "gramaticaDeCero.y"
+{yyerror("Error sintáctico: Falta nombre identificador de función");}
+break;
+case 21:
+//#line 110 "gramaticaDeCero.y"
+{yyerror("Error sintáctico: falta identificador despues de coma en parametro formal");}
+break;
+case 22:
+//#line 111 "gramaticaDeCero.y"
+{yyerror("Error sintactico: falta coma entre parametros formales en declaracion de funcion");}
+break;
+case 24:
+//#line 115 "gramaticaDeCero.y"
+{ yyerror("Falta identificador después de tipo en parámetro formal");}
+break;
+case 25:
+//#line 116 "gramaticaDeCero.y"
+{ yyerror("Falta tipo en parámetro formal");}
+break;
+//#line 633 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
