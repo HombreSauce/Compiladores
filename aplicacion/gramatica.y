@@ -54,9 +54,6 @@
 
 %% 
 
-expresion_error : error expresion  
-                ;
-
 /* ========= Programa ========= */ /* programa: nombre + cuerpo */
 
 prog	: ID LLAVEINIC bloque LLAVEFIN             
@@ -107,7 +104,7 @@ var_ref		: ID					/* tema 22 */
 			| var_ref PUNTO ID
   			;	
 
-lista_ids	: var_ref {n_var++;}
+lista_ids	: var_ref {n_var++; System.out.println("INCEREMENTO");}
  			| lista_ids COMA var_ref {n_var++;}
 			| lista_ids COMA error { yyerror("Error: falta identificador después de coma");}
 			| lista_ids var_ref {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
@@ -121,7 +118,8 @@ asign_simple	: var_ref ASIGN expresion_posible {System.out.println("Asignación 
 
 /* Tema 18 */ /* LHS puede tener más elementos que RHS.  RHS sólo constantes */
 
-asign_multiple	: lista_ids IGUALUNICO lista_ctes {
+asign_multiple	: lista_ids IGUALUNICO lista_ctes { 
+                    System.out.println("n_var: " + n_var + ", n_cte: " + n_cte);
                     if (n_var == 1 && n_cte == 1) {
                         yyerror("Error: para asignación simple use ':=' en lugar de '='");
                     } else {
@@ -180,6 +178,9 @@ cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos n
 
 /* ========= Expresiones aritméticas (sin '()' ) ========= */
 
+expresion_error : error expresion  
+                ;
+
 expresion_posible : expresion
                   | expresion_error {yyerror("Error en la expresión, falta un operador entre los operandos.");}
                   ; 
@@ -222,16 +223,16 @@ param_real_map		: parametro_real FLECHA ID
                     | parametro_real FLECHA error { yyerror("Falta identificador después de '->' en parámetro real");}
 					;	
 
-parametro_real	: expresion                    
-  				| TRUNC PARENTINIC expresion PARENTFIN                		 /* tema 31 */
-                | TRUNC PARENTINIC expresion error { yyerror("Falta ')' en llamada a función con 'trunc'.");}
-                | TRUNC error expresion PARENTFIN { yyerror("Falta '(' en llamada a función con 'trunc'.");}
-                | TRUNC error expresion error { yyerror("Faltan los paréntesis en llamada a función con 'trunc'.");}
+parametro_real	: expresion_posible                    
+  				| TRUNC PARENTINIC expresion_posible PARENTFIN                		 /* tema 31 */
+                | TRUNC PARENTINIC expresion_posible error { yyerror("Falta ')' en llamada a función con 'trunc'.");}
+                | TRUNC error expresion_posible PARENTFIN { yyerror("Falta '(' en llamada a función con 'trunc'.");}
+                | TRUNC error expresion_posible error { yyerror("Faltan los paréntesis en llamada a función con 'trunc'.");}
   				| lambda_expr                                     	 /* tema 28 */
 				;
 
 /* ========= Retorno ========= */
-return_sent		: RETURN PARENTINIC expresion PARENTFIN
+return_sent		: RETURN PARENTINIC expresion_posible PARENTFIN
   				;
 
 /* ========= Funciones (declaración) ========= */
@@ -306,10 +307,14 @@ rama_for		: sentencia_ejec PUNTOYCOMA
 /* ========= Print (tema 8) ========= */
 
 print_sent		: PRINT PARENTINIC expresion PARENTFIN
+                | PRINT PARENTINIC expresion_error PARENTFIN {yyerror("Error en la expresión dentro de print, falta un operador entre los operandos.");}
                 | PRINT PARENTINIC error PARENTFIN { yyerror("Falta argumento en sentencia print."); }
-                | PRINT error expresion PARENTFIN { yyerror("Falta '(' en sentencia print."); }
-                | PRINT PARENTINIC expresion error { yyerror("Falta ')' en sentencia print."); }
-  				;
+                | PRINT error expresion_posible PARENTFIN { yyerror("Falta '(' en sentencia print."); }
+                // | PRINT PARENTINIC error expresion error { yyerror("Falta ')' en sentencia print."); yyerror("Error en la expresión dentro de print, falta un operador entre los operandos.");}
+                | PRINT PARENTINIC expresion error { yyerror("Falta ')' en sentencia print.");}
+                | PRINT PARENTINIC expresion_error error { yyerror("Falta ')' en sentencia print."); yyerror("Error en la expresión dentro de print, falta un operador entre los operandos.");}
+  				// SOLUCIONAR ESTE PROBLEMA SI COMENTAMOS EL DE SOLO EXPRESION RECONOCE UNA EXPRESION ERRONEA Y ) PERO SI NO RECONOCE AMBOS, PERO NO DA MENSAJE DE EXPRESION ERRONEA
+                ;
 
 /* ========= Lambda como parámetro (tema 28) ========= */
 

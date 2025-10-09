@@ -5,7 +5,7 @@ Y:=2I;
 
 int APLICA ( V, CB ) {
     print( V );
-    return ( V );
+    return ( 3I  A );
 }
 
 int (V, CB)  {}
@@ -22,7 +22,7 @@ X, Y, Z, W = 1I, 2I, 3I;
 
 int X, Y Z;
 
-if( A > B ) {
+if( 2I + 3I > 3I + 4I ) {
     X := 2I; }
 endif;
 
@@ -31,7 +31,7 @@ if ( A B  ) { print( X ); } else print( Y ); endif;
 for ( I from 1 to 3I ) { print( I ); };
 for  I from 1 to 3I  {};
 
-print( SUMA( 12 -> A, trunc 7I / -3I  -> B ) );
+print( SUMA( 12 * 8I -> A, trunc (7I / -3I)  -> B ) );
 
 APLICA( 99I -> V, (int T){ print( T ); }(5) -> CB );
 APLICA( 99I -> V, (int T) print( T ); }(5) -> CB );
