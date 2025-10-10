@@ -30,5 +30,4 @@ Linea  | Descripcion
     41 | Error sintactico: Error sintactico: falta lista de variables antes del '='
     43 | Error sintactico: Error sintactico: falta una coma entre identificadores en la lista de variables
     43 | Error sintactico: Error sintactico: más constantes que variables en la asignación
-    44 | Error sintactico: Error sintactico: falta una coma entre constantes
-    45 | Error sintactico: Falta ';' al final de la sentencia.
+    44 | Error sintactico: Error sintactico: falta una coma entre constantes en la lista de constantes

@@ -226,4 +226,9 @@ Linea  | Token              | Lexema                       | ID
     44 | IGUALUNICO         | =                            |  283
     44 | CONST_INT          | 2I                           |  270
     44 | CONST_INT          | 3I                           |  270
-    45 | LLAVEFIN           | }                            |  292
+    44 | PUNTOYCOMA         | ;                            |  288
+    46 | ID                 | A                            |  269
+    46 | ASIGN              | :=                           |  273
+    46 | CONST_INT          | 3I                           |  270
+    46 | PUNTOYCOMA         | ;                            |  288
+    49 | LLAVEFIN           | }                            |  292

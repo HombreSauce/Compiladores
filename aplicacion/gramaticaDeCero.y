@@ -72,25 +72,36 @@ tipo    : INT
 
 
 sentencia	: declaracion_variable
+            | declaracion_con_asignacion
             | sentencia_ejec PUNTOYCOMA
             | sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
   		    | declaracion_funcion { SINT.add(lex.getLineaActual(), "Declaracion de funcion"); }
   			;
 
-declaracion_variable : tipo lista_ids PUNTOYCOMA { SINT.add(lex.getLineaActual(), "Declaracion de variable"); }
-                     | tipo lista_ids { yyerror("Error en declaración de variables, falta ';' al final."); }
-                     ;
-
 sentencia_ejec	: asign_simple
                 | asign_multiple
                 ;
 
-lista_ids	: ID {System.out.println("ESTOY EN LISTA_IDS");}
- 			| lista_ids COMA ID {System.out.println("ESTOY EN LISTA_IDS");}
+/* ========= Declaraciones ========= */
+
+declaracion_variable : tipo lista_ids PUNTOYCOMA { SINT.add(lex.getLineaActual(), "Declaracion de variable"); }
+                     | tipo lista_ids { yyerror("Error en declaración de variables, falta ';' al final."); }
+                     ;
+
+
+lista_ids	: ID
+ 			| lista_ids COMA ID
 			| lista_ids COMA error { yyerror("Error: falta identificador después de coma");}
 			// | lista_ids ID {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
             //ESTA LINEA DE ARRIBA DEBERIA ESTAR
   			;
+
+declaracion_con_asignacion  : tipo ID ASIGN expresion PUNTOYCOMA { SINT.add(lex.getLineaActual(), "Declaracion de variable con asignacion"); }
+                            | tipo ID ASIGN expresion { yyerror("Error en declaración de variable con asignación, falta ';' al final."); }
+                            | tipo ID ASIGN error PUNTOYCOMA { yyerror("Error en declaración de variable con asignación, expresión inválida."); }
+                            | tipo ID error expresion PUNTOYCOMA { yyerror("Error en declaración de variable con asignación, falta ':=' entre identificador y expresión."); }
+                            | tipo error ASIGN expresion PUNTOYCOMA { yyerror("Error en declaración de variable con asignación, falta identificador después del tipo."); }
+                            ;
 
 /* ========= Funciones (declaración) ========= */
 declaracion_funcion     : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
@@ -131,14 +142,15 @@ asign_simple	: var_ref ASIGN expresion {System.out.println("Asignación válida"
 /* Tema 18 */ /* LHS puede tener más elementos que RHS.  RHS sólo constantes */
 
 asign_multiple	: lista_vars IGUALUNICO lista_ctes { 
-                    System.out.println("n_var: " + n_var + ", n_cte: " + n_cte);
+                    //System.out.println("n_var: " + n_var + ", n_cte: " + n_cte);
                     if (n_var == 1 && n_cte == 1) {
                         yyerror("Error sintactico: para asignación simple use ':=' en lugar de '='");
                     } else {
                         if (n_var < n_cte) {
                             yyerror("Error sintactico: más constantes que variables en la asignación");
                         } else {
-                            System.out.println("Asignación válida (" + n_var + ", " + n_cte + ")");
+                            // System.out.println("Asignación válida (" + n_var + ", " + n_cte + ")");
+                            System.out.println("Asignación válida");
                         }
                     }
 					n_var = n_cte = 0;  /* reset para la próxima */
@@ -155,8 +167,8 @@ lista_ctes	: cte {n_cte++;}
 			| lista_ctes cte { yyerror("Error sintactico: falta una coma entre constantes en la lista de constantes");}
   			;	
 
-lista_vars	: var_ref {n_var++; System.out.println("ESTOY EN LISTA_VARS");}
-            | lista_vars COMA var_ref {n_var++; System.out.println("ESTOY EN LISTA_VARS");}
+lista_vars	: var_ref {n_var++;}
+            | lista_vars COMA var_ref {n_var++;}
             | lista_vars COMA error { yyerror("Error sintactico: falta identificador después de coma");}
             | lista_vars var_ref {yyerror("Error sintactico: falta una coma entre identificadores en la lista de variables");}
             //ESTA LINEA DE ARRIBA DEBERIA ESTAR

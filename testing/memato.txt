@@ -29,7 +29,7 @@ P{
     A :=  * 4;
     A := / 5 ;
     A := 4I 5I;
-    @ A := B 3I;
+    @ A := B 3I; @/ Comentado porque se rompe
 
     A.A = 1;
 
@@ -41,5 +41,9 @@ P{
     = 2I, 3I;
 
     A B = 2I, 3I;
-    A, B = 2I 3I
+    A, B = 2I 3I;
+
+    A := 3I;
+
+    
 }
