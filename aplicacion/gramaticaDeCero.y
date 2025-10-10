@@ -82,26 +82,15 @@ declaracion_variable : tipo lista_ids PUNTOYCOMA { SINT.add(lex.getLineaActual()
                      ;
 
 sentencia_ejec	: asign_simple
-                // | asign_multiple
+                | asign_multiple
                 ;
 
-lista_ids	: ID
- 			| lista_ids COMA ID
+lista_ids	: ID {System.out.println("ESTOY EN LISTA_IDS");}
+ 			| lista_ids COMA ID {System.out.println("ESTOY EN LISTA_IDS");}
 			| lista_ids COMA error { yyerror("Error: falta identificador después de coma");}
 			// | lista_ids ID {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
             //ESTA LINEA DE ARRIBA DEBERIA ESTAR
   			;
-
-// lista_vars	: var_ref
-//             | lista_ids COMA var_ref
-//             | lista_ids COMA error { yyerror("Error: falta identificador después de coma");}
-//             // | lista_ids var_ref {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
-//             //ESTA LINEA DE ARRIBA DEBERIA ESTAR
-            ;
-
-var_ref		: ID					/* tema 22 */
-			| var_ref PUNTO ID
-  			;	
 
 /* ========= Funciones (declaración) ========= */
 declaracion_funcion     : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
@@ -141,28 +130,41 @@ asign_simple	: var_ref ASIGN expresion {System.out.println("Asignación válida"
 
 /* Tema 18 */ /* LHS puede tener más elementos que RHS.  RHS sólo constantes */
 
-// asign_multiple	: lista_vars IGUALUNICO lista_ctes { 
-//                     System.out.println("n_var: " + n_var + ", n_cte: " + n_cte);
-//                     if (n_var == 1 && n_cte == 1) {
-//                         yyerror("Error: para asignación simple use ':=' en lugar de '='");
-//                     } else {
-//                         if (n_var < n_cte) {
-//                             yyerror("Error: más constantes que variables en la asignación");
-//                         } else {
-//                             System.out.println("Asignación válida (" + n_var + ", " + n_cte + ")");
-//                         }
-//                     }
-// 					n_var = n_cte = 0;  /* reset para la próxima */
-// 				}
-// 				| IGUALUNICO lista_ctes { yyerror("Error: falta lista de variables antes del '='"); }
-// 				| lista_vars lista_ctes { yyerror("Error: falta '=' entre la lista de variables y la lista de constantes"); }
-// 				| lista_vars IGUALUNICO error { yyerror("Error: falta lista de constantes después del '='");}
-//   				;
+asign_multiple	: lista_vars IGUALUNICO lista_ctes { 
+                    System.out.println("n_var: " + n_var + ", n_cte: " + n_cte);
+                    if (n_var == 1 && n_cte == 1) {
+                        yyerror("Error sintactico: para asignación simple use ':=' en lugar de '='");
+                    } else {
+                        if (n_var < n_cte) {
+                            yyerror("Error sintactico: más constantes que variables en la asignación");
+                        } else {
+                            System.out.println("Asignación válida (" + n_var + ", " + n_cte + ")");
+                        }
+                    }
+					n_var = n_cte = 0;  /* reset para la próxima */
+				}
+				| IGUALUNICO lista_ctes { yyerror("Error sintactico: falta lista de variables antes del '='"); }
+				| lista_vars IGUALUNICO error { yyerror("Error sintactico: falta lista de constantes después del '='");}
+				// | lista_vars lista_ctes { yyerror("Error sintactico: falta '=' entre la lista de variables y la lista de constantes"); }
+                // NO LO PIDE LA HOJA, POR AHORA NO ANDA
+  				;
 
-// lista_ctes	: cte {n_cte++;}
-//   			| lista_ctes COMA cte {n_cte++;}
-// 			| lista_ctes COMA error { yyerror("Error: falta una constante después de coma");}
-//   			;	
+lista_ctes	: cte {n_cte++;}
+  			| lista_ctes COMA cte {n_cte++;}
+			| lista_ctes COMA error { yyerror("Error sintactico: falta una constante después de coma");}
+			| lista_ctes cte { yyerror("Error sintactico: falta una coma entre constantes en la lista de constantes");}
+  			;	
+
+lista_vars	: var_ref {n_var++; System.out.println("ESTOY EN LISTA_VARS");}
+            | lista_vars COMA var_ref {n_var++; System.out.println("ESTOY EN LISTA_VARS");}
+            | lista_vars COMA error { yyerror("Error sintactico: falta identificador después de coma");}
+            | lista_vars var_ref {yyerror("Error sintactico: falta una coma entre identificadores en la lista de variables");}
+            //ESTA LINEA DE ARRIBA DEBERIA ESTAR
+            ;
+
+var_ref		: ID					/* tema 22 */
+			| var_ref PUNTO ID
+  			;	
 
 /* ========= Expresiones aritméticas (sin '()' ) ========= */
 
@@ -185,6 +187,7 @@ termino		: factor
             | termino DIV error { yyerror("Falta operando derecho después de '/' en expresión."); }
             | error DIV factor { yyerror("Falta operando izquierdo antes de '/' en expresión."); }
             | termino error factor { yyerror("Falta operador entre factores en expresión."); }
+            // NO ANDA CON VARIABLES O VARIABLES Y CTES
 			;
 
 factor		: var_ref
