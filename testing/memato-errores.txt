@@ -1,0 +1,7 @@
+==========================
+=== ERRORES DETECTADOS ===
+==========================
+Linea  | Descripcion
+------ | ------------------------------
+     4 | Error sintactico: Error en declaración de variables, falta ';' al final.
+     4 | Error sintactico: stack underflow. aborting...

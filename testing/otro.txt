@@ -1,0 +1,10 @@
+P{
+  @print(A+ B);@esto no anda por la derecha
+@ print( SUMA( 12I  8I -> A, trunc 7I  3I  -> B ) );
+ @A.A := 1I;
+ @A = 2I *;
+
+ if (2 > 3) {
+    INT A, B, C;
+ }endif;
+}

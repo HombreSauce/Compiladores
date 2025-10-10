@@ -5,6 +5,8 @@ import aplicacion.Token;
 import datos.EntradaTablaSimbolos;
 import datos.TablaIdentificadorToken;
 import datos.TablaSimbolos;
+import aplicacion.Parser;
+
 
 public class AccionSemantica9 implements AccionSemantica {
     private TablaSimbolos tablaSimbolos;
@@ -39,7 +41,7 @@ public class AccionSemantica9 implements AccionSemantica {
             Token token = new Token(tablaIDToken.getID("CTEFLOAT"), entrada);
             return token;
         } else {
-            System.err.println("Linea " + lineaCodigoActual + ". Error Lexico: Constante numerica real fuera de rango '" + lexema.toString() + "'.");
+            Parser.logLexError("Constante numerica real fuera de rango '" + lexema.toString() + "'.");
             return null;
         }
     }

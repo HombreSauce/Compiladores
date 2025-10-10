@@ -1,0 +1,6 @@
+==========================================
+=== ESTRUCTURAS SINTACTICAS DETECTADAS ===
+==========================================
+Linea  | Estructura                    
+------ | ------------------------------
+     3 | Declaracion de variable       

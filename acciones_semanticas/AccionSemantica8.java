@@ -5,6 +5,8 @@ import aplicacion.Token;
 import datos.EntradaTablaSimbolos;
 import datos.TablaIdentificadorToken;
 import datos.TablaSimbolos;
+import aplicacion.Parser;
+
 
 public class AccionSemantica8 implements AccionSemantica{
     private TablaSimbolos tablaSimbolos;
@@ -24,7 +26,7 @@ public class AccionSemantica8 implements AccionSemantica{
             Token token = new Token(tablaIDToken.getID("CTEINT"), entrada);
             return token;
         } else {
-            System.err.println("Linea " + lineaCodigoActual + ". Error Lexico: Constante numerica entera fuera de rango '" + lexema.toString() + "'.");
+            Parser.logLexError("Constante numerica entera fuera de rango '" + lexema.toString() + "'.");
             return null;
         }
     }

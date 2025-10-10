@@ -3,6 +3,7 @@ package acciones_semanticas;
 import aplicacion.ControlPosicion;
 import aplicacion.Token;
 import datos.TablaPalabraReservada;
+import aplicacion.Parser;
 
 public class AccionSemantica7 implements AccionSemantica{
     private TablaPalabraReservada tpr;
@@ -14,11 +15,20 @@ public class AccionSemantica7 implements AccionSemantica{
     @Override
     public Token ejecutar(char simbolo, StringBuilder lexema, ControlPosicion posicionLectura, int lineaCodigoActual) {
         posicionLectura.decrementar();
-        int idToken = tpr.getID(lexema.toString());
+        final String lx = lexema.toString();
+        final int idToken = tpr.getID(lx);
+
         if (idToken == -1) {
-            System.err.println("Linea " + lineaCodigoActual + ". Error Lexico: Palabra reservada invalida '" + lexema.toString() + "'.");
-            System.err.println("Quizas quisiste escribir: '" + tpr.mejorMatchPorPrefijo(lexema.toString()) + "'");
-            return null; // o lanzar excepción
+            // error al archivo + consola
+            Parser.logLexError("palabra reservada invalida: '" + lx + "'");
+
+            // sugerencia (si aplica) como warning separado
+            String sugerencia = tpr.mejorMatchPorPrefijo(lx);
+            if (sugerencia != null && !sugerencia.isEmpty()) {
+                Parser.logLexWarnAt(lineaCodigoActual, "Quizas quisiste escribir '" + sugerencia + "'?");
+            }
+
+            return null; // o tu estrategia de recuperación
         }
         Token token = new Token(tpr.getID(lexema.toString()), null);
         return token;

@@ -24,11 +24,16 @@ package aplicacion;
 	import datos.EntradaTablaSimbolos;
 	import datos.TablaIdentificadorToken;
 	import datos.TablaPalabraReservada;
+    import salida.Generador_out;
+	import salida.Tokens_out;
+	import salida.TS_out;
+	import salida.SintaxStruct_out;
+	import salida.Errors_out;
+	import static salida.Generador_out.*;
 	import java.io.*;
 	import java.nio.charset.StandardCharsets;
 	import java.nio.file.*;
-
-//#line 28 "Parser.java"
+//#line 33 "Parser.java"
 
 
 
@@ -204,71 +209,107 @@ public final static short LLAVEINIC=291;
 public final static short LLAVEFIN=292;
 public final static short YYERRCODE=256;
 final static short yylhs[] = {                           -1,
-    0,    1,    1,    3,    2,    2,    2,    6,    4,    7,
-    7,    7,    7,    8,    8,    5,    5,   10,    9,    9,
-    9,    9,   11,   11,   11,   12,   12,
+    0,    1,    1,    3,    2,    2,    2,    2,    4,    4,
+    5,    7,    7,    7,    9,    9,    6,    6,   11,   10,
+   10,   10,   12,   12,   12,   13,   13,    8,   14,   14,
+   14,   14,   14,   14,   14,   15,   15,   15,   15,   15,
+   15,   15,   15,   16,   16,   17,   17,   17,   17,   17,
 };
 final static short yylen[] = {                            2,
-    4,    0,    2,    1,    2,    1,    1,    2,    1,    1,
-    3,    3,    2,    1,    3,    8,    1,    7,    1,    3,
-    3,    2,    3,    3,    2,    0,    1,
+    4,    0,    2,    1,    1,    2,    1,    1,    3,    2,
+    1,    1,    3,    3,    1,    3,    8,    1,    7,    1,
+    3,    3,    3,    3,    2,    0,    1,    3,    1,    3,
+    3,    3,    3,    3,    3,    1,    3,    3,    3,    3,
+    3,    3,    3,    1,    1,    1,    2,    1,    2,    1,
 };
 final static short yydefred[] = {                         0,
-    0,    0,    2,    0,    4,    1,    3,    0,    0,    7,
-    9,   17,    0,    0,    0,    0,    5,    0,   27,    0,
-   19,    0,   14,    0,    0,    0,    0,    0,    0,   22,
-   25,    0,   12,    0,   15,    0,   21,   20,    2,   24,
-   23,    2,    0,    0,   18,   16,
+    0,    0,    2,    0,    4,   15,    1,    3,    0,    5,
+    0,    8,   11,    0,   18,    0,    0,    0,    6,    0,
+    0,    0,   27,    0,   20,    0,    0,    9,    0,   48,
+   46,   50,    0,    0,    0,    0,   36,   45,   16,    0,
+    0,    0,   25,    0,   14,   13,    0,    0,    0,    0,
+   49,   47,    0,    0,    0,    0,    0,    0,   22,   21,
+    2,   24,   23,    0,    0,   39,   42,    0,    0,    0,
+    0,    0,   43,   38,   37,   41,   40,    2,    0,    0,
+   19,   17,
 };
 final static short yydgoto[] = {                          2,
-    4,    7,    8,    9,   10,   11,   15,   16,   20,   12,
-   21,   22,
+    4,    8,    9,   10,   11,   12,   18,   13,   34,   24,
+   15,   25,   26,   35,   36,   37,   38,
 };
-final static short yysindex[] = {                      -264,
- -285,    0,    0, -261,    0,    0,    0, -266, -270,    0,
-    0,    0, -269, -246, -265, -236,    0, -246,    0, -238,
-    0, -201,    0, -211, -236, -218, -228, -210, -226,    0,
-    0, -209,    0, -236,    0, -225,    0,    0,    0,    0,
-    0,    0, -250, -249,    0,    0,
+final static short yysindex[] = {                      -251,
+ -241,    0,    0, -258,    0,    0,    0,    0, -248,    0,
+ -230,    0,    0, -270,    0, -237, -201, -172,    0, -164,
+ -209, -201,    0, -167,    0, -254, -227,    0, -105,    0,
+    0,    0, -140, -218, -158, -236,    0,    0,    0, -144,
+ -142, -154,    0, -174,    0,    0, -160, -112, -112, -160,
+    0,    0, -143, -137, -112, -120, -116, -153,    0,    0,
+    0,    0,    0, -113, -236,    0,    0, -236, -113, -236,
+ -113, -236,    0,    0,    0,    0,    0,    0, -257, -256,
+    0,    0,
 };
 final static short yyrindex[] = {                         0,
-    0,    0,    0,    0,    0,    0,    0,    0, -248,    0,
-    0,    0, -262, -198, -251, -260,    0, -198,    0, -198,
-    0,    0,    0,    0, -254,    0, -198, -198,    0,    0,
-    0,    0,    0, -252,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+ -207,    0,    0,    0,    0, -188, -252, -175,    0,    0,
+    0, -252,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0, -255, -190, -260,    0,    0,    0,    0,
+ -252,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0, -239,    0,    0, -231, -223, -215,
+ -199, -191,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,
 };
 final static short yygindex[] = {                         0,
-  -23,    0,   31,    0,    0,    0,    0,   39,   49,    0,
-   28,    0,
+   25,    0,   58,    0,    0,    0,    0,    0,   -4,   68,
+    0,  101,    0,    0,   94,  116,    0,
 };
-final static int YYTABLESIZE=71;
+final static int YYTABLESIZE=177;
 static short yytable[];
 static { yytable();}
 static void yytable(){
 yytable = new short[]{                         14,
-    5,   10,   13,   23,    1,    3,   14,   13,   10,   11,
-    8,    5,    5,    6,   13,   43,   11,   17,   44,   18,
-   19,   24,   14,   14,   14,   14,   10,   10,   19,   14,
-    6,   10,   13,   13,   11,   11,    8,   13,   19,   11,
-    8,   45,   46,    6,   33,   37,   40,   30,   28,   26,
-   35,   29,   32,   25,   30,   38,   19,   23,   28,   41,
-    5,   36,   34,   26,   39,   42,   27,   31,    0,    0,
-   26,
+   44,   29,   20,    5,    5,    5,   44,    5,   29,   26,
+    6,    6,    6,   44,   43,   21,   26,    1,   29,   55,
+   16,   29,   32,   44,   44,   44,   44,   29,   45,   32,
+   35,   29,   44,    7,   81,   82,   44,   35,   31,   32,
+   17,   46,   32,   56,   57,   31,   30,   35,   32,    3,
+   35,   22,   32,   30,    7,   31,   35,   19,   31,   39,
+   35,    7,   34,   30,   31,   23,   30,   21,   31,   34,
+   33,   28,   30,   12,   14,   14,   30,   33,   28,   34,
+   12,   62,   34,   44,    7,   79,   10,   33,   34,   40,
+   33,   29,   34,   10,   63,   64,   33,   28,   12,   12,
+   33,   28,   80,   12,    6,   30,   31,   32,    6,   30,
+   31,   32,   69,   59,   27,   28,   10,   33,   71,   41,
+   53,   33,   42,   54,   23,    6,   30,   31,   32,   51,
+   52,    6,   30,   31,   32,   74,   61,   78,   33,   76,
+   65,   60,   41,   68,   33,   58,   70,   72,    6,   30,
+   31,   32,    6,   30,   31,   32,    6,   30,   31,   32,
+    0,   33,    0,   66,   67,   33,   48,   49,    0,   33,
+   73,   75,   77,   47,   48,   49,   50,
 };
 }
 static short yycheck[];
 static { yycheck(); }
 static void yycheck() {
-yycheck = new short[] {                        262,
-  262,  262,  269,  269,  269,  291,  269,  262,  269,  262,
-  262,  262,  262,  262,  269,   39,  269,  288,   42,  289,
-  267,  287,  289,  286,  287,  288,  287,  288,  267,  292,
-  292,  292,  287,  288,  287,  288,  288,  292,  267,  292,
-  292,  292,  292,  292,  256,  256,  256,   20,  287,  286,
-  269,  290,   22,   15,   27,   28,  267,  269,  287,  269,
-  262,  290,   24,  262,  291,  291,   18,  269,   -1,   -1,
-  269,
+yycheck = new short[] {                          4,
+  256,  262,  273,  262,  262,  262,  262,  262,  269,  262,
+  269,  269,  269,  269,  269,  286,  269,  269,  279,  256,
+  269,  282,  262,  279,  280,  281,  282,  288,  256,  269,
+  262,  292,  288,  292,  292,  292,  292,  269,  262,  279,
+  289,  269,  282,  280,  281,  269,  262,  279,  288,  291,
+  282,  289,  292,  269,  262,  279,  288,  288,  282,  269,
+  292,  269,  262,  279,  288,  267,  282,  286,  292,  269,
+  262,  262,  288,  262,   79,   80,  292,  269,  269,  279,
+  269,  256,  282,   26,  292,   61,  262,  279,  288,   22,
+  282,  256,  292,  269,  269,  256,  288,  288,  287,  288,
+  292,  292,   78,  292,  269,  270,  271,  272,  269,  270,
+  271,  272,  256,  256,  287,  288,  292,  282,  256,  287,
+  279,  282,  290,  282,  267,  269,  270,  271,  272,  270,
+  271,  269,  270,  271,  272,  256,  291,  291,  282,  256,
+   47,   41,  287,   50,  282,  290,   53,   54,  269,  270,
+  271,  272,  269,  270,  271,  272,  269,  270,  271,  272,
+   -1,  282,   -1,   48,   49,  282,  280,  281,   -1,  282,
+   55,   56,   57,  279,  280,  281,  282,
 };
 }
 final static short YYFINAL=2;
@@ -302,15 +343,16 @@ final static String yyrule[] = {
 "bloque :",
 "bloque : bloque sentencia",
 "tipo : INT",
+"sentencia : declaracion_variable",
 "sentencia : sentencia_ejec PUNTOYCOMA",
 "sentencia : sentencia_ejec",
 "sentencia : declaracion_funcion",
+"declaracion_variable : tipo lista_ids PUNTOYCOMA",
 "declaracion_variable : tipo lista_ids",
-"sentencia_ejec : declaracion_variable",
-"lista_ids : var_ref",
-"lista_ids : lista_ids COMA var_ref",
+"sentencia_ejec : asign_simple",
+"lista_ids : ID",
+"lista_ids : lista_ids COMA ID",
 "lista_ids : lista_ids COMA error",
-"lista_ids : lista_ids var_ref",
 "var_ref : ID",
 "var_ref : var_ref PUNTO ID",
 "declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN",
@@ -319,15 +361,39 @@ final static String yyrule[] = {
 "lista_params_formales : param_formal",
 "lista_params_formales : lista_params_formales COMA param_formal",
 "lista_params_formales : lista_params_formales COMA error",
-"lista_params_formales : lista_params_formales param_formal",
 "param_formal : sem_pasaje_opt tipo ID",
 "param_formal : sem_pasaje_opt tipo error",
 "param_formal : sem_pasaje_opt ID",
 "sem_pasaje_opt :",
 "sem_pasaje_opt : CV",
+"asign_simple : var_ref ASIGN expresion",
+"expresion : termino",
+"expresion : expresion MAS termino",
+"expresion : expresion MAS error",
+"expresion : error MAS termino",
+"expresion : expresion MENOS termino",
+"expresion : expresion MENOS error",
+"expresion : error MENOS termino",
+"termino : factor",
+"termino : termino MUL factor",
+"termino : termino MUL error",
+"termino : error MUL factor",
+"termino : termino DIV factor",
+"termino : termino DIV error",
+"termino : error DIV factor",
+"termino : termino error factor",
+"factor : var_ref",
+"factor : cte",
+"cte : CTEFLOAT",
+"cte : MENOS CTEFLOAT",
+"cte : CTEINT",
+"cte : MENOS CTEINT",
+"cte : CTESTR",
 };
 
-//#line 213 "gramaticaDeCero.y"
+//#line 231 "gramaticaDeCero.y"
+
+/* ---- Seccion de código ---- */
 
 /* ---- Seccion de código ---- */
 
@@ -337,119 +403,21 @@ static TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
 static int n_var = 0; //para contar variables en asignaciones multiples
 static int n_cte = 0; //para contar ctes en asignaciones multiples
 
-// writers de salida
-static BufferedWriter wTokens = null;   // para los tokens
-static BufferedWriter wTabla  = null;   // para la tabla de símbolos
-static BufferedWriter wSint = null;     // para las estructuras sintacticas
+public static Tokens_out TOKENS;
+public static TS_out TS;
+public static SintaxStruct_out SINT;
+public static Errors_out ERR;
 
-// helpers de ruta
-static Path rutaLexico(Path fuente, boolean acentos) {
-    String base = quitarExt(fuente.getFileName().toString());
-    String suf  = acentos ? "-léxico" : "-lexico";
-    return (fuente.getParent() == null ? Paths.get(".") : fuente.getParent())
-            .resolve(base + suf + ".txt");
-}
-static Path rutaTabla(Path fuente, boolean acentos) {
-    String base = quitarExt(fuente.getFileName().toString());
-    String suf  = acentos ? "-tabla-de-símbolos" : "-tabla-simbolos";
-    return (fuente.getParent() == null ? Paths.get(".") : fuente.getParent())
-            .resolve(base + suf + ".txt");
-}
-static Path rutaSintactico(Path fuente, boolean acentos) {
-    String base = quitarExt(fuente.getFileName().toString());
-    String suf  = acentos ? "-sintáctico" : "-sintactico";
-    return (fuente.getParent() == null ? Paths.get(".") : fuente.getParent())
-            .resolve(base + suf + ".txt");
-}
-static String quitarExt(String s) {
-    int i = s.lastIndexOf('.');
-    return (i > 0) ? s.substring(0, i) : s;
+public static void logLexError(String mensaje){
+    int linea = (lex != null) ? lex.getLineaActual() : -1;
+    System.err.println("Error lexico en linea " + linea + ": " + mensaje);
+    if (ERR != null) ERR.add(linea, "Error lexico: " + mensaje);
 }
 
-
-
-//para el archivo de tokens
-static void escribirHeaderTokens(BufferedWriter w) throws IOException {
-    w.write(encabezado("TOKENS DETECTADOS")); w.newLine();
-    w.write(String.format("%-6s | %-18s | %-28s | %-4s", "Linea", "Token", "Lexema", "ID")); w.newLine();
-    w.write("------ | ------------------ | ---------------------------- | ----"); w.newLine();
+public static void logLexWarnAt(int linea, String mensaje){
+    System.out.println("Warning en linea " + linea + ": " + mensaje);
+    if (ERR != null) ERR.add(linea, "Warning: " + mensaje);
 }
-static String filaToken(Token t, int linea) {
-    String[] tl = tipoYLexema(t);
-    String tipo   = humanizeTipo(tl[0]);                              
-    String lexema = tl[1].replace("\n","\\n").replace("\r","\\r").replace("\t","\\t");
-    lexema = trunc(lexema, 28);                                       // evita que desborde la columna
-    return String.format("%6d | %-18s | %-28s | %4d", linea, tipo, lexema, t.getIDToken());
-}
-// Mapea los IDs a (tipo, lexema) usando las tablas
-static String[] tipoYLexema(Token t) {
-    TablaIdentificadorToken tid = TablaIdentificadorToken.getInstancia();
-    TablaPalabraReservada  tpr  = TablaPalabraReservada.getInstancia();
-    int id = t.getIDToken();
-
-    if (id < 269) {                            // Palabra reservada
-        String kw = tpr.getClave(id);          // ej: IF
-        return new String[]{ kw, kw.toLowerCase() }; // tipo=IF, lexema="if"
-    } else if (id == 269) {
-        return new String[]{ "ID",           t.getEntradaTS()!=null ? t.getEntradaTS().getLexema() : "" };
-    } else if (id == 270) {
-        return new String[]{ "CONST_INT",    t.getEntradaTS()!=null ? t.getEntradaTS().getLexema() : "" };
-    } else if (id == 271) {
-        return new String[]{ "CONST_FLOAT",  t.getEntradaTS()!=null ? t.getEntradaTS().getLexema() : "" };
-    } else if (id == 272) {
-        return new String[]{ "CONST_STRING", t.getEntradaTS()!=null ? t.getEntradaTS().getLexema() : "" };
-    } else {
-        String raw = tid.getClave(id); // puede ser "(", "ASIGNACION", ";", etc.
-        String lex = (t.getEntradaTS()!=null) ? t.getEntradaTS().getLexema() : raw;
-        return new String[]{ raw, lex };
-    }
-}
-// Cambia simbolos sueltos para que la columna Token se vea prolija
-static String humanizeTipo(String raw) {
-    return switch (raw) {
-        case "if" -> "IF";
-        case "else" -> "ELSE";
-        case "endif" -> "ENDIF";
-        case "print" -> "PRINT";
-        case "return" -> "RETURN";
-        case "int" -> "INT";
-        case "for" -> "FOR";
-        case "from" -> "FROM";
-        case "to" -> "TO";
-        case "lambda" -> "LAMBDA";
-        case "cv" -> "CV";
-        case "trunc" -> "TRUNC";
-        case ":=" -> "ASIGN";
-        case "->" -> "FLECHA";
-        case "==" -> "IGUAL";
-        case "=!" -> "DISTINTO";
-        case "<=" -> "MENORIGUAL";
-        case "=>" -> "MAYORIGUAL";
-        case "+" -> "MAS";
-        case "*" -> "MUL";
-        case "/" -> "DIV";
-        case "-" -> "MENOS";
-        case "=" -> "IGUALUNICO";
-        case ">" -> "MAYOR";
-        case "<" -> "MENOR";
-        case "." -> "PUNTO";
-        case "(" -> "PARENTINIC";
-        case ")" -> "PARENTFIN";
-        case "{" -> "LLAVEINIC";
-        case "}" -> "LLAVEFIN";
-        case ";" -> "PUNTOYCOMA";
-        case "," -> "COMA";
-        default -> raw;
-    };
-}
-// Recorta con puntos si el lexema es muy largo
-static String trunc(String s, int max) {
-    if (s == null) return "";
-    if (s.length() <= max) return s;
-    if (max <= 1) return s.substring(0, max);
-    return s.substring(0, max-1) + "…";
-}
-
 
 public static void main (String [] args) {
     try {
@@ -458,42 +426,30 @@ public static void main (String [] args) {
 
         Path fuente = Paths.get(args[0]);
 
-        // abrir archivos de salida
-        wTokens = Files.newBufferedWriter(
-                rutaLexico(fuente, false), StandardCharsets.UTF_8,
-                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
-        escribirHeaderTokens(wTokens);
-
-        // (opcional) abrimos el de tabla ahora o despues — aca lo abrimos ahora
-        wTabla = Files.newBufferedWriter(
-                rutaTabla(fuente, false), StandardCharsets.UTF_8,
-                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+        TOKENS = new Tokens_out(Generador_out.rutaLexico(fuente, false));
+        TS     = new TS_out(Generador_out.rutaTabla(fuente, false));
+        SINT   = new SintaxStruct_out(Generador_out.rutaSintactico(fuente, false));
+        ERR    = new Errors_out(Generador_out.rutaErrores(fuente, false));
 
         // correr analisis
         lex = new AnalizadorLexico(args[0]);
         par = new Parser(false);
         par.run();
 
-        // volcar TABLA DE SIMBOLOS a archivo
-        wTabla.write(encabezado("TABLA DE SIMBOLOS"));
-        wTabla.newLine();
-        PrintWriter pw = new PrintWriter(wTabla, true);
-        tablaSimbolos.mostrarTabla(pw); 
+        TS.dump(tablaSimbolos);
 
         System.out.println("Fin compilacion");
-        
-    } catch (IOException e) {
-        throw new RuntimeException(e);
+    } catch (Exception e) {
+        e.printStackTrace();
     } finally {
-        try { if (wTokens != null) { wTokens.flush(); wTokens.close(); } } catch (IOException ignored) {}
-        try { if (wTabla  != null) { wTabla.flush();  wTabla.close();  } } catch (IOException ignored) {}
+        // Cierra en orden; SintaxStruct_out escribe el header y la tabla en close()
+        try { if (SINT   != null) SINT.close(); }   catch (Exception ignored) {}
+        try { if (TS     != null) TS.close(); }     catch (Exception ignored) {}
+        try { if (TOKENS != null) TOKENS.close(); } catch (Exception ignored) {}
+        try { if (ERR    != null) ERR.close(); }   catch (Exception ignored) {}
     }
 }
 
-static String encabezado(String titulo) {
-    String barra = "=".repeat(Math.max(24, titulo.length() + 8));
-    return barra + "\n" + "=== " + titulo + " ===\n" + barra;
-}
 
 
 int yylex (){
@@ -501,15 +457,10 @@ int yylex (){
     if ((token = lex.getToken()) != null) {
         yylval = new ParserVal(token.getEntradaTS());
 
-        // --- escribir al archivo de tokens ---
-        if (wTokens != null) {
-            try {
-				int lineaTok = lex.getLineaActual(); 
-                wTokens.write(filaToken(token, lineaTok)); 
-                wTokens.newLine();
-            } catch (IOException e) {
-                throw new RuntimeException("Error escribiendo token", e);
-            }
+        // registrar token
+        if (TOKENS != null) {
+            int lineaTok = lex.getLineaActual();
+            TOKENS.append(token, lineaTok);
         }
         return token.getIDToken();
     } else {
@@ -519,9 +470,12 @@ int yylex (){
 
 void yyerror(String mensaje){
     if ("syntax error".equals(mensaje)) return;  // suprime el genérico
+	int linea = lex.getLineaActual();
     System.err.println("Error sintactico en linea " + lex.getLineaActual() + ": " + mensaje);
+	if (ERR != null) ERR.add(linea, "Error sintactico: " + mensaje);
+
 }
-//#line 452 "Parser.java"
+//#line 406 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -675,39 +629,121 @@ boolean doaction;
     switch(yyn)
       {
 //########## USER-SUPPLIED ACTIONS ##########
-case 6:
-//#line 70 "gramaticaDeCero.y"
+case 7:
+//#line 76 "gramaticaDeCero.y"
 { yyerror("Falta ';' al final de la sentencia."); }
 break;
-case 12:
-//#line 86 "gramaticaDeCero.y"
+case 8:
+//#line 77 "gramaticaDeCero.y"
+{ SINT.add(lex.getLineaActual(), "Declaracion de funcion"); }
+break;
+case 9:
+//#line 80 "gramaticaDeCero.y"
+{ SINT.add(lex.getLineaActual(), "Declaracion de variable"); }
+break;
+case 10:
+//#line 81 "gramaticaDeCero.y"
+{ yyerror("Error en declaración de variables, falta ';' al final."); }
+break;
+case 14:
+//#line 90 "gramaticaDeCero.y"
 { yyerror("Error: falta identificador después de coma");}
 break;
-case 13:
-//#line 87 "gramaticaDeCero.y"
-{yyerror("Error: falta una coma entre identificadores en la lista de variables");}
-break;
-case 18:
-//#line 99 "gramaticaDeCero.y"
+case 19:
+//#line 111 "gramaticaDeCero.y"
 {yyerror("Error sintáctico: Falta nombre identificador de función");}
 break;
-case 21:
-//#line 110 "gramaticaDeCero.y"
+case 22:
+//#line 122 "gramaticaDeCero.y"
 {yyerror("Error sintáctico: falta identificador despues de coma en parametro formal");}
 break;
-case 22:
-//#line 111 "gramaticaDeCero.y"
-{yyerror("Error sintactico: falta coma entre parametros formales en declaracion de funcion");}
-break;
 case 24:
-//#line 115 "gramaticaDeCero.y"
+//#line 128 "gramaticaDeCero.y"
 { yyerror("Falta identificador después de tipo en parámetro formal");}
 break;
 case 25:
-//#line 116 "gramaticaDeCero.y"
+//#line 129 "gramaticaDeCero.y"
 { yyerror("Falta tipo en parámetro formal");}
 break;
-//#line 633 "Parser.java"
+case 28:
+//#line 139 "gramaticaDeCero.y"
+{System.out.println("Asignación válida");}
+break;
+case 31:
+//#line 171 "gramaticaDeCero.y"
+{ yyerror("Falta operando derecho después de '+' en expresión."); }
+break;
+case 32:
+//#line 172 "gramaticaDeCero.y"
+{ yyerror("Falta operando izquierdo antes de '+' en expresión."); }
+break;
+case 34:
+//#line 174 "gramaticaDeCero.y"
+{ yyerror("Falta operando derecho después de '-' en expresión."); }
+break;
+case 35:
+//#line 175 "gramaticaDeCero.y"
+{ yyerror("Falta operando izquierdo antes de '-' en expresión."); }
+break;
+case 38:
+//#line 182 "gramaticaDeCero.y"
+{ yyerror("Falta operando derecho después de '*' en expresión."); }
+break;
+case 39:
+//#line 183 "gramaticaDeCero.y"
+{ yyerror("Falta operando izquierdo antes de '*' en expresión."); }
+break;
+case 41:
+//#line 185 "gramaticaDeCero.y"
+{ yyerror("Falta operando derecho después de '/' en expresión."); }
+break;
+case 42:
+//#line 186 "gramaticaDeCero.y"
+{ yyerror("Falta operando izquierdo antes de '/' en expresión."); }
+break;
+case 43:
+//#line 187 "gramaticaDeCero.y"
+{ yyerror("Falta operador entre factores en expresión."); }
+break;
+case 47:
+//#line 198 "gramaticaDeCero.y"
+{
+			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)val_peek(0).obj;
+			String valor_negativo = '-' + entrada.getLexema();
+			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
+			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); /*eliminamos la entrada del positivo que se creo en el lexico*/
+			yyval = val_peek(0); /*se reduce por CTEFLOAT*/
+		}
+break;
+case 48:
+//#line 205 "gramaticaDeCero.y"
+{
+			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)val_peek(0).obj;
+			String valor = entrada.getLexema();
+			valor = valor.substring(0, valor.length() - 1); /*nos quedamos con el numero sin el I final*/
+			int num = Integer.parseInt(valor);
+			int max = 32767;
+			/*al ser positivo debemos chequear el maximo*/
+			if (num > max) {
+				System.err.println("Error léxico: constante entera fuera de rango en línea " + lex.getLineaActual() + ": " + num);
+				tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea());
+			}
+
+			yyval = val_peek(0);
+		}
+break;
+case 49:
+//#line 219 "gramaticaDeCero.y"
+{
+			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)val_peek(0).obj;
+			String valor_negativo = '-' + entrada.getLexema();
+			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
+			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); /*eliminamos la entrada del positivo que se creo en el lexico*/
+
+			yyval = val_peek(0);
+		}
+break;
+//#line 669 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

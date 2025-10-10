@@ -1,7 +1,7 @@
 P{
-    int A.B;
+    @int A.B; no se si se debria poder declarar asi
     int A, B, C;
-    int A B, C;
+    @int A B, C; @/ no reconoce que falta la coma, (la regla está comentada) porque si no tengo shift reduce
     int A, B, ;
     int A, B
     int A
@@ -10,5 +10,26 @@ P{
     int  (int A, cv int B) {}
     int FUNCION (int A, int B) {}
     int A
-    
+
+    A := B;
+    A := 3I;
+    A := 4.5;
+    A := 4.5D+6;
+    A.C := 3I + 4I;
+    A.C := 3I - 4I;
+    A := 4 * 6.6;
+    A := 4 / 6.6;
+    A.C := 3I + ;
+    A.C := 3I - ;
+    A := 4 * ;
+    A := 5 / ;
+    A.C := + 3I ;
+    A.C := - 3I ;
+    A.C := - -3I ;
+    A :=  * 4;
+    A := / 5 ;
+    A := 4I 5I;
+
+    A, B = 1;
+    A, B, C = 1I, 2I, 3I;
 }

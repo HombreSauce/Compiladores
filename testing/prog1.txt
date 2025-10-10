@@ -1,37 +1,45 @@
 PROG {
 
+H:=23;
+
 X:=1I;
 Y:=2I;
 
-int APLICA ( V, CB ) {
+int APLICA ( int V,  cv CB ) {
     print( V );
-    return ( 3I  A );
+    return ( V );
 }
 
-int (V, CB)  {}
-@probar esto (V, CB) {} porque no anda
+int (int A, int B) { X:=3I;}
+X:=3I;
+
+H:=33333333;
+
 
 print();
 
-X := 3I  4I / 5I;
+AJAJAJASJKDHASKJÑLDHASDF :=213;
+
+X := 3I - 4I / 5I;
 Y := 32768I;
 Z := -2I;
 FLOTANTE := -33.456;
-H := 32768;
-X, Y, Z, W = 1I, 2I, 3I;
+H := 327683;
 
-int X, Y Z;
+X, Y, Z = 1I, 2I, 3I;
 
-if( 2I + 3I > 3I + 4I ) {
+int X, Y, Z;
+
+if( A > B ) {
     X := 2I; }
 endif;
 
-if ( A B  ) { print( X ); } else print( Y ); endif;
+if ( X  Y ) { print( X ); } else print( Y ); endif;
 
 for ( I from 1 to 3I ) { print( I ); };
 for  I from 1 to 3I  {};
 
-print( SUMA( 12 * 8I -> A, trunc (7I / -3I)  -> B ) );
+print( SUMA( 12 -> A, trunc 7I / -3I  -> B ) );
 
 APLICA( 99I -> V, (int T){ print( T ); }(5) -> CB );
 APLICA( 99I -> V, (int T) print( T ); }(5) -> CB );

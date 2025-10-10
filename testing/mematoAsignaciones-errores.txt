@@ -1,0 +1,6 @@
+==========================
+=== ERRORES DETECTADOS ===
+==========================
+Linea  | Descripcion
+------ | ------------------------------
+     5 | Error sintactico: Falta ';' al final de la sentencia.

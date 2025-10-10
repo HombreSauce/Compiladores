@@ -7,31 +7,31 @@
 
    4  tipo : INT
 
-   5  sentencia : sentencia_ejec PUNTOYCOMA
-   6            | sentencia_ejec
-   7            | declaracion_funcion
+   5  sentencia : declaracion_variable
+   6            | sentencia_ejec PUNTOYCOMA
+   7            | sentencia_ejec
+   8            | declaracion_funcion
 
-   8  declaracion_variable : tipo lista_ids
+   9  declaracion_variable : tipo lista_ids PUNTOYCOMA
+  10                       | tipo lista_ids
 
-   9  sentencia_ejec : declaracion_variable
+  11  sentencia_ejec : asign_simple
 
-  10  lista_ids : var_ref
-  11            | lista_ids COMA var_ref
-  12            | lista_ids COMA error
-  13            | lista_ids var_ref
+  12  lista_ids : ID
+  13            | lista_ids COMA ID
+  14            | lista_ids COMA error
 
-  14  var_ref : ID
-  15          | var_ref PUNTO ID
+  15  var_ref : ID
+  16          | var_ref PUNTO ID
 
-  16  declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
-  17                      | declaracion_funcion_err
+  17  declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
+  18                      | declaracion_funcion_err
 
-  18  declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
+  19  declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
 
-  19  lista_params_formales : param_formal
-  20                        | lista_params_formales COMA param_formal
-  21                        | lista_params_formales COMA error
-  22                        | lista_params_formales param_formal
+  20  lista_params_formales : param_formal
+  21                        | lista_params_formales COMA param_formal
+  22                        | lista_params_formales COMA error
 
   23  param_formal : sem_pasaje_opt tipo ID
   24               | sem_pasaje_opt tipo error
@@ -39,6 +39,34 @@
 
   26  sem_pasaje_opt :
   27                 | CV
+
+  28  asign_simple : var_ref ASIGN expresion
+
+  29  expresion : termino
+  30            | expresion MAS termino
+  31            | expresion MAS error
+  32            | error MAS termino
+  33            | expresion MENOS termino
+  34            | expresion MENOS error
+  35            | error MENOS termino
+
+  36  termino : factor
+  37          | termino MUL factor
+  38          | termino MUL error
+  39          | error MUL factor
+  40          | termino DIV factor
+  41          | termino DIV error
+  42          | error DIV factor
+  43          | termino error factor
+
+  44  factor : var_ref
+  45         | cte
+
+  46  cte : CTEFLOAT
+  47      | MENOS CTEFLOAT
+  48      | CTEINT
+  49      | MENOS CTEINT
+  50      | CTESTR
 
 state 0
 	$accept : . prog $end  (0)
@@ -76,15 +104,18 @@ state 4
 	bloque : bloque . sentencia  (3)
 
 	INT  shift 5
-	LLAVEFIN  shift 6
+	ID  shift 6
+	LLAVEFIN  shift 7
 	.  error
 
-	sentencia  goto 7
-	tipo  goto 8
-	sentencia_ejec  goto 9
-	declaracion_funcion  goto 10
-	declaracion_variable  goto 11
-	declaracion_funcion_err  goto 12
+	sentencia  goto 8
+	tipo  goto 9
+	declaracion_variable  goto 10
+	sentencia_ejec  goto 11
+	declaracion_funcion  goto 12
+	asign_simple  goto 13
+	var_ref  goto 14
+	declaracion_funcion_err  goto 15
 
 
 state 5
@@ -94,381 +125,792 @@ state 5
 
 
 state 6
+	var_ref : ID .  (15)
+
+	.  reduce 15
+
+
+state 7
 	prog : ID LLAVEINIC bloque LLAVEFIN .  (1)
 
 	.  reduce 1
 
 
-state 7
+state 8
 	bloque : bloque sentencia .  (3)
 
 	.  reduce 3
 
 
-state 8
-	declaracion_variable : tipo . lista_ids  (8)
-	declaracion_funcion : tipo . ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (16)
-	declaracion_funcion_err : tipo . PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (18)
+state 9
+	declaracion_variable : tipo . lista_ids PUNTOYCOMA  (9)
+	declaracion_variable : tipo . lista_ids  (10)
+	declaracion_funcion : tipo . ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (17)
+	declaracion_funcion_err : tipo . PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (19)
 
-	ID  shift 13
-	PARENTINIC  shift 14
+	ID  shift 16
+	PARENTINIC  shift 17
 	.  error
 
-	lista_ids  goto 15
-	var_ref  goto 16
-
-
-state 9
-	sentencia : sentencia_ejec . PUNTOYCOMA  (5)
-	sentencia : sentencia_ejec .  (6)
-
-	PUNTOYCOMA  shift 17
-	INT  reduce 6
-	LLAVEFIN  reduce 6
+	lista_ids  goto 18
 
 
 state 10
-	sentencia : declaracion_funcion .  (7)
-
-	.  reduce 7
-
-
-state 11
-	sentencia_ejec : declaracion_variable .  (9)
-
-	.  reduce 9
-
-
-state 12
-	declaracion_funcion : declaracion_funcion_err .  (17)
-
-	.  reduce 17
-
-
-state 13
-	var_ref : ID .  (14)
-	declaracion_funcion : tipo ID . PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (16)
-
-	PARENTINIC  shift 18
-	INT  reduce 14
-	ID  reduce 14
-	PUNTO  reduce 14
-	COMA  reduce 14
-	PUNTOYCOMA  reduce 14
-	LLAVEFIN  reduce 14
-
-
-state 14
-	declaracion_funcion_err : tipo PARENTINIC . lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (18)
-	sem_pasaje_opt : .  (26)
-
-	CV  shift 19
-	INT  reduce 26
-	ID  reduce 26
-
-	lista_params_formales  goto 20
-	param_formal  goto 21
-	sem_pasaje_opt  goto 22
-
-
-state 15
-	declaracion_variable : tipo lista_ids .  (8)
-	lista_ids : lista_ids . COMA var_ref  (11)
-	lista_ids : lista_ids . COMA error  (12)
-	lista_ids : lista_ids . var_ref  (13)
-
-	ID  shift 23
-	COMA  shift 24
-	INT  reduce 8
-	PUNTOYCOMA  reduce 8
-	LLAVEFIN  reduce 8
-
-	var_ref  goto 25
-
-
-state 16
-	lista_ids : var_ref .  (10)
-	var_ref : var_ref . PUNTO ID  (15)
-
-	PUNTO  shift 26
-	INT  reduce 10
-	ID  reduce 10
-	COMA  reduce 10
-	PUNTOYCOMA  reduce 10
-	LLAVEFIN  reduce 10
-
-
-state 17
-	sentencia : sentencia_ejec PUNTOYCOMA .  (5)
+	sentencia : declaracion_variable .  (5)
 
 	.  reduce 5
 
 
-state 18
-	declaracion_funcion : tipo ID PARENTINIC . lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (16)
+state 11
+	sentencia : sentencia_ejec . PUNTOYCOMA  (6)
+	sentencia : sentencia_ejec .  (7)
+
+	PUNTOYCOMA  shift 19
+	INT  reduce 7
+	ID  reduce 7
+	LLAVEFIN  reduce 7
+
+
+state 12
+	sentencia : declaracion_funcion .  (8)
+
+	.  reduce 8
+
+
+state 13
+	sentencia_ejec : asign_simple .  (11)
+
+	.  reduce 11
+
+
+state 14
+	var_ref : var_ref . PUNTO ID  (16)
+	asign_simple : var_ref . ASIGN expresion  (28)
+
+	ASIGN  shift 20
+	PUNTO  shift 21
+	.  error
+
+
+state 15
+	declaracion_funcion : declaracion_funcion_err .  (18)
+
+	.  reduce 18
+
+
+state 16
+	lista_ids : ID .  (12)
+	declaracion_funcion : tipo ID . PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (17)
+
+	PARENTINIC  shift 22
+	INT  reduce 12
+	ID  reduce 12
+	COMA  reduce 12
+	PUNTOYCOMA  reduce 12
+	LLAVEFIN  reduce 12
+
+
+state 17
+	declaracion_funcion_err : tipo PARENTINIC . lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (19)
 	sem_pasaje_opt : .  (26)
 
-	CV  shift 19
+	CV  shift 23
 	INT  reduce 26
 	ID  reduce 26
 
-	lista_params_formales  goto 27
-	param_formal  goto 21
-	sem_pasaje_opt  goto 22
+	lista_params_formales  goto 24
+	param_formal  goto 25
+	sem_pasaje_opt  goto 26
+
+
+state 18
+	declaracion_variable : tipo lista_ids . PUNTOYCOMA  (9)
+	declaracion_variable : tipo lista_ids .  (10)
+	lista_ids : lista_ids . COMA ID  (13)
+	lista_ids : lista_ids . COMA error  (14)
+
+	COMA  shift 27
+	PUNTOYCOMA  shift 28
+	INT  reduce 10
+	ID  reduce 10
+	LLAVEFIN  reduce 10
 
 
 state 19
+	sentencia : sentencia_ejec PUNTOYCOMA .  (6)
+
+	.  reduce 6
+
+
+state 20
+	asign_simple : var_ref ASIGN . expresion  (28)
+
+	error  shift 29
+	ID  shift 6
+	CTEINT  shift 30
+	CTEFLOAT  shift 31
+	CTESTR  shift 32
+	MENOS  shift 33
+	.  error
+
+	var_ref  goto 34
+	expresion  goto 35
+	termino  goto 36
+	factor  goto 37
+	cte  goto 38
+
+
+state 21
+	var_ref : var_ref PUNTO . ID  (16)
+
+	ID  shift 39
+	.  error
+
+
+state 22
+	declaracion_funcion : tipo ID PARENTINIC . lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN  (17)
+	sem_pasaje_opt : .  (26)
+
+	CV  shift 23
+	INT  reduce 26
+	ID  reduce 26
+
+	lista_params_formales  goto 40
+	param_formal  goto 25
+	sem_pasaje_opt  goto 26
+
+
+state 23
 	sem_pasaje_opt : CV .  (27)
 
 	.  reduce 27
 
 
-state 20
-	declaracion_funcion_err : tipo PARENTINIC lista_params_formales . PARENTFIN LLAVEINIC bloque LLAVEFIN  (18)
-	lista_params_formales : lista_params_formales . COMA param_formal  (20)
-	lista_params_formales : lista_params_formales . COMA error  (21)
-	lista_params_formales : lista_params_formales . param_formal  (22)
-	sem_pasaje_opt : .  (26)
+state 24
+	declaracion_funcion_err : tipo PARENTINIC lista_params_formales . PARENTFIN LLAVEINIC bloque LLAVEFIN  (19)
+	lista_params_formales : lista_params_formales . COMA param_formal  (21)
+	lista_params_formales : lista_params_formales . COMA error  (22)
 
-	CV  shift 19
-	COMA  shift 28
-	PARENTFIN  shift 29
-	INT  reduce 26
-	ID  reduce 26
-
-	param_formal  goto 30
-	sem_pasaje_opt  goto 22
+	COMA  shift 41
+	PARENTFIN  shift 42
+	.  error
 
 
-state 21
-	lista_params_formales : param_formal .  (19)
+state 25
+	lista_params_formales : param_formal .  (20)
 
-	.  reduce 19
+	.  reduce 20
 
 
-state 22
+state 26
 	param_formal : sem_pasaje_opt . tipo ID  (23)
 	param_formal : sem_pasaje_opt . tipo error  (24)
 	param_formal : sem_pasaje_opt . ID  (25)
 
 	INT  shift 5
-	ID  shift 31
+	ID  shift 43
 	.  error
 
-	tipo  goto 32
-
-
-state 23
-	var_ref : ID .  (14)
-
-	.  reduce 14
-
-
-state 24
-	lista_ids : lista_ids COMA . var_ref  (11)
-	lista_ids : lista_ids COMA . error  (12)
-
-	error  shift 33
-	ID  shift 23
-	.  error
-
-	var_ref  goto 34
-
-
-state 25
-	lista_ids : lista_ids var_ref .  (13)
-	var_ref : var_ref . PUNTO ID  (15)
-
-	PUNTO  shift 26
-	INT  reduce 13
-	ID  reduce 13
-	COMA  reduce 13
-	PUNTOYCOMA  reduce 13
-	LLAVEFIN  reduce 13
-
-
-state 26
-	var_ref : var_ref PUNTO . ID  (15)
-
-	ID  shift 35
-	.  error
+	tipo  goto 44
 
 
 state 27
-	declaracion_funcion : tipo ID PARENTINIC lista_params_formales . PARENTFIN LLAVEINIC bloque LLAVEFIN  (16)
-	lista_params_formales : lista_params_formales . COMA param_formal  (20)
-	lista_params_formales : lista_params_formales . COMA error  (21)
-	lista_params_formales : lista_params_formales . param_formal  (22)
-	sem_pasaje_opt : .  (26)
+	lista_ids : lista_ids COMA . ID  (13)
+	lista_ids : lista_ids COMA . error  (14)
 
-	CV  shift 19
-	COMA  shift 28
-	PARENTFIN  shift 36
-	INT  reduce 26
-	ID  reduce 26
-
-	param_formal  goto 30
-	sem_pasaje_opt  goto 22
+	error  shift 45
+	ID  shift 46
+	.  error
 
 
 state 28
-	lista_params_formales : lista_params_formales COMA . param_formal  (20)
-	lista_params_formales : lista_params_formales COMA . error  (21)
-	sem_pasaje_opt : .  (26)
+	declaracion_variable : tipo lista_ids PUNTOYCOMA .  (9)
 
-	error  shift 37
-	CV  shift 19
-	INT  reduce 26
-	ID  reduce 26
-
-	param_formal  goto 38
-	sem_pasaje_opt  goto 22
+	.  reduce 9
 
 
 state 29
-	declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN . LLAVEINIC bloque LLAVEFIN  (18)
+	expresion : error . MAS termino  (32)
+	expresion : error . MENOS termino  (35)
+	termino : error . MUL factor  (39)
+	termino : error . DIV factor  (42)
 
-	LLAVEINIC  shift 39
+	MAS  shift 47
+	MUL  shift 48
+	DIV  shift 49
+	MENOS  shift 50
 	.  error
 
 
 state 30
-	lista_params_formales : lista_params_formales param_formal .  (22)
+	cte : CTEINT .  (48)
 
-	.  reduce 22
+	.  reduce 48
 
 
 state 31
+	cte : CTEFLOAT .  (46)
+
+	.  reduce 46
+
+
+state 32
+	cte : CTESTR .  (50)
+
+	.  reduce 50
+
+
+state 33
+	cte : MENOS . CTEFLOAT  (47)
+	cte : MENOS . CTEINT  (49)
+
+	CTEINT  shift 51
+	CTEFLOAT  shift 52
+	.  error
+
+
+state 34
+	var_ref : var_ref . PUNTO ID  (16)
+	factor : var_ref .  (44)
+
+	PUNTO  shift 21
+	error  reduce 44
+	INT  reduce 44
+	ID  reduce 44
+	MAS  reduce 44
+	MUL  reduce 44
+	DIV  reduce 44
+	MENOS  reduce 44
+	PUNTOYCOMA  reduce 44
+	LLAVEFIN  reduce 44
+
+
+state 35
+	asign_simple : var_ref ASIGN expresion .  (28)
+	expresion : expresion . MAS termino  (30)
+	expresion : expresion . MAS error  (31)
+	expresion : expresion . MENOS termino  (33)
+	expresion : expresion . MENOS error  (34)
+
+	MAS  shift 53
+	MENOS  shift 54
+	INT  reduce 28
+	ID  reduce 28
+	PUNTOYCOMA  reduce 28
+	LLAVEFIN  reduce 28
+
+
+state 36
+	expresion : termino .  (29)
+	termino : termino . MUL factor  (37)
+	termino : termino . MUL error  (38)
+	termino : termino . DIV factor  (40)
+	termino : termino . DIV error  (41)
+	termino : termino . error factor  (43)
+
+	error  shift 55
+	MUL  shift 56
+	DIV  shift 57
+	INT  reduce 29
+	ID  reduce 29
+	MAS  reduce 29
+	MENOS  reduce 29
+	PUNTOYCOMA  reduce 29
+	LLAVEFIN  reduce 29
+
+
+state 37
+	termino : factor .  (36)
+
+	.  reduce 36
+
+
+state 38
+	factor : cte .  (45)
+
+	.  reduce 45
+
+
+state 39
+	var_ref : var_ref PUNTO ID .  (16)
+
+	.  reduce 16
+
+
+state 40
+	declaracion_funcion : tipo ID PARENTINIC lista_params_formales . PARENTFIN LLAVEINIC bloque LLAVEFIN  (17)
+	lista_params_formales : lista_params_formales . COMA param_formal  (21)
+	lista_params_formales : lista_params_formales . COMA error  (22)
+
+	COMA  shift 41
+	PARENTFIN  shift 58
+	.  error
+
+
+state 41
+	lista_params_formales : lista_params_formales COMA . param_formal  (21)
+	lista_params_formales : lista_params_formales COMA . error  (22)
+	sem_pasaje_opt : .  (26)
+
+	error  shift 59
+	CV  shift 23
+	INT  reduce 26
+	ID  reduce 26
+
+	param_formal  goto 60
+	sem_pasaje_opt  goto 26
+
+
+state 42
+	declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN . LLAVEINIC bloque LLAVEFIN  (19)
+
+	LLAVEINIC  shift 61
+	.  error
+
+
+state 43
 	param_formal : sem_pasaje_opt ID .  (25)
 
 	.  reduce 25
 
 
-state 32
+state 44
 	param_formal : sem_pasaje_opt tipo . ID  (23)
 	param_formal : sem_pasaje_opt tipo . error  (24)
 
-	error  shift 40
-	ID  shift 41
+	error  shift 62
+	ID  shift 63
 	.  error
 
 
-state 33
-	lista_ids : lista_ids COMA error .  (12)
+state 45
+	lista_ids : lista_ids COMA error .  (14)
 
-	.  reduce 12
-
-
-state 34
-	lista_ids : lista_ids COMA var_ref .  (11)
-	var_ref : var_ref . PUNTO ID  (15)
-
-	PUNTO  shift 26
-	INT  reduce 11
-	ID  reduce 11
-	COMA  reduce 11
-	PUNTOYCOMA  reduce 11
-	LLAVEFIN  reduce 11
+	.  reduce 14
 
 
-state 35
-	var_ref : var_ref PUNTO ID .  (15)
+state 46
+	lista_ids : lista_ids COMA ID .  (13)
 
-	.  reduce 15
+	.  reduce 13
 
 
-state 36
-	declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN . LLAVEINIC bloque LLAVEFIN  (16)
+state 47
+	expresion : error MAS . termino  (32)
 
-	LLAVEINIC  shift 42
+	error  shift 64
+	ID  shift 6
+	CTEINT  shift 30
+	CTEFLOAT  shift 31
+	CTESTR  shift 32
+	MENOS  shift 33
+	.  error
+
+	var_ref  goto 34
+	termino  goto 65
+	factor  goto 37
+	cte  goto 38
+
+
+state 48
+	termino : error MUL . factor  (39)
+
+	ID  shift 6
+	CTEINT  shift 30
+	CTEFLOAT  shift 31
+	CTESTR  shift 32
+	MENOS  shift 33
+	.  error
+
+	var_ref  goto 34
+	factor  goto 66
+	cte  goto 38
+
+
+state 49
+	termino : error DIV . factor  (42)
+
+	ID  shift 6
+	CTEINT  shift 30
+	CTEFLOAT  shift 31
+	CTESTR  shift 32
+	MENOS  shift 33
+	.  error
+
+	var_ref  goto 34
+	factor  goto 67
+	cte  goto 38
+
+
+state 50
+	expresion : error MENOS . termino  (35)
+
+	error  shift 64
+	ID  shift 6
+	CTEINT  shift 30
+	CTEFLOAT  shift 31
+	CTESTR  shift 32
+	MENOS  shift 33
+	.  error
+
+	var_ref  goto 34
+	termino  goto 68
+	factor  goto 37
+	cte  goto 38
+
+
+state 51
+	cte : MENOS CTEINT .  (49)
+
+	.  reduce 49
+
+
+state 52
+	cte : MENOS CTEFLOAT .  (47)
+
+	.  reduce 47
+
+
+state 53
+	expresion : expresion MAS . termino  (30)
+	expresion : expresion MAS . error  (31)
+
+	error  shift 69
+	ID  shift 6
+	CTEINT  shift 30
+	CTEFLOAT  shift 31
+	CTESTR  shift 32
+	MENOS  shift 33
+	.  error
+
+	var_ref  goto 34
+	termino  goto 70
+	factor  goto 37
+	cte  goto 38
+
+
+state 54
+	expresion : expresion MENOS . termino  (33)
+	expresion : expresion MENOS . error  (34)
+
+	error  shift 71
+	ID  shift 6
+	CTEINT  shift 30
+	CTEFLOAT  shift 31
+	CTESTR  shift 32
+	MENOS  shift 33
+	.  error
+
+	var_ref  goto 34
+	termino  goto 72
+	factor  goto 37
+	cte  goto 38
+
+
+state 55
+	termino : termino error . factor  (43)
+
+	ID  shift 6
+	CTEINT  shift 30
+	CTEFLOAT  shift 31
+	CTESTR  shift 32
+	MENOS  shift 33
+	.  error
+
+	var_ref  goto 34
+	factor  goto 73
+	cte  goto 38
+
+
+state 56
+	termino : termino MUL . factor  (37)
+	termino : termino MUL . error  (38)
+
+	error  shift 74
+	ID  shift 6
+	CTEINT  shift 30
+	CTEFLOAT  shift 31
+	CTESTR  shift 32
+	MENOS  shift 33
+	.  error
+
+	var_ref  goto 34
+	factor  goto 75
+	cte  goto 38
+
+
+state 57
+	termino : termino DIV . factor  (40)
+	termino : termino DIV . error  (41)
+
+	error  shift 76
+	ID  shift 6
+	CTEINT  shift 30
+	CTEFLOAT  shift 31
+	CTESTR  shift 32
+	MENOS  shift 33
+	.  error
+
+	var_ref  goto 34
+	factor  goto 77
+	cte  goto 38
+
+
+state 58
+	declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN . LLAVEINIC bloque LLAVEFIN  (17)
+
+	LLAVEINIC  shift 78
 	.  error
 
 
-state 37
-	lista_params_formales : lista_params_formales COMA error .  (21)
+state 59
+	lista_params_formales : lista_params_formales COMA error .  (22)
+
+	.  reduce 22
+
+
+state 60
+	lista_params_formales : lista_params_formales COMA param_formal .  (21)
 
 	.  reduce 21
 
 
-state 38
-	lista_params_formales : lista_params_formales COMA param_formal .  (20)
-
-	.  reduce 20
-
-
-state 39
-	declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC . bloque LLAVEFIN  (18)
+state 61
+	declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC . bloque LLAVEFIN  (19)
 	bloque : .  (2)
 
 	.  reduce 2
 
-	bloque  goto 43
+	bloque  goto 79
 
 
-state 40
+state 62
 	param_formal : sem_pasaje_opt tipo error .  (24)
 
 	.  reduce 24
 
 
-state 41
+state 63
 	param_formal : sem_pasaje_opt tipo ID .  (23)
 
 	.  reduce 23
 
 
-state 42
-	declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC . bloque LLAVEFIN  (16)
+state 64
+	termino : error . MUL factor  (39)
+	termino : error . DIV factor  (42)
+
+	MUL  shift 48
+	DIV  shift 49
+	.  error
+
+
+state 65
+	expresion : error MAS termino .  (32)
+	termino : termino . MUL factor  (37)
+	termino : termino . MUL error  (38)
+	termino : termino . DIV factor  (40)
+	termino : termino . DIV error  (41)
+	termino : termino . error factor  (43)
+
+	error  shift 55
+	MUL  shift 56
+	DIV  shift 57
+	INT  reduce 32
+	ID  reduce 32
+	MAS  reduce 32
+	MENOS  reduce 32
+	PUNTOYCOMA  reduce 32
+	LLAVEFIN  reduce 32
+
+
+state 66
+	termino : error MUL factor .  (39)
+
+	.  reduce 39
+
+
+state 67
+	termino : error DIV factor .  (42)
+
+	.  reduce 42
+
+
+state 68
+	expresion : error MENOS termino .  (35)
+	termino : termino . MUL factor  (37)
+	termino : termino . MUL error  (38)
+	termino : termino . DIV factor  (40)
+	termino : termino . DIV error  (41)
+	termino : termino . error factor  (43)
+
+	error  shift 55
+	MUL  shift 56
+	DIV  shift 57
+	INT  reduce 35
+	ID  reduce 35
+	MAS  reduce 35
+	MENOS  reduce 35
+	PUNTOYCOMA  reduce 35
+	LLAVEFIN  reduce 35
+
+
+state 69
+	expresion : expresion MAS error .  (31)
+	termino : error . MUL factor  (39)
+	termino : error . DIV factor  (42)
+
+	MUL  shift 48
+	DIV  shift 49
+	INT  reduce 31
+	ID  reduce 31
+	MAS  reduce 31
+	MENOS  reduce 31
+	PUNTOYCOMA  reduce 31
+	LLAVEFIN  reduce 31
+
+
+state 70
+	expresion : expresion MAS termino .  (30)
+	termino : termino . MUL factor  (37)
+	termino : termino . MUL error  (38)
+	termino : termino . DIV factor  (40)
+	termino : termino . DIV error  (41)
+	termino : termino . error factor  (43)
+
+	error  shift 55
+	MUL  shift 56
+	DIV  shift 57
+	INT  reduce 30
+	ID  reduce 30
+	MAS  reduce 30
+	MENOS  reduce 30
+	PUNTOYCOMA  reduce 30
+	LLAVEFIN  reduce 30
+
+
+state 71
+	expresion : expresion MENOS error .  (34)
+	termino : error . MUL factor  (39)
+	termino : error . DIV factor  (42)
+
+	MUL  shift 48
+	DIV  shift 49
+	INT  reduce 34
+	ID  reduce 34
+	MAS  reduce 34
+	MENOS  reduce 34
+	PUNTOYCOMA  reduce 34
+	LLAVEFIN  reduce 34
+
+
+state 72
+	expresion : expresion MENOS termino .  (33)
+	termino : termino . MUL factor  (37)
+	termino : termino . MUL error  (38)
+	termino : termino . DIV factor  (40)
+	termino : termino . DIV error  (41)
+	termino : termino . error factor  (43)
+
+	error  shift 55
+	MUL  shift 56
+	DIV  shift 57
+	INT  reduce 33
+	ID  reduce 33
+	MAS  reduce 33
+	MENOS  reduce 33
+	PUNTOYCOMA  reduce 33
+	LLAVEFIN  reduce 33
+
+
+state 73
+	termino : termino error factor .  (43)
+
+	.  reduce 43
+
+
+state 74
+	termino : termino MUL error .  (38)
+
+	.  reduce 38
+
+
+state 75
+	termino : termino MUL factor .  (37)
+
+	.  reduce 37
+
+
+state 76
+	termino : termino DIV error .  (41)
+
+	.  reduce 41
+
+
+state 77
+	termino : termino DIV factor .  (40)
+
+	.  reduce 40
+
+
+state 78
+	declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC . bloque LLAVEFIN  (17)
 	bloque : .  (2)
 
 	.  reduce 2
 
-	bloque  goto 44
+	bloque  goto 80
 
 
-state 43
+state 79
 	bloque : bloque . sentencia  (3)
-	declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque . LLAVEFIN  (18)
+	declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque . LLAVEFIN  (19)
 
 	INT  shift 5
-	LLAVEFIN  shift 45
+	ID  shift 6
+	LLAVEFIN  shift 81
 	.  error
 
-	sentencia  goto 7
-	tipo  goto 8
-	sentencia_ejec  goto 9
-	declaracion_funcion  goto 10
-	declaracion_variable  goto 11
-	declaracion_funcion_err  goto 12
+	sentencia  goto 8
+	tipo  goto 9
+	declaracion_variable  goto 10
+	sentencia_ejec  goto 11
+	declaracion_funcion  goto 12
+	asign_simple  goto 13
+	var_ref  goto 14
+	declaracion_funcion_err  goto 15
 
 
-state 44
+state 80
 	bloque : bloque . sentencia  (3)
-	declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque . LLAVEFIN  (16)
+	declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque . LLAVEFIN  (17)
 
 	INT  shift 5
-	LLAVEFIN  shift 46
+	ID  shift 6
+	LLAVEFIN  shift 82
 	.  error
 
-	sentencia  goto 7
-	tipo  goto 8
-	sentencia_ejec  goto 9
-	declaracion_funcion  goto 10
-	declaracion_variable  goto 11
-	declaracion_funcion_err  goto 12
+	sentencia  goto 8
+	tipo  goto 9
+	declaracion_variable  goto 10
+	sentencia_ejec  goto 11
+	declaracion_funcion  goto 12
+	asign_simple  goto 13
+	var_ref  goto 14
+	declaracion_funcion_err  goto 15
 
 
-state 45
-	declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN .  (18)
+state 81
+	declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN .  (19)
 
-	.  reduce 18
-
-
-state 46
-	declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN .  (16)
-
-	.  reduce 16
+	.  reduce 19
 
 
-38 terminals, 14 nonterminals
-28 grammar rules, 47 states
+state 82
+	declaracion_funcion : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN .  (17)
+
+	.  reduce 17
+
+
+38 terminals, 19 nonterminals
+51 grammar rules, 83 states

@@ -1,0 +1,25 @@
+=========================
+=== TOKENS DETECTADOS ===
+=========================
+Linea  | Token              | Lexema                       | ID  
+------ | ------------------ | ---------------------------- | ----
+     1 | ID                 | P                            |  269
+     1 | LLAVEINIC          | {                            |  291
+     7 | IF                 | if                           |  257
+     7 | PARENTINIC         | (                            |  289
+     7 | CONST_INT          | 2I                           |  270
+     7 | MAYOR              | >                            |  284
+     7 | CONST_INT          | 3I                           |  270
+     7 | PARENTFIN          | )                            |  290
+     7 | LLAVEINIC          | {                            |  291
+     8 | ID                 | INT                          |  269
+     8 | ID                 | A                            |  269
+     8 | COMA               | ,                            |  287
+     8 | ID                 | B                            |  269
+     8 | COMA               | ,                            |  287
+     8 | ID                 | C                            |  269
+     8 | PUNTOYCOMA         | ;                            |  288
+     9 | LLAVEFIN           | }                            |  292
+     9 | ENDIF              | endif                        |  259
+     9 | PUNTOYCOMA         | ;                            |  288
+    10 | LLAVEFIN           | }                            |  292
