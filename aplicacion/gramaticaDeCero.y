@@ -276,16 +276,17 @@ bloque_if   : IF PARENTINIC condicion PARENTFIN rama_if ENDIF {
 bloque_if_error : IF condicion PARENTFIN rama_if ENDIF { yyerror("Falta '(' en sentencia if."); }
                 | IF PARENTINIC condicion rama_if ENDIF { yyerror("Falta ')' en sentencia if."); }
                 | IF condicion rama_if ENDIF { yyerror("Faltan los paréntesis en sentencia if."); }
-                // | IF PARENTINIC condicion PARENTFIN rama_if error { yyerror("Falta 'endif' al final del bloque if."); }
+                | IF PARENTINIC condicion PARENTFIN rama_if error { yyerror("Falta 'endif' al final del bloque if."); }
                 | IF condicion PARENTFIN rama_if ELSE rama_else ENDIF { yyerror("Falta '(' en sentencia if."); }
                 | IF PARENTINIC condicion rama_if ELSE rama_else ENDIF { yyerror("Falta ')' en sentencia if."); }
                 | IF condicion rama_if ELSE rama_else ENDIF { yyerror("Faltan los paréntesis en sentencia if."); }
-                // | IF PARENTINIC condicion PARENTFIN rama_if ELSE rama_else error { yyerror("Falta 'endif' al final del bloque else."); }
+                | IF PARENTINIC condicion PARENTFIN rama_if ELSE rama_else error { yyerror("Falta 'endif' al final del bloque else."); }
                 | IF rama_if ENDIF { yyerror("Falta el cuerpo de condicion en el if.");}
                 | IF rama_if ELSE rama_else ENDIF { yyerror("Falta el cuerpo de condicion en el if.");}
                 | IF PARENTINIC error PARENTFIN rama_if ENDIF { yyerror("Falta condicion en el if."); }
                 | IF PARENTINIC error PARENTFIN rama_if ELSE rama_else ENDIF { yyerror("Falta condicion en el if."); }
                 | IF PARENTINIC condicion PARENTFIN error {yyerror("Falta bloque del if");}
+                |  IF PARENTINIC condicion PARENTFIN rama_if ELSE error {yyerror("Falta bloque del else");}
                 ;
 
 condicion   : expresion op_relacion expresion
@@ -306,14 +307,16 @@ op_relacion     : MENOR
 
 rama_if : sentencia_ejec PUNTOYCOMA
         | LLAVEINIC bloque_ejecutable LLAVEFIN
-        | LLAVEINIC LLAVEFIN  {yyerror("Falta sentencia en el bloque ejecutable");}
-        | /* vacio */ {yyerror("Falta bloque del then");}
+        | LLAVEINIC LLAVEFIN  {yyerror("Falta sentencia en el bloque ejecutable del then");}
+        // | /* vacio */ {yyerror("Falta bloque del then");}
+        //HECHO EN IF ERROR
         ;
 
 rama_else   : sentencia_ejec PUNTOYCOMA
             | LLAVEINIC bloque_ejecutable LLAVEFIN
-            | LLAVEINIC LLAVEFIN  {yyerror("Falta sentencia en el bloque ejecutable");}
-            | /* vacio */ {yyerror("Falta bloque del else");}
+            | LLAVEINIC LLAVEFIN  {yyerror("Falta sentencia en el bloque ejecutable del else");}
+            // | /* vacio */ {yyerror("Falta bloque del else");}
+            // HECHO EN IF ERROR
             ;
 
 /* ========= For (tema 15) ========= */

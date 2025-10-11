@@ -73,7 +73,11 @@ P{
         A := 3I;
     endif;
 
-    if (A =! 5)
+    if (A =! 5) 
+    else
+    endif;
+
+    if (A =! 5) {}
     else
     endif;
 
@@ -119,6 +123,16 @@ P{
 
     }
     endif;
+
+    if ( < B) {
+
+    }
+
+    if ( < B) {
+
+    } else {
+        
+    }
 
     for (I from 1I to 10I) {
         B := A;

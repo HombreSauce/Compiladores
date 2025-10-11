@@ -5,100 +5,110 @@ Linea  | Descripcion
 ------ | ------------------------------
      4 | Error sintactico: Error en declaración de variables, falta ';' al final.
      4 | Error sintactico: Error sintactico: falta identificador después de coma
+     5 | Error sintactico: Error sintactico: falta una coma entre identificadores en la lista de variables
      5 | Error sintactico: Error sintactico: falta identificador después de coma
      6 | Error sintactico: Error sintactico: falta una coma entre identificadores en la lista de variables
-     6 | Error sintactico: Error sintactico: falta identificador después de coma
-     7 | Error sintactico: Error sintactico: falta una coma entre identificadores en la lista de variables
-     8 | Error sintactico: Error sintactico: falta identificador después de coma
-    11 | Error sintactico: Error sintáctico: Falta nombre identificador de función
-    15 | Error sintactico: Error en declaración de variables, falta ';' al final.
+     7 | Error sintactico: Error sintactico: falta identificador después de coma
+    10 | Error sintactico: Error sintáctico: Falta nombre identificador de función
+    14 | Error sintactico: Error en declaración de variables, falta ';' al final.
+    20 | Warning: Se esperaba 'I' luego de la constante numerica '4'. Se asume '4I'
     21 | Warning: Se esperaba 'I' luego de la constante numerica '4'. Se asume '4I'
-    22 | Warning: Se esperaba 'I' luego de la constante numerica '4'. Se asume '4I'
-    23 | Error sintactico: Falta operando derecho después de '+' en expresión.
-    24 | Error sintactico: Falta operando derecho después de '-' en expresión.
-    25 | Warning: Se esperaba 'I' luego de la constante numerica '4'. Se asume '4I'
-    25 | Error sintactico: Falta operando derecho después de '*' en expresión.
-    26 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    26 | Error sintactico: Falta operando derecho después de '/' en expresión.
-    27 | Error sintactico: Falta operando izquierdo antes de '+' en expresión.
-    29 | Error sintactico: Falta operando izquierdo antes de '-' en expresión.
-    30 | Warning: Se esperaba 'I' luego de la constante numerica '4'. Se asume '4I'
-    30 | Error sintactico: Falta operando izquierdo antes de '*' en expresión.
-    31 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    31 | Error sintactico: Falta operando izquierdo antes de '/' en expresión.
-    32 | Error sintactico: Falta operador entre factores en expresión.
-    35 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
-    37 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
-    40 | Error sintactico: Error sintactico: falta lista de constantes después del '='
-    42 | Error sintactico: Error sintactico: falta lista de variables antes del '='
-    44 | Error sintactico: Error sintactico: falta una coma entre identificadores en la lista de variables
-    44 | Error sintactico: Error sintactico: más constantes que variables en la asignación
-    45 | Error sintactico: Error sintactico: falta una coma entre constantes en la lista de constantes
-    52 | Warning: Se esperaba 'I' luego de la constante numerica '2'. Se asume '2I'
-    57 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    61 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    65 | Error sintactico: Falta ';' al final de la sentencia.
-    65 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    67 | Error sintactico: Falta '(' en sentencia if.
-    69 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    71 | Error sintactico: Falta ')' en sentencia if.
-    73 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    75 | Error sintactico: Faltan los paréntesis en sentencia if.
-    77 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    78 | Error sintactico: Falta bloque del then
-    79 | Error sintactico: Falta bloque del else
-    81 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    83 | Error sintactico: Falta sentencia en el bloque ejecutable
-    85 | Error sintactico: Falta sentencia en el bloque ejecutable
-    88 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    90 | Error sintactico: Falta sentencia en el bloque ejecutable
-    92 | Error sintactico: Falta sentencia en el bloque ejecutable
-    93 | Error sintactico: Falta '(' en sentencia if.
-    95 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    97 | Error sintactico: Falta sentencia en el bloque ejecutable
-    99 | Error sintactico: Falta sentencia en el bloque ejecutable
-   100 | Error sintactico: Falta ')' en sentencia if.
-   102 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-   104 | Error sintactico: Falta sentencia en el bloque ejecutable
-   106 | Error sintactico: Falta sentencia en el bloque ejecutable
-   107 | Error sintactico: Faltan los paréntesis en sentencia if.
-   111 | Error sintactico: Falta sentencia en el bloque ejecutable
-   112 | Error sintactico: Falta condicion en el if.
-   114 | Error sintactico: Falta operando derecho en la condicion.
-   116 | Error sintactico: Falta sentencia en el bloque ejecutable
-   119 | Error sintactico: Falta operando izquierdo en la condicion.
-   121 | Error sintactico: Falta sentencia en el bloque ejecutable
-   126 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
-   130 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
-   133 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
-   134 | Error sintactico: Falta '(' en sentencia for.
-   137 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
-   138 | Error sintactico: Falta identificador en sentencia for.
-   141 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
-   142 | Error sintactico: Falta 'from' en sentencia for.
-   145 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
-   146 | Error sintactico: Falta constante entera después de 'from' en sentencia for.
-   149 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
-   150 | Error sintactico: Falta 'to' en sentencia for.
-   153 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
-   154 | Error sintactico: Falta constante entera después de 'to' en sentencia for.
-   156 | Error sintactico: Falta ';' al final de la sentencia.
-   157 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
-   158 | Error sintactico: Falta ')' en sentencia for.
-   160 | Error sintactico: Falta ';' al final de la sentencia.
-   161 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
-   162 | Error sintactico: Faltan los parentesis en sentencia for.
-   164 | Error sintactico: Falta ';' al final de la sentencia.
-   166 | Error sintactico: Falta cuerpo en el bloque del for
-   172 | Error sintactico: Falta '(' en sentencia print.
-   173 | Error sintactico: Falta argumento en sentencia print.
-   174 | Error sintactico: Falta ')' en sentencia print.
-   178 | Error sintactico: Falta ')' en llamada a función con 'trunc'.
-   179 | Error sintactico: Falta '(' en llamada a función con 'trunc'.
-   180 | Error sintactico: Faltan los paréntesis en llamada a función con 'trunc'.
-   181 | Error sintactico: Falta identificador después de '->' en parámetro real
-   184 | Error sintactico: Faltan los delimitadores '{}' en expresión lambda.
-   185 | Error sintactico: Falta '{' en expresión lambda.
-   186 | Error sintactico: Falta '}' en expresión lambda.
-   195 | Error sintactico: Error en declaración de variables, falta ';' al final.
-   197 | Error sintactico: Falta '{' en declaración de programa
+    22 | Error sintactico: Falta operando derecho después de '+' en expresión.
+    23 | Error sintactico: Falta operando derecho después de '-' en expresión.
+    24 | Warning: Se esperaba 'I' luego de la constante numerica '4'. Se asume '4I'
+    24 | Error sintactico: Falta operando derecho después de '*' en expresión.
+    25 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    25 | Error sintactico: Falta operando derecho después de '/' en expresión.
+    26 | Error sintactico: Falta operando izquierdo antes de '+' en expresión.
+    28 | Error sintactico: Falta operando izquierdo antes de '-' en expresión.
+    29 | Warning: Se esperaba 'I' luego de la constante numerica '4'. Se asume '4I'
+    29 | Error sintactico: Falta operando izquierdo antes de '*' en expresión.
+    30 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    30 | Error sintactico: Falta operando izquierdo antes de '/' en expresión.
+    31 | Error sintactico: Falta operador entre factores en expresión.
+    34 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+    36 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+    39 | Error sintactico: Error sintactico: falta lista de constantes después del '='
+    41 | Error sintactico: Error sintactico: falta lista de variables antes del '='
+    43 | Error sintactico: Error sintactico: falta una coma entre identificadores en la lista de variables
+    43 | Error sintactico: Error sintactico: más constantes que variables en la asignación
+    44 | Error sintactico: Error sintactico: falta una coma entre constantes en la lista de constantes
+    51 | Warning: Se esperaba 'I' luego de la constante numerica '2'. Se asume '2I'
+    56 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    60 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    64 | Error sintactico: Falta ';' al final de la sentencia.
+    64 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    66 | Error sintactico: Falta '(' en sentencia if.
+    68 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    70 | Error sintactico: Falta ')' en sentencia if.
+    72 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    74 | Error sintactico: Faltan los paréntesis en sentencia if.
+    76 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    77 | Error sintactico: Falta bloque del if
+    80 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    80 | Error sintactico: Falta sentencia en el bloque ejecutable del then
+    82 | Error sintactico: Falta bloque del else
+    84 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    86 | Error sintactico: Falta sentencia en el bloque ejecutable del then
+    88 | Error sintactico: Falta sentencia en el bloque ejecutable del else
+    91 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    93 | Error sintactico: Falta sentencia en el bloque ejecutable del then
+    95 | Error sintactico: Falta sentencia en el bloque ejecutable del else
+    96 | Error sintactico: Falta '(' en sentencia if.
+    98 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+   100 | Error sintactico: Falta sentencia en el bloque ejecutable del then
+   102 | Error sintactico: Falta sentencia en el bloque ejecutable del else
+   103 | Error sintactico: Falta ')' en sentencia if.
+   105 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+   107 | Error sintactico: Falta sentencia en el bloque ejecutable del then
+   109 | Error sintactico: Falta sentencia en el bloque ejecutable del else
+   110 | Error sintactico: Faltan los paréntesis en sentencia if.
+   114 | Error sintactico: Falta sentencia en el bloque ejecutable del then
+   115 | Error sintactico: Falta condicion en el if.
+   117 | Error sintactico: Falta operando derecho en la condicion.
+   119 | Error sintactico: Falta sentencia en el bloque ejecutable del then
+   122 | Error sintactico: Falta operando izquierdo en la condicion.
+   124 | Error sintactico: Falta sentencia en el bloque ejecutable del then
+   127 | Error sintactico: Falta operando izquierdo en la condicion.
+   129 | Error sintactico: Falta sentencia en el bloque ejecutable del then
+   131 | Error sintactico: Falta 'endif' al final del bloque if.
+   131 | Error sintactico: Falta ';' al final de la sentencia.
+   131 | Error sintactico: Falta operando izquierdo en la condicion.
+   133 | Error sintactico: Falta sentencia en el bloque ejecutable del then
+   135 | Error sintactico: Falta sentencia en el bloque ejecutable del else
+   137 | Error sintactico: Falta 'endif' al final del bloque else.
+   137 | Error sintactico: Falta ';' al final de la sentencia.
+   139 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+   143 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+   146 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+   147 | Error sintactico: Falta '(' en sentencia for.
+   150 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+   151 | Error sintactico: Falta identificador en sentencia for.
+   154 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+   155 | Error sintactico: Falta 'from' en sentencia for.
+   158 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+   159 | Error sintactico: Falta constante entera después de 'from' en sentencia for.
+   162 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+   163 | Error sintactico: Falta 'to' en sentencia for.
+   166 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+   167 | Error sintactico: Falta constante entera después de 'to' en sentencia for.
+   169 | Error sintactico: Falta ';' al final de la sentencia.
+   170 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+   171 | Error sintactico: Falta ')' en sentencia for.
+   173 | Error sintactico: Falta ';' al final de la sentencia.
+   174 | Warning: Se esperaba 'I' luego de la constante numerica '1'. Se asume '1I'
+   175 | Error sintactico: Faltan los parentesis en sentencia for.
+   177 | Error sintactico: Falta ';' al final de la sentencia.
+   179 | Error sintactico: Falta cuerpo en el bloque del for
+   185 | Error sintactico: Falta '(' en sentencia print.
+   186 | Error sintactico: Falta argumento en sentencia print.
+   187 | Error sintactico: Falta ')' en sentencia print.
+   191 | Error sintactico: Falta ')' en llamada a función con 'trunc'.
+   192 | Error sintactico: Falta '(' en llamada a función con 'trunc'.
+   193 | Error sintactico: Faltan los paréntesis en llamada a función con 'trunc'.
+   194 | Error sintactico: Falta identificador después de '->' en parámetro real
+   197 | Error sintactico: Faltan los delimitadores '{}' en expresión lambda.
+   198 | Error sintactico: Falta '{' en expresión lambda.
+   199 | Error sintactico: Falta '}' en expresión lambda.
+   208 | Error sintactico: Error en declaración de variables, falta ';' al final.
+   210 | Error sintactico: Falta '{' en declaración de programa
