@@ -88,6 +88,7 @@ sentencia_ejec	: asign_simple
                 | asign_multiple
                 | bloque_if
                 | bloque_for
+                | sentencia_print
                 ;
 
 /* ========= Declaraciones ========= */
@@ -320,6 +321,14 @@ rama_for	: sentencia_ejec //sin punto y coma porque ya lo pide la sentencia ejec
             | LLAVEINIC bloque_ejecutable LLAVEFIN {System.out.println("BLOQUE FOR");}
             | LLAVEINIC LLAVEFIN  {yyerror("Falta cuerpo en el bloque del for");}
             ;
+
+/* ========= Print (tema 8) ========= */
+
+sentencia_print	: PRINT PARENTINIC expresion PARENTFIN { SINT.add(lex.getLineaActual(), "Print"); }
+                | PRINT PARENTINIC error PARENTFIN { yyerror("Falta argumento en sentencia print."); }
+                | PRINT error expresion PARENTFIN { yyerror("Falta '(' en sentencia print."); }
+                | PRINT PARENTINIC expresion { yyerror("Falta ')' en sentencia print."); }
+                ;
 
 %%
 

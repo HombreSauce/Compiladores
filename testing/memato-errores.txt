@@ -88,5 +88,7 @@ Linea  | Descripcion
    163 | Error sintactico: Falta ';' al final de la sentencia.
    165 | Error sintactico: Falta cuerpo en el bloque del for
    167 | Error sintactico: Falta ';' al final de la sentencia.
-   169 | Error sintactico: Falta bloque del for.
-   169 | Error sintactico: Falta ';' al final de la sentencia.
+   171 | Error sintactico: Falta ';' al final de la sentencia.
+   171 | Error sintactico: Falta '(' en sentencia print.
+   172 | Error sintactico: Falta argumento en sentencia print.
+   173 | Error sintactico: Falta ')' en sentencia print.

@@ -20,3 +20,6 @@ Linea  | Estructura
    126 | Sentencia for                 
    129 | Sentencia for                 
    165 | Sentencia for                 
+   169 | Print                         
+   169 | Sentencia for                 
+   170 | Print                         

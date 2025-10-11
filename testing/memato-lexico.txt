@@ -572,4 +572,25 @@ Linea  | Token              | Lexema                       | ID
    167 | TO                 | to                           |  265
    167 | CONST_INT          | 10I                          |  270
    167 | PARENTFIN          | )                            |  290
-   169 | LLAVEFIN           | }                            |  292
+   169 | PRINT              | print                        |  260
+   169 | PARENTINIC         | (                            |  289
+   169 | CONST_FLOAT        | 8.5                          |  271
+   169 | PARENTFIN          | )                            |  290
+   169 | PUNTOYCOMA         | ;                            |  288
+   170 | PRINT              | print                        |  260
+   170 | PARENTINIC         | (                            |  289
+   170 | CONST_FLOAT        | 8.5                          |  271
+   170 | PARENTFIN          | )                            |  290
+   171 | PRINT              | print                        |  260
+   171 | CONST_FLOAT        | 8.5                          |  271
+   171 | PARENTFIN          | )                            |  290
+   171 | PUNTOYCOMA         | ;                            |  288
+   172 | PRINT              | print                        |  260
+   172 | PARENTINIC         | (                            |  289
+   172 | PARENTFIN          | )                            |  290
+   172 | PUNTOYCOMA         | ;                            |  288
+   173 | PRINT              | print                        |  260
+   173 | PARENTINIC         | (                            |  289
+   173 | CONST_FLOAT        | 8.5                          |  271
+   173 | PUNTOYCOMA         | ;                            |  288
+   175 | LLAVEFIN           | }                            |  292
