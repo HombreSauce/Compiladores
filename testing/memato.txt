@@ -1,7 +1,7 @@
 P{
     @int A.B; no se si se debria poder declarar asi
-    int A, B, C;
-    int A B, C;
+    int A, B, C
+    @ int A B, C;
     int A, B, ;
     int A, B
     int A
@@ -124,6 +124,11 @@ P{
     }
     endif;
 
+    if ( A B) {
+
+    }
+    endif;
+
     if ( < B) {
 
     }
@@ -197,14 +202,5 @@ P{
     SUMAR(4I -> A, (int A) if (A > 1I) print(A);endif;(A) -> B);
     SUMAR(4I -> A, (int A) if (A > 1I) print(A);endif;}(A) -> B);
     SUMAR(4I -> A, (int A) {if (A > 1I) print(A);endif;(A) -> B);
-
-    int FUNCION (int A, cv int B) {
-        A:= 3I;
-        return (A);
-    }
-    int FUNCION (int A, cv int B) {
-        A:= 3I;
-        return (A)
-    }
     
 }

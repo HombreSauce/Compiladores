@@ -61,9 +61,9 @@
 //             ;
 
 prog	: ID LLAVEINIC bloque LLAVEFIN             
-        | ID error bloque LLAVEFIN {yyerror("Falta '{' en declaración de programa");}
+        | ID bloque LLAVEFIN {yyerror("Falta '{' en declaración de programa");}
         | ID LLAVEINIC bloque {yyerror("Falta '}' en declaración de programa");}
-        | error LLAVEINIC bloque LLAVEFIN {yyerror("Falta identificador en declaración de programa");}
+        | LLAVEINIC bloque LLAVEFIN {yyerror("Falta identificador en declaración de programa");}
 		;
 
 /* ========= Bloques ========= */ /* Mezcla declarativas + ejecutables */   
@@ -102,15 +102,16 @@ sentencia_ejec	: asign_simple
 
 declaracion_variable : tipo lista_ids PUNTOYCOMA { SINT.add(lex.getLineaActual(), "Declaracion de variable"); }
                      | tipo lista_ids { yyerror("Error en declaración de variables, falta ';' al final."); }
+                    //  | tipo error PUNTOYCOMA {yyerror("Error en declaración de variables, falta ',' entre identificadores");};
                      ;
 
 
 lista_ids	: ID
  			| lista_ids COMA ID
 			| lista_ids COMA error { yyerror("Error: falta identificador después de coma");}
-            | error COMA {yyerror("Identificador invalido");}
-			| error ID {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
-            //ESTA LINEA DE ARRIBA DEBERIA SER DISTINTA ANDA, PERO RECONOCE MAS COSAS COMO ESE ERROR
+            // | lista_ids ID {yyerror("Error en declaración de variables, falta ',' entre identificadores");};
+            // | error COMA {yyerror("Identificador invalido");}
+			// | error ID {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
   			;
 
 declaracion_con_asignacion  : tipo ID ASIGN expresion PUNTOYCOMA { SINT.add(lex.getLineaActual(), "Declaracion de variable con asignacion"); }
@@ -208,8 +209,6 @@ expresion	: termino
   			| expresion MENOS termino
             | expresion MENOS error { yyerror("Falta operando derecho después de '-' en expresión."); }
   			| error MENOS termino { yyerror("Falta operando izquierdo antes de '-' en expresión."); }
-            // | expresion error termino { yyerror("Falta operador entre factores en expresión."); }
-            // | expresion_error
 			;
 
 termino		: factor
@@ -219,7 +218,7 @@ termino		: factor
   			| termino DIV factor
             | termino DIV error { yyerror("Falta operando derecho después de '/' en expresión."); }
             | error DIV factor { yyerror("Falta operando izquierdo antes de '/' en expresión."); }
-            | termino error factor { yyerror("Falta operador entre factores en expresión."); }
+            // | termino error factor { yyerror("Falta operador entre factores en expresión."); }
             // NO ANDA CON VARIABLES O VARIABLES Y CTES
 			;
 
@@ -290,7 +289,7 @@ bloque_if_error : IF condicion PARENTFIN rama_if ENDIF { yyerror("Falta '(' en s
                 ;
 
 condicion   : expresion op_relacion expresion
-            // | expresion error expresion { yyerror("Falta comparador en la condicion."); }
+            | expresion error expresion { yyerror("Falta comparador en la condicion."); }
             | error op_relacion expresion { yyerror("Falta operando izquierdo en la condicion."); }
             | expresion op_relacion error { yyerror("Falta operando derecho en la condicion."); }
             // | /* vacío */ { yyerror("Falta condicion en el if."); }

@@ -67,8 +67,9 @@ bloque	: /* vacío */
   		;
 
 bloque_ejecutable   : bloque_ejecutable sentencia_ejec PUNTOYCOMA
+                    | sentencia_ejec PUNTOYCOMA
+                    | sentencia_ejec {yyerror("Falta ';' al final de la sentencia.");}
                     | bloque_ejecutable sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
-                    | /* vacío */ {yyerror("Falta sentencia en el bloque ejecutable");}
                     ;
 
 /* ========= Sentencias ========= */
@@ -86,6 +87,9 @@ sentencia	: declaracion_variable
 sentencia_ejec	: asign_simple
                 | asign_multiple
                 | bloque_if
+                | bloque_for
+                | sentencia_print
+                | llamada_funcion
                 ;
 
 /* ========= Declaraciones ========= */
@@ -252,44 +256,118 @@ cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos n
 
 bloque_if   : IF PARENTINIC condicion PARENTFIN rama_if ENDIF { 
 					SINT.add(lex.getLineaActual(), "Sentencia if"); }
-            // | IF condicion PARENTFIN rama_if ENDIF { yyerror("Falta '(' en sentencia if."); }
-            // | IF PARENTINIC condicion error rama_if ENDIF { yyerror("Falta ')' en sentencia if."); }
-            // | IF condicion rama_if ENDIF { yyerror("Faltan los paréntesis en sentencia if."); }
-            // // | IF PARENTINIC condicion PARENTFIN rama_if error { yyerror("Falta 'endif' al final del bloque if."); }
-            // | IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF{
+            | IF PARENTINIC condicion PARENTFIN rama_if ELSE rama_else ENDIF{
 					SINT.add(lex.getLineaActual(), "Sentencia if");
 					SINT.add(lex.getLineaActual(), "Sentencia else");}
-            // | IF PARENTINIC condicion PARENTFIN rama_if opt_else error { yyerror("Falta 'endif' al final del bloque else."); }
-            // | IF PARENTINIC condicion PARENTFIN error  opt_else ENDIF { yyerror("Falta bloque del then."); }
-            // | IF error rama_if ENDIF { yyerror("Falta el cuerpo de condicion en el if.");}
+            | bloque_if_error
             ;
-            /*se podrian agregar errores por si falta alguno de los dos parentesis de la condicion*/
 
-condicion   : expresion relop expresion
-            | expresion error expresion { yyerror("Falta comparador en la condicion."); }
-            | error relop expresion { yyerror("Falta operando izquierdo en la condicion."); }
-            | expresion relop error { yyerror("Falta operando derecho en la condicion."); }
+bloque_if_error : IF condicion PARENTFIN rama_if ENDIF { yyerror("Falta '(' en sentencia if."); }
+                | IF PARENTINIC condicion rama_if ENDIF { yyerror("Falta ')' en sentencia if."); }
+                | IF condicion rama_if ENDIF { yyerror("Faltan los paréntesis en sentencia if."); }
+                // | IF PARENTINIC condicion PARENTFIN rama_if error { yyerror("Falta 'endif' al final del bloque if."); }
+                | IF condicion PARENTFIN rama_if ELSE rama_else ENDIF { yyerror("Falta '(' en sentencia if."); }
+                | IF PARENTINIC condicion rama_if ELSE rama_else ENDIF { yyerror("Falta ')' en sentencia if."); }
+                | IF condicion rama_if ELSE rama_else ENDIF { yyerror("Faltan los paréntesis en sentencia if."); }
+                // | IF PARENTINIC condicion PARENTFIN rama_if ELSE rama_else error { yyerror("Falta 'endif' al final del bloque else."); }
+                | IF rama_if ENDIF { yyerror("Falta el cuerpo de condicion en el if.");}
+                | IF rama_if ELSE rama_else ENDIF { yyerror("Falta el cuerpo de condicion en el if.");}
+                | IF PARENTINIC error PARENTFIN rama_if ENDIF { yyerror("Falta condicion en el if."); }
+                | IF PARENTINIC error PARENTFIN rama_if ELSE rama_else ENDIF { yyerror("Falta condicion en el if."); }
+                ;
+
+condicion   : expresion op_relacion expresion
+            // | expresion error expresion { yyerror("Falta comparador en la condicion."); }
+            | error op_relacion expresion { yyerror("Falta operando izquierdo en la condicion."); }
+            | expresion op_relacion error { yyerror("Falta operando derecho en la condicion."); }
             // | /* vacío */ { yyerror("Falta condicion en el if."); }
             ;
 
-relop       : MENOR 
-            | MAYOR 
-            | IGUAL 
-            | DISTINTO 
-            | MENORIGUAL 
-            | MAYORIGUAL
-            ;
+op_relacion     : MENOR 
+                | MAYOR 
+                | IGUAL 
+                | DISTINTO 
+                | MENORIGUAL 
+                | MAYORIGUAL
+                // | /* vacio */ {yyerror("Falta operador relacional en la condicion");}
+                ;
 
-rama_if     : sentencia
+rama_if : sentencia_ejec PUNTOYCOMA
+        | LLAVEINIC bloque_ejecutable LLAVEFIN
+        | LLAVEINIC LLAVEFIN  {yyerror("Falta sentencia en el bloque ejecutable");}
+        | /* vacio */ {yyerror("Falta bloque del then");}
+        ;
+
+rama_else   : sentencia_ejec PUNTOYCOMA
             | LLAVEINIC bloque_ejecutable LLAVEFIN
+            | LLAVEINIC LLAVEFIN  {yyerror("Falta sentencia en el bloque ejecutable");}
+            | /* vacio */ {yyerror("Falta bloque del else");}
             ;
 
-opt_else    : ELSE rama_if
-            | ELSE error { yyerror("Falta bloque del else."); }
+/* ========= For (tema 15) ========= */
+
+bloque_for	: FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for { SINT.add(lex.getLineaActual(), "Sentencia for"); }
+            | FOR error ID FROM CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta '(' en sentencia for."); }
+            | FOR PARENTINIC error FROM CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta identificador en sentencia for."); }
+            | FOR PARENTINIC ID error CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta 'from' en sentencia for."); }
+            | FOR PARENTINIC ID FROM error TO CTEINT PARENTFIN rama_for { yyerror("Falta constante entera después de 'from' en sentencia for."); }
+            | FOR PARENTINIC ID FROM CTEINT error CTEINT PARENTFIN rama_for { yyerror("Falta 'to' en sentencia for."); }
+            | FOR PARENTINIC ID FROM CTEINT TO error PARENTFIN rama_for { yyerror("Falta constante entera después de 'to' en sentencia for."); }
+            | FOR PARENTINIC ID FROM CTEINT TO CTEINT error rama_for { yyerror("Falta ')' en sentencia for."); }
+            | FOR error ID FROM CTEINT TO CTEINT error rama_for { yyerror("Faltan los parentesis en sentencia for."); }
+            | FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN error { yyerror("Falta bloque del for."); }
             ;
+
+rama_for	: sentencia_ejec //sin punto y coma porque ya lo pide la sentencia ejecutable
+            | LLAVEINIC bloque_ejecutable LLAVEFIN {System.out.println("BLOQUE FOR");}
+            | LLAVEINIC LLAVEFIN  {yyerror("Falta cuerpo en el bloque del for");}
+            ;
+
+/* ========= Print (tema 8) ========= */
+
+sentencia_print	: PRINT PARENTINIC expresion PARENTFIN { SINT.add(lex.getLineaActual(), "Print"); }
+                | PRINT PARENTINIC error PARENTFIN { yyerror("Falta argumento en sentencia print."); }
+                | PRINT error expresion PARENTFIN { yyerror("Falta '(' en sentencia print."); }
+                | PRINT PARENTINIC expresion { yyerror("Falta ')' en sentencia print."); }
+                ;
+
+/* ========= Invocaciones y retorno ========= */
+
+/* Params reales pueden ser expr, lambda (tema 28) o trunc (expr) (tema 31) */
+
+llamada_funcion	: ID PARENTINIC lista_params_reales PARENTFIN { SINT.add(lex.getLineaActual(), "Llamada a funcion"); }
+                // | PARENTINIC lista_params_reales PARENTFIN{ yyerror("Llamada a función sin nombre");}
+  				;
+
+lista_params_reales	: param_real_map
+                    | lista_params_reales COMA param_real_map
+                    ;
+
+/* Cada parámetro real debe mapear a un formal con '->' */
+param_real_map	: parametro_real FLECHA ID
+                | parametro_real FLECHA error { yyerror("Falta identificador después de '->' en parámetro real");}
+                ;	
+
+parametro_real	: expresion                    
+  				| TRUNC PARENTINIC expresion PARENTFIN { SINT.add(lex.getLineaActual(), "Trunc"); }                		 /* tema 31 */
+                | TRUNC PARENTINIC expresion { yyerror("Falta ')' en llamada a función con 'trunc'.");}
+                | TRUNC error expresion PARENTFIN { yyerror("Falta '(' en llamada a función con 'trunc'.");}
+                | TRUNC error expresion { yyerror("Faltan los paréntesis en llamada a función con 'trunc'.");}
+  				| lambda_expr                                     	 /* tema 28 */
+				;
+
+/* ========= Lambda como parámetro (tema 28) ========= */
+
+lambda_expr		: PARENTINIC tipo ID PARENTFIN LLAVEINIC bloque_ejecutable LLAVEFIN PARENTINIC argumento PARENTFIN { SINT.add(lex.getLineaActual(), "Lambda"); System.out.println("HOLAAAA");}
+                | PARENTINIC tipo ID PARENTFIN bloque_ejecutable LLAVEFIN PARENTINIC argumento PARENTFIN { yyerror("Falta '{' en expresión lambda."); }
+                | PARENTINIC tipo ID PARENTFIN LLAVEINIC bloque_ejecutable PARENTINIC argumento PARENTFIN { yyerror("Falta '}' en expresión lambda."); }
+                | PARENTINIC tipo ID PARENTFIN bloque_ejecutable PARENTINIC argumento PARENTFIN { yyerror("Faltan los delimitadores '{}' en expresión lambda."); }
+                ;
+
+argumento	: ID
+  			| cte
+  			;
 %%
-
-/* ---- Seccion de código ---- */
 
 /* ---- Seccion de código ---- */
 
