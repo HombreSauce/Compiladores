@@ -171,5 +171,17 @@ P{
     print8.5);
     print();
     print(8.5;
+
+    SUMAR(4I -> A, 5I + 6.5 -> B);
+    SUMAR(4I -> A, trunc(5I / 6I)-> B);
+    SUMAR(4I -> A, trunc(5I / 6I-> B);
+    SUMAR(4I -> A, trunc5I / 6I)-> B);
+    SUMAR(4I -> A, trunc5I / 6I-> B);
+    SUMAR(4I -> A, 5I + 6.5 -> );
+
+    SUMAR(4I -> A, (int A) {if (A > 1I) print(A);endif;}(4I)-> B);
+    SUMAR(4I -> A, (int A) if (A > 1I) print(A);endif;(A) -> B);
+    SUMAR(4I -> A, (int A) if (A > 1I) print(A);endif;}(A) -> B);
+    SUMAR(4I -> A, (int A) {if (A > 1I) print(A);endif;(A) -> B);
     
 }

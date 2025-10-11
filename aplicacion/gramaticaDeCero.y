@@ -89,6 +89,7 @@ sentencia_ejec	: asign_simple
                 | bloque_if
                 | bloque_for
                 | sentencia_print
+                | llamada_funcion
                 ;
 
 /* ========= Declaraciones ========= */
@@ -291,13 +292,13 @@ op_relacion     : MENOR
                 // | /* vacio */ {yyerror("Falta operador relacional en la condicion");}
                 ;
 
-rama_if : sentencia_ejec
+rama_if : sentencia_ejec PUNTOYCOMA
         | LLAVEINIC bloque_ejecutable LLAVEFIN
         | LLAVEINIC LLAVEFIN  {yyerror("Falta sentencia en el bloque ejecutable");}
         | /* vacio */ {yyerror("Falta bloque del then");}
         ;
 
-rama_else   : sentencia_ejec
+rama_else   : sentencia_ejec PUNTOYCOMA
             | LLAVEINIC bloque_ejecutable LLAVEFIN
             | LLAVEINIC LLAVEFIN  {yyerror("Falta sentencia en el bloque ejecutable");}
             | /* vacio */ {yyerror("Falta bloque del else");}
@@ -330,6 +331,42 @@ sentencia_print	: PRINT PARENTINIC expresion PARENTFIN { SINT.add(lex.getLineaAc
                 | PRINT PARENTINIC expresion { yyerror("Falta ')' en sentencia print."); }
                 ;
 
+/* ========= Invocaciones y retorno ========= */
+
+/* Params reales pueden ser expr, lambda (tema 28) o trunc (expr) (tema 31) */
+
+llamada_funcion	: ID PARENTINIC lista_params_reales PARENTFIN { SINT.add(lex.getLineaActual(), "Llamada a funcion"); }
+                // | PARENTINIC lista_params_reales PARENTFIN{ yyerror("Llamada a función sin nombre");}
+  				;
+
+lista_params_reales	: param_real_map
+                    | lista_params_reales COMA param_real_map
+                    ;
+
+/* Cada parámetro real debe mapear a un formal con '->' */
+param_real_map	: parametro_real FLECHA ID
+                | parametro_real FLECHA error { yyerror("Falta identificador después de '->' en parámetro real");}
+                ;	
+
+parametro_real	: expresion                    
+  				| TRUNC PARENTINIC expresion PARENTFIN { SINT.add(lex.getLineaActual(), "Trunc"); }                		 /* tema 31 */
+                | TRUNC PARENTINIC expresion { yyerror("Falta ')' en llamada a función con 'trunc'.");}
+                | TRUNC error expresion PARENTFIN { yyerror("Falta '(' en llamada a función con 'trunc'.");}
+                | TRUNC error expresion { yyerror("Faltan los paréntesis en llamada a función con 'trunc'.");}
+  				| lambda_expr                                     	 /* tema 28 */
+				;
+
+/* ========= Lambda como parámetro (tema 28) ========= */
+
+lambda_expr		: PARENTINIC tipo ID PARENTFIN LLAVEINIC bloque_ejecutable LLAVEFIN PARENTINIC argumento PARENTFIN { SINT.add(lex.getLineaActual(), "Lambda"); System.out.println("HOLAAAA");}
+                | PARENTINIC tipo ID PARENTFIN bloque_ejecutable LLAVEFIN PARENTINIC argumento PARENTFIN { yyerror("Falta '{' en expresión lambda."); }
+                | PARENTINIC tipo ID PARENTFIN LLAVEINIC bloque_ejecutable PARENTINIC argumento PARENTFIN { yyerror("Falta '}' en expresión lambda."); }
+                | PARENTINIC tipo ID PARENTFIN bloque_ejecutable PARENTINIC argumento PARENTFIN { yyerror("Faltan los delimitadores '{}' en expresión lambda."); }
+                ;
+
+argumento	: ID
+  			| cte
+  			;
 %%
 
 /* ---- Seccion de código ---- */

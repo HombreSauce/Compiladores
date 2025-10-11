@@ -34,14 +34,14 @@ Linea  | Descripcion
     51 | Warning: Se esperaba 'I' luego de la constante numerica '2'. Se asume '2I'
     56 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
     60 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
+    64 | Error sintactico: Falta ';' al final de la sentencia.
     64 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    64 | Error sintactico: Falta operando izquierdo en la condicion.
+    66 | Error sintactico: Falta '(' en sentencia if.
     68 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    69 | Error sintactico: Falta operando izquierdo en la condicion.
+    70 | Error sintactico: Falta ')' en sentencia if.
     72 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    73 | Error sintactico: Falta operando izquierdo en la condicion.
+    74 | Error sintactico: Faltan los paréntesis en sentencia if.
     76 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
-    76 | Error sintactico: Falta operando izquierdo en la condicion.
     77 | Error sintactico: Falta bloque del then
     78 | Error sintactico: Falta bloque del else
     80 | Warning: Se esperaba 'I' luego de la constante numerica '5'. Se asume '5I'
@@ -92,3 +92,10 @@ Linea  | Descripcion
    171 | Error sintactico: Falta '(' en sentencia print.
    172 | Error sintactico: Falta argumento en sentencia print.
    173 | Error sintactico: Falta ')' en sentencia print.
+   177 | Error sintactico: Falta ')' en llamada a función con 'trunc'.
+   178 | Error sintactico: Falta '(' en llamada a función con 'trunc'.
+   179 | Error sintactico: Faltan los paréntesis en llamada a función con 'trunc'.
+   180 | Error sintactico: Falta identificador después de '->' en parámetro real
+   183 | Error sintactico: Faltan los delimitadores '{}' en expresión lambda.
+   184 | Error sintactico: Falta '{' en expresión lambda.
+   185 | Error sintactico: Falta '}' en expresión lambda.
