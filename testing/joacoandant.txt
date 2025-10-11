@@ -1,0 +1,16 @@
+P{
+    @int A
+    @int A, B
+    @@int A.B;
+    @int A, B, C;
+    @int A B, C;
+    @int A, B, ;
+    
+    
+    int FUNCIONJOACO1 (int A) {}
+    int FUNCIONJ2 (int A, cv int B) {}
+    int  (int A, cv int B) {}
+    int FUNCIONJ3 (int A, int B) {}
+    int A
+
+}

@@ -1,0 +1,52 @@
+=========================
+=== TOKENS DETECTADOS ===
+=========================
+Linea  | Token              | Lexema                       | ID  
+------ | ------------------ | ---------------------------- | ----
+     1 | ID                 | P                            |  269
+     1 | LLAVEINIC          | {                            |  291
+    10 | INT                | int                          |  262
+    10 | ID                 | FUNCIONJOACO1                |  269
+    10 | PARENTINIC         | (                            |  289
+    10 | INT                | int                          |  262
+    10 | ID                 | A                            |  269
+    10 | PARENTFIN          | )                            |  290
+    10 | LLAVEINIC          | {                            |  291
+    10 | LLAVEFIN           | }                            |  292
+    11 | INT                | int                          |  262
+    11 | ID                 | FUNCIONJ2                    |  269
+    11 | PARENTINIC         | (                            |  289
+    11 | INT                | int                          |  262
+    11 | ID                 | A                            |  269
+    11 | COMA               | ,                            |  287
+    11 | CV                 | cv                           |  267
+    11 | INT                | int                          |  262
+    11 | ID                 | B                            |  269
+    11 | PARENTFIN          | )                            |  290
+    11 | LLAVEINIC          | {                            |  291
+    11 | LLAVEFIN           | }                            |  292
+    12 | INT                | int                          |  262
+    12 | PARENTINIC         | (                            |  289
+    12 | INT                | int                          |  262
+    12 | ID                 | A                            |  269
+    12 | COMA               | ,                            |  287
+    12 | CV                 | cv                           |  267
+    12 | INT                | int                          |  262
+    12 | ID                 | B                            |  269
+    12 | PARENTFIN          | )                            |  290
+    12 | LLAVEINIC          | {                            |  291
+    12 | LLAVEFIN           | }                            |  292
+    13 | INT                | int                          |  262
+    13 | ID                 | FUNCIONJ3                    |  269
+    13 | PARENTINIC         | (                            |  289
+    13 | INT                | int                          |  262
+    13 | ID                 | A                            |  269
+    13 | COMA               | ,                            |  287
+    13 | INT                | int                          |  262
+    13 | ID                 | B                            |  269
+    13 | PARENTFIN          | )                            |  290
+    13 | LLAVEINIC          | {                            |  291
+    13 | LLAVEFIN           | }                            |  292
+    14 | INT                | int                          |  262
+    14 | ID                 | A                            |  269
+    16 | LLAVEFIN           | }                            |  292

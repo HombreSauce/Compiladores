@@ -3,3 +3,5 @@
 ==========================
 Linea  | Descripcion
 ------ | ------------------------------
+    12 | Error sintactico: Falta el nombre de la funcion
+    16 | Error sintactico: Falta ';' al final de la declaracion multiple.

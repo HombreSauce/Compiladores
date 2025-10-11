@@ -3,5 +3,6 @@
 ==========================================
 Linea  | Estructura                    
 ------ | ------------------------------
-    13 | Declaracion de variable       
-    15 | Declaracion de variable       
+    10 | Declaracion de funcion        
+    11 | Declaracion de funcion        
+    13 | Declaracion de funcion        

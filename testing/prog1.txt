@@ -1,46 +1,33 @@
 PROG {
 
-H:=23;
+@CP = casos de prueba
 
-X:=1I;
-Y:=2I;
-
-int APLICA ( int V,  cv CB ) {
-    print( V );
-    return ( V );
-}
-
-int (int A, int B) { X:=3I;}
-X:=3I;
-
-H:=33333333;
+@CP asignacion simple ---> funciona bien para todos los casos
+@Z:=3I;      @   6 | Asignacion
+@Z:=3;       @   7 | Asignacion                  7 | Warning: Se esperaba 'I' luego de la constante numerica '3'. Se asume '3I'                    
+@Z:=;        @                                   8 | Error sintactico: Falta expresion despues de ':=' en asignacion.
+@:=3I;       @                                   9 | Error sintactico: Falta variable antes de ':=' en asignacion.
 
 
-print();
+@CP declaracion simple
+int Z;      @   13 | Declaracion de variable
+@int X       @                                  15 | Error sintactico: Se esperaba un ';', ',' o '(' en la declaracion pero no se encontro
+int Q;      @esta declaracion es comida porque la anterior esta buscando el ; para sincronizarse luego del error
+@int ;       @                                   16 | Error sintactico: Falta identificador despues de 'int'
 
-AJAJAJASJKDHASKJÑLDHASDF :=213;
 
-X := 3I - 4I / 5I;
-Y := 32768I;
-Z := -2I;
-FLOTANTE := -33.456;
-H := 327683;
+@CP declaracion multiple
 
-X, Y, Z = 1I, 2I, 3I;
+@int A, B, ;
+@
+@int A, B, C,
+@
+@int A, B, C, 
+@
+@int D, E, F
 
-int X, Y, Z;
+int G, H, I;
 
-if( A > B ) {
-    X := 2I; }
-endif;
-
-if ( X  Y ) { print( X ); } else print( Y ); endif;
-
-for ( I from 1 to 3I ) { print( I ); };
-for  I from 1 to 3I  {};
-
-print( SUMA( 12 -> A, trunc 7I / -3I  -> B ) );
-
-APLICA( 99I -> V, (int T){ print( T ); }(5) -> CB );
-APLICA( 99I -> V, (int T) print( T ); }(5) -> CB );
+@X:=1I;
+@Y:=2I;
 }
