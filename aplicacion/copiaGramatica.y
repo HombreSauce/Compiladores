@@ -7,10 +7,15 @@
 	import datos.EntradaTablaSimbolos;
 	import datos.TablaIdentificadorToken;
 	import datos.TablaPalabraReservada;
+    import salida.Generador_out;
+	import salida.Tokens_out;
+	import salida.TS_out;
+	import salida.SintaxStruct_out;
+	import salida.Errors_out;
+	import static salida.Generador_out.*;
 	import java.io.*;
 	import java.nio.charset.StandardCharsets;
 	import java.nio.file.*;
-
 %}
 
 /* ===== Palabras reservadas ===== */
@@ -61,32 +66,51 @@ bloque	: /* vacío */
   		| bloque sentencia
   		;
 
+bloque_ejecutable   : bloque_ejecutable sentencia_ejec PUNTOYCOMA
+                    | bloque_ejecutable sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
+                    | /* vacío */ {yyerror("Falta sentencia en el bloque ejecutable");}
+                    ;
+
 /* ========= Sentencias ========= */
 tipo    : INT
         ;
 
-sentencia	: tipo lista_ids PUNTOYCOMA
-            | tipo lista_ids { yyerror("Error en declaración de variables, falta ';' al final."); }
-            // | sentencia_ejec PUNTOYCOMA
-            // | sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
+
+sentencia	: declaracion_variable
+            | declaracion_con_asignacion
+            | sentencia_ejec PUNTOYCOMA
+            | sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
   		    | declaracion_funcion
   			;
 
 sentencia_ejec	: asign_simple
+                | asign_multiple
+                | bloque_if
                 ;
 
-lista_ids	: var_ref
- 			| lista_ids COMA var_ref
+/* ========= Declaraciones ========= */
+
+declaracion_variable : tipo lista_ids PUNTOYCOMA { SINT.add(lex.getLineaActual(), "Declaracion de variable"); }
+                     | tipo lista_ids { yyerror("Error en declaración de variables, falta ';' al final."); }
+                     ;
+
+
+lista_ids	: ID
+ 			| lista_ids COMA ID
 			| lista_ids COMA error { yyerror("Error: falta identificador después de coma");}
-			| lista_ids var_ref {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
+			// | lista_ids ID {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
+            //ESTA LINEA DE ARRIBA DEBERIA ESTAR
   			;
 
-var_ref		: ID					/* tema 22 */
-			| var_ref PUNTO ID
-  			;	
+declaracion_con_asignacion  : tipo ID ASIGN expresion PUNTOYCOMA { SINT.add(lex.getLineaActual(), "Declaracion de variable con asignacion"); }
+                            | tipo ID ASIGN expresion { yyerror("Error en declaración de variable con asignación, falta ';' al final."); }
+                            | tipo ID ASIGN error PUNTOYCOMA { yyerror("Error en declaración de variable con asignación, expresión inválida."); }
+                            | tipo ID error expresion PUNTOYCOMA { yyerror("Error en declaración de variable con asignación, falta ':=' entre identificador y expresión."); }
+                            | tipo error ASIGN expresion PUNTOYCOMA { yyerror("Error en declaración de variable con asignación, falta identificador después del tipo."); }
+                            ;
 
 /* ========= Funciones (declaración) ========= */
-declaracion_funcion     : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
+declaracion_funcion     : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN { SINT.add(lex.getLineaActual(), "Declaracion de funcion"); }
                         | declaracion_funcion_err
                         ;
 
@@ -102,7 +126,8 @@ declaracion_funcion_err : tipo PARENTINIC lista_params_formales PARENTFIN LLAVEI
 lista_params_formales	: param_formal
 						| lista_params_formales COMA param_formal
                         | lista_params_formales COMA error {yyerror("Error sintáctico: falta identificador despues de coma en parametro formal");}
-                        | lista_params_formales param_formal {yyerror("Error sintactico: falta coma entre parametros formales en declaracion de funcion");}
+                        // | lista_params_formales param_formal {yyerror("Error sintactico: falta coma entre parametros formales en declaracion de funcion");}
+                        // DEBERIA ESTAR ESTE DE ARRIBA
 						;
 
 param_formal		: sem_pasaje_opt tipo ID            /* tema 24 */
@@ -120,90 +145,151 @@ sem_pasaje_opt		: /* vacío */
 asign_simple	: var_ref ASIGN expresion {System.out.println("Asignación válida");}
   				;
 
-// /* Tema 18 */ /* LHS puede tener más elementos que RHS.  RHS sólo constantes */
+/* Tema 18 */ /* LHS puede tener más elementos que RHS.  RHS sólo constantes */
 
-// // asign_multiple	: lista_ids IGUALUNICO lista_ctes { 
-// //                     System.out.println("n_var: " + n_var + ", n_cte: " + n_cte);
-// //                     if (n_var == 1 && n_cte == 1) {
-// //                         yyerror("Error: para asignación simple use ':=' en lugar de '='");
-// //                     } else {
-// //                         if (n_var < n_cte) {
-// //                             yyerror("Error: más constantes que variables en la asignación");
-// //                         } else {
-// //                             System.out.println("Asignación válida (" + n_var + ", " + n_cte + ")");
-// //                         }
-// //                     }
-// // 					n_var = n_cte = 0;  /* reset para la próxima */
-// // 				}
-// // 				| IGUALUNICO lista_ctes { yyerror("Error: falta lista de variables antes del '='"); }
-// // 				| lista_ids lista_ctes { yyerror("Error: falta '=' entre la lista de variables y la lista de constantes"); }
-// // 				| lista_ids IGUALUNICO error { yyerror("Error: falta lista de constantes después del '='");}
-// //   				;
+asign_multiple	: lista_vars IGUALUNICO lista_ctes { 
+                    //System.out.println("n_var: " + n_var + ", n_cte: " + n_cte);
+                    if (n_var == 1 && n_cte == 1) {
+                        yyerror("Error sintactico: para asignación simple use ':=' en lugar de '='");
+                    } else {
+                        if (n_var < n_cte) {
+                            yyerror("Error sintactico: más constantes que variables en la asignación");
+                        } else {
+                            // System.out.println("Asignación válida (" + n_var + ", " + n_cte + ")");
+                            System.out.println("Asignación válida");
+                        }
+                    }
+					n_var = n_cte = 0;  /* reset para la próxima */
+				}
+				| IGUALUNICO lista_ctes { yyerror("Error sintactico: falta lista de variables antes del '='"); }
+				| lista_vars IGUALUNICO error { yyerror("Error sintactico: falta lista de constantes después del '='");}
+				// | lista_vars lista_ctes { yyerror("Error sintactico: falta '=' entre la lista de variables y la lista de constantes"); }
+                // NO LO PIDE LA HOJA, POR AHORA NO ANDA
+  				;
 
-// // lista_ctes	: cte {n_cte++;}
-// //   			| lista_ctes COMA cte {n_cte++;}
-// // 			| lista_ctes COMA error { yyerror("Error: falta una constante después de coma");}
-// //   			;	
+lista_ctes	: cte {n_cte++;}
+  			| lista_ctes COMA cte {n_cte++;}
+			| lista_ctes COMA error { yyerror("Error sintactico: falta una constante después de coma");}
+			| lista_ctes cte { yyerror("Error sintactico: falta una coma entre constantes en la lista de constantes");}
+  			;	
+
+lista_vars	: var_ref {n_var++;}
+            | lista_vars COMA var_ref {n_var++;}
+            | lista_vars COMA error { yyerror("Error sintactico: falta identificador después de coma");}
+            | lista_vars var_ref {yyerror("Error sintactico: falta una coma entre identificadores en la lista de variables");}
+            //ESTA LINEA DE ARRIBA DEBERIA ESTAR
+            ;
+
+var_ref		: ID					/* tema 22 */
+			| var_ref PUNTO ID
+  			;	
 
 /* ========= Expresiones aritméticas (sin '()' ) ========= */
 
 expresion	: termino
             | expresion MAS termino
-            // | expresion MAS error { yyerror("Falta operando derecho después de '+' en expresión."); }
+            | expresion MAS error { yyerror("Falta operando derecho después de '+' en expresión."); }
+            | error MAS termino { yyerror("Falta operando izquierdo antes de '+' en expresión."); }
   			| expresion MENOS termino
-            // | expresion MENOS error { yyerror("Falta operando derecho después de '-' en expresión."); }
-            // | expresion termino { yyerror("Falta operador entre factores en expresión."); }
+            | expresion MENOS error { yyerror("Falta operando derecho después de '-' en expresión."); }
+  			| error MENOS termino { yyerror("Falta operando izquierdo antes de '-' en expresión."); }
+            // | expresion error termino { yyerror("Falta operador entre factores en expresión."); }
             // | expresion_error
 			;
 
 termino		: factor
             | termino MUL factor
-            // | termino MUL error { yyerror("Falta operando derecho después de '*' en expresión."); }
+            | termino MUL error { yyerror("Falta operando derecho después de '*' en expresión."); }
+            | error MUL factor { yyerror("Falta operando izquierdo antes de '*' en expresión."); }
   			| termino DIV factor
-            // | termino DIV error { yyerror("Falta operando derecho después de '/' en expresión."); }
+            | termino DIV error { yyerror("Falta operando derecho después de '/' en expresión."); }
+            | error DIV factor { yyerror("Falta operando izquierdo antes de '/' en expresión."); }
+            | termino error factor { yyerror("Falta operador entre factores en expresión."); }
+            // NO ANDA CON VARIABLES O VARIABLES Y CTES
 			;
 
 factor		: var_ref
   			// | llamada_funcion
-  			// | cte
+  			| cte
  			;
 
-// /* ========= Constante ========= */
+/* ========= Constante ========= */
 
-// cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos ni negativos porque ya lo hace la AS9
-// 		| MENOS CTEFLOAT {
-// 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$2.obj;
-// 			String valor_negativo = '-' + entrada.getLexema();
-// 			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
-// 			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); //eliminamos la entrada del positivo que se creo en el lexico
-// 			yyval = $2; //se reduce por CTEFLOAT
-// 		}
-// 		| CTEINT {
-// 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$1.obj;
-// 			String valor = entrada.getLexema();
-// 			valor = valor.substring(0, valor.length() - 1); //nos quedamos con el numero sin el I final
-// 			int num = Integer.parseInt(valor);
-// 			int max = 32767;
-// 			//al ser positivo debemos chequear el maximo
-// 			if (num > max) {
-// 				System.err.println("Error léxico: constante entera fuera de rango en línea " + lex.getLineaActual() + ": " + num);
-// 				tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea());
-// 			}
+cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos ni negativos porque ya lo hace la AS9
+		| MENOS CTEFLOAT {
+			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$2.obj;
+			String valor_negativo = '-' + entrada.getLexema();
+			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
+			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); //eliminamos la entrada del positivo que se creo en el lexico
+			yyval = $2; //se reduce por CTEFLOAT
+		}
+		| CTEINT {
+			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$1.obj;
+			String valor = entrada.getLexema();
+			valor = valor.substring(0, valor.length() - 1); //nos quedamos con el numero sin el I final
+			int num = Integer.parseInt(valor);
+			int max = 32767;
+			//al ser positivo debemos chequear el maximo
+			if (num > max) {
+				System.err.println("Error léxico: constante entera fuera de rango en línea " + lex.getLineaActual() + ": " + num);
+				tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea());
+			}
 
-// 			yyval = $1;
-// 		}
-// 		| MENOS CTEINT {
-// 			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$2.obj;
-// 			String valor_negativo = '-' + entrada.getLexema();
-// 			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
-// 			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); //eliminamos la entrada del positivo que se creo en el lexico
+			yyval = $1;
+		}
+		| MENOS CTEINT {
+			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$2.obj;
+			String valor_negativo = '-' + entrada.getLexema();
+			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
+			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); //eliminamos la entrada del positivo que se creo en el lexico
 
-// 			yyval = $2;
-// 		}
-// 		| CTESTR
-//   		;
+			yyval = $2;
+		}
+		| CTESTR
+  		;
 
+/* ========= If (selección) ========= */
+
+bloque_if   : IF PARENTINIC condicion PARENTFIN rama_if ENDIF { 
+					SINT.add(lex.getLineaActual(), "Sentencia if"); }
+            // | IF condicion PARENTFIN rama_if ENDIF { yyerror("Falta '(' en sentencia if."); }
+            // | IF PARENTINIC condicion error rama_if ENDIF { yyerror("Falta ')' en sentencia if."); }
+            // | IF condicion rama_if ENDIF { yyerror("Faltan los paréntesis en sentencia if."); }
+            // // | IF PARENTINIC condicion PARENTFIN rama_if error { yyerror("Falta 'endif' al final del bloque if."); }
+            // | IF PARENTINIC condicion PARENTFIN rama_if opt_else ENDIF{
+					SINT.add(lex.getLineaActual(), "Sentencia if");
+					SINT.add(lex.getLineaActual(), "Sentencia else");}
+            // | IF PARENTINIC condicion PARENTFIN rama_if opt_else error { yyerror("Falta 'endif' al final del bloque else."); }
+            // | IF PARENTINIC condicion PARENTFIN error  opt_else ENDIF { yyerror("Falta bloque del then."); }
+            // | IF error rama_if ENDIF { yyerror("Falta el cuerpo de condicion en el if.");}
+            ;
+            /*se podrian agregar errores por si falta alguno de los dos parentesis de la condicion*/
+
+condicion   : expresion relop expresion
+            | expresion error expresion { yyerror("Falta comparador en la condicion."); }
+            | error relop expresion { yyerror("Falta operando izquierdo en la condicion."); }
+            | expresion relop error { yyerror("Falta operando derecho en la condicion."); }
+            // | /* vacío */ { yyerror("Falta condicion en el if."); }
+            ;
+
+relop       : MENOR 
+            | MAYOR 
+            | IGUAL 
+            | DISTINTO 
+            | MENORIGUAL 
+            | MAYORIGUAL
+            ;
+
+rama_if     : sentencia
+            | LLAVEINIC bloque_ejecutable LLAVEFIN
+            ;
+
+opt_else    : ELSE rama_if
+            | ELSE error { yyerror("Falta bloque del else."); }
+            ;
 %%
+
+/* ---- Seccion de código ---- */
 
 /* ---- Seccion de código ---- */
 
@@ -213,119 +299,21 @@ static TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
 static int n_var = 0; //para contar variables en asignaciones multiples
 static int n_cte = 0; //para contar ctes en asignaciones multiples
 
-// writers de salida
-static BufferedWriter wTokens = null;   // para los tokens
-static BufferedWriter wTabla  = null;   // para la tabla de símbolos
-static BufferedWriter wSint = null;     // para las estructuras sintacticas
+public static Tokens_out TOKENS;
+public static TS_out TS;
+public static SintaxStruct_out SINT;
+public static Errors_out ERR;
 
-// helpers de ruta
-static Path rutaLexico(Path fuente, boolean acentos) {
-    String base = quitarExt(fuente.getFileName().toString());
-    String suf  = acentos ? "-léxico" : "-lexico";
-    return (fuente.getParent() == null ? Paths.get(".") : fuente.getParent())
-            .resolve(base + suf + ".txt");
-}
-static Path rutaTabla(Path fuente, boolean acentos) {
-    String base = quitarExt(fuente.getFileName().toString());
-    String suf  = acentos ? "-tabla-de-símbolos" : "-tabla-simbolos";
-    return (fuente.getParent() == null ? Paths.get(".") : fuente.getParent())
-            .resolve(base + suf + ".txt");
-}
-static Path rutaSintactico(Path fuente, boolean acentos) {
-    String base = quitarExt(fuente.getFileName().toString());
-    String suf  = acentos ? "-sintáctico" : "-sintactico";
-    return (fuente.getParent() == null ? Paths.get(".") : fuente.getParent())
-            .resolve(base + suf + ".txt");
-}
-static String quitarExt(String s) {
-    int i = s.lastIndexOf('.');
-    return (i > 0) ? s.substring(0, i) : s;
+public static void logLexError(String mensaje){
+    int linea = (lex != null) ? lex.getLineaActual() : -1;
+    System.err.println("Error lexico en linea " + linea + ": " + mensaje);
+    if (ERR != null) ERR.add(linea, "Error lexico: " + mensaje);
 }
 
-
-
-//para el archivo de tokens
-static void escribirHeaderTokens(BufferedWriter w) throws IOException {
-    w.write(encabezado("TOKENS DETECTADOS")); w.newLine();
-    w.write(String.format("%-6s | %-18s | %-28s | %-4s", "Linea", "Token", "Lexema", "ID")); w.newLine();
-    w.write("------ | ------------------ | ---------------------------- | ----"); w.newLine();
+public static void logLexWarnAt(int linea, String mensaje){
+    System.out.println("Warning en linea " + linea + ": " + mensaje);
+    if (ERR != null) ERR.add(linea, "Warning: " + mensaje);
 }
-static String filaToken(Token t, int linea) {
-    String[] tl = tipoYLexema(t);
-    String tipo   = humanizeTipo(tl[0]);                              
-    String lexema = tl[1].replace("\n","\\n").replace("\r","\\r").replace("\t","\\t");
-    lexema = trunc(lexema, 28);                                       // evita que desborde la columna
-    return String.format("%6d | %-18s | %-28s | %4d", linea, tipo, lexema, t.getIDToken());
-}
-// Mapea los IDs a (tipo, lexema) usando las tablas
-static String[] tipoYLexema(Token t) {
-    TablaIdentificadorToken tid = TablaIdentificadorToken.getInstancia();
-    TablaPalabraReservada  tpr  = TablaPalabraReservada.getInstancia();
-    int id = t.getIDToken();
-
-    if (id < 269) {                            // Palabra reservada
-        String kw = tpr.getClave(id);          // ej: IF
-        return new String[]{ kw, kw.toLowerCase() }; // tipo=IF, lexema="if"
-    } else if (id == 269) {
-        return new String[]{ "ID",           t.getEntradaTS()!=null ? t.getEntradaTS().getLexema() : "" };
-    } else if (id == 270) {
-        return new String[]{ "CONST_INT",    t.getEntradaTS()!=null ? t.getEntradaTS().getLexema() : "" };
-    } else if (id == 271) {
-        return new String[]{ "CONST_FLOAT",  t.getEntradaTS()!=null ? t.getEntradaTS().getLexema() : "" };
-    } else if (id == 272) {
-        return new String[]{ "CONST_STRING", t.getEntradaTS()!=null ? t.getEntradaTS().getLexema() : "" };
-    } else {
-        String raw = tid.getClave(id); // puede ser "(", "ASIGNACION", ";", etc.
-        String lex = (t.getEntradaTS()!=null) ? t.getEntradaTS().getLexema() : raw;
-        return new String[]{ raw, lex };
-    }
-}
-// Cambia simbolos sueltos para que la columna Token se vea prolija
-static String humanizeTipo(String raw) {
-    return switch (raw) {
-        case "if" -> "IF";
-        case "else" -> "ELSE";
-        case "endif" -> "ENDIF";
-        case "print" -> "PRINT";
-        case "return" -> "RETURN";
-        case "int" -> "INT";
-        case "for" -> "FOR";
-        case "from" -> "FROM";
-        case "to" -> "TO";
-        case "lambda" -> "LAMBDA";
-        case "cv" -> "CV";
-        case "trunc" -> "TRUNC";
-        case ":=" -> "ASIGN";
-        case "->" -> "FLECHA";
-        case "==" -> "IGUAL";
-        case "=!" -> "DISTINTO";
-        case "<=" -> "MENORIGUAL";
-        case "=>" -> "MAYORIGUAL";
-        case "+" -> "MAS";
-        case "*" -> "MUL";
-        case "/" -> "DIV";
-        case "-" -> "MENOS";
-        case "=" -> "IGUALUNICO";
-        case ">" -> "MAYOR";
-        case "<" -> "MENOR";
-        case "." -> "PUNTO";
-        case "(" -> "PARENTINIC";
-        case ")" -> "PARENTFIN";
-        case "{" -> "LLAVEINIC";
-        case "}" -> "LLAVEFIN";
-        case ";" -> "PUNTOYCOMA";
-        case "," -> "COMA";
-        default -> raw;
-    };
-}
-// Recorta con puntos si el lexema es muy largo
-static String trunc(String s, int max) {
-    if (s == null) return "";
-    if (s.length() <= max) return s;
-    if (max <= 1) return s.substring(0, max);
-    return s.substring(0, max-1) + "…";
-}
-
 
 public static void main (String [] args) {
     try {
@@ -334,42 +322,30 @@ public static void main (String [] args) {
 
         Path fuente = Paths.get(args[0]);
 
-        // abrir archivos de salida
-        wTokens = Files.newBufferedWriter(
-                rutaLexico(fuente, false), StandardCharsets.UTF_8,
-                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
-        escribirHeaderTokens(wTokens);
-
-        // (opcional) abrimos el de tabla ahora o despues — aca lo abrimos ahora
-        wTabla = Files.newBufferedWriter(
-                rutaTabla(fuente, false), StandardCharsets.UTF_8,
-                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+        TOKENS = new Tokens_out(Generador_out.rutaLexico(fuente, false));
+        TS     = new TS_out(Generador_out.rutaTabla(fuente, false));
+        SINT   = new SintaxStruct_out(Generador_out.rutaSintactico(fuente, false));
+        ERR    = new Errors_out(Generador_out.rutaErrores(fuente, false));
 
         // correr analisis
         lex = new AnalizadorLexico(args[0]);
         par = new Parser(false);
         par.run();
 
-        // volcar TABLA DE SIMBOLOS a archivo
-        wTabla.write(encabezado("TABLA DE SIMBOLOS"));
-        wTabla.newLine();
-        PrintWriter pw = new PrintWriter(wTabla, true);
-        tablaSimbolos.mostrarTabla(pw); 
+        TS.dump(tablaSimbolos);
 
         System.out.println("Fin compilacion");
-        
-    } catch (IOException e) {
-        throw new RuntimeException(e);
+    } catch (Exception e) {
+        e.printStackTrace();
     } finally {
-        try { if (wTokens != null) { wTokens.flush(); wTokens.close(); } } catch (IOException ignored) {}
-        try { if (wTabla  != null) { wTabla.flush();  wTabla.close();  } } catch (IOException ignored) {}
+        // Cierra en orden; SintaxStruct_out escribe el header y la tabla en close()
+        try { if (SINT   != null) SINT.close(); }   catch (Exception ignored) {}
+        try { if (TS     != null) TS.close(); }     catch (Exception ignored) {}
+        try { if (TOKENS != null) TOKENS.close(); } catch (Exception ignored) {}
+        try { if (ERR    != null) ERR.close(); }   catch (Exception ignored) {}
     }
 }
 
-static String encabezado(String titulo) {
-    String barra = "=".repeat(Math.max(24, titulo.length() + 8));
-    return barra + "\n" + "=== " + titulo + " ===\n" + barra;
-}
 
 
 int yylex (){
@@ -377,15 +353,10 @@ int yylex (){
     if ((token = lex.getToken()) != null) {
         yylval = new ParserVal(token.getEntradaTS());
 
-        // --- escribir al archivo de tokens ---
-        if (wTokens != null) {
-            try {
-				int lineaTok = lex.getLineaActual(); 
-                wTokens.write(filaToken(token, lineaTok)); 
-                wTokens.newLine();
-            } catch (IOException e) {
-                throw new RuntimeException("Error escribiendo token", e);
-            }
+        // registrar token
+        if (TOKENS != null) {
+            int lineaTok = lex.getLineaActual();
+            TOKENS.append(token, lineaTok);
         }
         return token.getIDToken();
     } else {
@@ -395,5 +366,8 @@ int yylex (){
 
 void yyerror(String mensaje){
     if ("syntax error".equals(mensaje)) return;  // suprime el genérico
+	int linea = lex.getLineaActual();
     System.err.println("Error sintactico en linea " + lex.getLineaActual() + ": " + mensaje);
+	if (ERR != null) ERR.add(linea, "Error sintactico: " + mensaje);
+
 }

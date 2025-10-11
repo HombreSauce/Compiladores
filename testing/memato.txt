@@ -45,5 +45,125 @@ P{
 
     A := 3I;
 
+    if (A > 5I) {
+        A := 3I + 3I;
+    } else {
+        B := 3I * 2;
+    }
+    endif;
+
+    if (A < 5I) {
+        A := 5;
+    }
+    endif;
+
+    if (A == 5)
+        A := 3I;
+    endif
+    
+    if A == 5)
+        A := 3I;
+    endif;
+    
+    if (A == 5
+        A := 3I;
+    endif;
+    
+    if A == 5
+        A := 3I;
+    endif;
+
+    if (A =! 5)
+    else
+    endif;
+
+    if (A =! 5) {
+
+    } else {
+        
+    }
+    endif;
+
+    if A =! 5) {
+
+    } else {
+        
+    }
+    endif;
+
+    if (A =! 5 {
+
+    } else {
+        
+    }
+    endif;
+
+    if A =! 5 {
+
+    } else {
+        
+    }
+    endif;
+
+    if () {
+
+    }
+    endif;
+
+    if (A >) {
+
+    }
+    endif;
+
+    if ( < B) {
+
+    }
+    endif;
+
+    for (I from 1I to 10I) {
+        B := A;
+        A := A + 1;
+    };
+
+    for (I from 1I to 10I)
+        A := A + 1;
+
+    for I from 1I to 10I) {
+        A := A + 1;
+    };
+
+    for ( from 1I to 10I) {
+        A := A + 1;
+    };
+
+    for (I 1I to 10I) {
+        A := A + 1;
+    };
+
+    for (I from to 10I) {
+        A := A + 1;
+    };
+
+    for (I from 1I  10I) {
+        A := A + 1;
+    };
+
+    for (I from 1I to ) {
+        A := A + 1;
+    }
+
+    for (I from 1I to 10I {
+        A := A + 1;
+    }
+
+    for I from 1I to 10I {
+        A := A + 1;
+    }
+
+    for (I from 1I to 10I) {
+        
+    }
+    
+    for (I from 1I to 10I) 
     
 }

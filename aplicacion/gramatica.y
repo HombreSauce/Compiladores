@@ -248,8 +248,6 @@ sem_pasaje_opt		: /* vacío */
 
 /* ========= If (selección) ========= */
 
-/* ========= If (selección) ========= */
-
 bloque_if   : IF PARENTINIC condicion PARENTFIN rama_if ENDIF { 
 					SINT.add(lex.getLineaActual(), "Sentencia if"); }
             | IF condicion PARENTFIN rama_if ENDIF { yyerror("Falta '(' en sentencia if."); }

@@ -66,6 +66,12 @@ bloque	: /* vacío */
   		| bloque sentencia
   		;
 
+bloque_ejecutable   : bloque_ejecutable sentencia_ejec PUNTOYCOMA
+                    | sentencia_ejec PUNTOYCOMA
+                    | sentencia_ejec {yyerror("Falta ';' al final de la sentencia.");}
+                    | bloque_ejecutable sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
+                    ;
+
 /* ========= Sentencias ========= */
 tipo    : INT
         ;
@@ -75,11 +81,13 @@ sentencia	: declaracion_variable
             | declaracion_con_asignacion
             | sentencia_ejec PUNTOYCOMA
             | sentencia_ejec { yyerror("Falta ';' al final de la sentencia."); }
-  		    | declaracion_funcion { SINT.add(lex.getLineaActual(), "Declaracion de funcion"); }
+  		    | declaracion_funcion
   			;
 
 sentencia_ejec	: asign_simple
                 | asign_multiple
+                | bloque_if
+                | bloque_for
                 ;
 
 /* ========= Declaraciones ========= */
@@ -104,7 +112,7 @@ declaracion_con_asignacion  : tipo ID ASIGN expresion PUNTOYCOMA { SINT.add(lex.
                             ;
 
 /* ========= Funciones (declaración) ========= */
-declaracion_funcion     : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN
+declaracion_funcion     : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN { SINT.add(lex.getLineaActual(), "Declaracion de funcion"); }
                         | declaracion_funcion_err
                         ;
 
@@ -242,9 +250,78 @@ cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos n
 		| CTESTR
   		;
 
-%%
+/* ========= If (selección) ========= */
 
-/* ---- Seccion de código ---- */
+bloque_if   : IF PARENTINIC condicion PARENTFIN rama_if ENDIF { 
+					SINT.add(lex.getLineaActual(), "Sentencia if"); }
+            | IF PARENTINIC condicion PARENTFIN rama_if ELSE rama_else ENDIF{
+					SINT.add(lex.getLineaActual(), "Sentencia if");
+					SINT.add(lex.getLineaActual(), "Sentencia else");}
+            | bloque_if_error
+            ;
+
+bloque_if_error : IF condicion PARENTFIN rama_if ENDIF { yyerror("Falta '(' en sentencia if."); }
+                | IF PARENTINIC condicion rama_if ENDIF { yyerror("Falta ')' en sentencia if."); }
+                | IF condicion rama_if ENDIF { yyerror("Faltan los paréntesis en sentencia if."); }
+                // | IF PARENTINIC condicion PARENTFIN rama_if error { yyerror("Falta 'endif' al final del bloque if."); }
+                | IF condicion PARENTFIN rama_if ELSE rama_else ENDIF { yyerror("Falta '(' en sentencia if."); }
+                | IF PARENTINIC condicion rama_if ELSE rama_else ENDIF { yyerror("Falta ')' en sentencia if."); }
+                | IF condicion rama_if ELSE rama_else ENDIF { yyerror("Faltan los paréntesis en sentencia if."); }
+                // | IF PARENTINIC condicion PARENTFIN rama_if ELSE rama_else error { yyerror("Falta 'endif' al final del bloque else."); }
+                | IF rama_if ENDIF { yyerror("Falta el cuerpo de condicion en el if.");}
+                | IF rama_if ELSE rama_else ENDIF { yyerror("Falta el cuerpo de condicion en el if.");}
+                | IF PARENTINIC error PARENTFIN rama_if ENDIF { yyerror("Falta condicion en el if."); }
+                | IF PARENTINIC error PARENTFIN rama_if ELSE rama_else ENDIF { yyerror("Falta condicion en el if."); }
+                ;
+
+condicion   : expresion op_relacion expresion
+            // | expresion error expresion { yyerror("Falta comparador en la condicion."); }
+            | error op_relacion expresion { yyerror("Falta operando izquierdo en la condicion."); }
+            | expresion op_relacion error { yyerror("Falta operando derecho en la condicion."); }
+            // | /* vacío */ { yyerror("Falta condicion en el if."); }
+            ;
+
+op_relacion     : MENOR 
+                | MAYOR 
+                | IGUAL 
+                | DISTINTO 
+                | MENORIGUAL 
+                | MAYORIGUAL
+                // | /* vacio */ {yyerror("Falta operador relacional en la condicion");}
+                ;
+
+rama_if : sentencia_ejec
+        | LLAVEINIC bloque_ejecutable LLAVEFIN
+        | LLAVEINIC LLAVEFIN  {yyerror("Falta sentencia en el bloque ejecutable");}
+        | /* vacio */ {yyerror("Falta bloque del then");}
+        ;
+
+rama_else   : sentencia_ejec
+            | LLAVEINIC bloque_ejecutable LLAVEFIN
+            | LLAVEINIC LLAVEFIN  {yyerror("Falta sentencia en el bloque ejecutable");}
+            | /* vacio */ {yyerror("Falta bloque del else");}
+            ;
+
+/* ========= For (tema 15) ========= */
+
+bloque_for	: FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for { SINT.add(lex.getLineaActual(), "Sentencia for"); }
+            | FOR error ID FROM CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta '(' en sentencia for."); }
+            | FOR PARENTINIC error FROM CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta identificador en sentencia for."); }
+            | FOR PARENTINIC ID error CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta 'from' en sentencia for."); }
+            | FOR PARENTINIC ID FROM error TO CTEINT PARENTFIN rama_for { yyerror("Falta constante entera después de 'from' en sentencia for."); }
+            | FOR PARENTINIC ID FROM CTEINT error CTEINT PARENTFIN rama_for { yyerror("Falta 'to' en sentencia for."); }
+            | FOR PARENTINIC ID FROM CTEINT TO error PARENTFIN rama_for { yyerror("Falta constante entera después de 'to' en sentencia for."); }
+            | FOR PARENTINIC ID FROM CTEINT TO CTEINT error rama_for { yyerror("Falta ')' en sentencia for."); }
+            | FOR error ID FROM CTEINT TO CTEINT error rama_for { yyerror("Faltan los parentesis en sentencia for."); }
+            | FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN error { yyerror("Falta bloque del for."); }
+            ;
+
+rama_for	: sentencia_ejec //sin punto y coma porque ya lo pide la sentencia ejecutable
+            | LLAVEINIC bloque_ejecutable LLAVEFIN {System.out.println("BLOQUE FOR");}
+            | LLAVEINIC LLAVEFIN  {yyerror("Falta cuerpo en el bloque del for");}
+            ;
+
+%%
 
 /* ---- Seccion de código ---- */
 

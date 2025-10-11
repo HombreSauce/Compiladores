@@ -7,5 +7,16 @@ Linea  | Estructura
      5 | Declaracion de variable       
      8 | Declaracion de funcion        
      9 | Declaracion de funcion        
-    10 | Declaracion de funcion        
     11 | Declaracion de funcion        
+    53 | Sentencia if                  
+    53 | Sentencia else                
+    58 | Sentencia if                  
+    78 | Sentencia if                  
+    78 | Sentencia else                
+    85 | Sentencia if                  
+    85 | Sentencia else                
+   116 | Sentencia if                  
+   121 | Sentencia if                  
+   126 | Sentencia for                 
+   129 | Sentencia for                 
+   165 | Sentencia for                 
