@@ -1,7 +1,7 @@
 P{
     @int A.B; no se si se debria poder declarar asi
     int A, B, C;
-    @int A B, C; @/ no reconoce que falta la coma, (la regla está comentada) porque si no tengo shift reduce
+    int A B, C;
     int A, B, ;
     int A, B
     int A

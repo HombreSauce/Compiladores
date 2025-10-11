@@ -12,39 +12,39 @@ Linea  | Token              | Lexema                       | ID
      3 | COMA               | ,                            |  287
      3 | ID                 | C                            |  269
      3 | PUNTOYCOMA         | ;                            |  288
+     4 | INT                | int                          |  262
+     4 | ID                 | A                            |  269
+     4 | ID                 | B                            |  269
+     4 | COMA               | ,                            |  287
+     4 | ID                 | C                            |  269
+     4 | PUNTOYCOMA         | ;                            |  288
      5 | INT                | int                          |  262
-     5 | ID                 | A                            |  269
+     5 | CONST_INT          | 4I                           |  270
      5 | COMA               | ,                            |  287
      5 | ID                 | B                            |  269
-     5 | COMA               | ,                            |  287
      5 | PUNTOYCOMA         | ;                            |  288
      6 | INT                | int                          |  262
      6 | ID                 | A                            |  269
      6 | COMA               | ,                            |  287
      6 | ID                 | B                            |  269
+     6 | COMA               | ,                            |  287
+     6 | PUNTOYCOMA         | ;                            |  288
      7 | INT                | int                          |  262
      7 | ID                 | A                            |  269
-     8 | INT                | int                          |  262
-     8 | ID                 | FUNCION                      |  269
-     8 | PARENTINIC         | (                            |  289
+     7 | COMA               | ,                            |  287
+     7 | ID                 | B                            |  269
      8 | INT                | int                          |  262
      8 | ID                 | A                            |  269
-     8 | PARENTFIN          | )                            |  290
-     8 | LLAVEINIC          | {                            |  291
-     8 | LLAVEFIN           | }                            |  292
      9 | INT                | int                          |  262
      9 | ID                 | FUNCION                      |  269
      9 | PARENTINIC         | (                            |  289
      9 | INT                | int                          |  262
      9 | ID                 | A                            |  269
-     9 | COMA               | ,                            |  287
-     9 | CV                 | cv                           |  267
-     9 | INT                | int                          |  262
-     9 | ID                 | B                            |  269
      9 | PARENTFIN          | )                            |  290
      9 | LLAVEINIC          | {                            |  291
      9 | LLAVEFIN           | }                            |  292
     10 | INT                | int                          |  262
+    10 | ID                 | FUNCION                      |  269
     10 | PARENTINIC         | (                            |  289
     10 | INT                | int                          |  262
     10 | ID                 | A                            |  269
@@ -56,98 +56,102 @@ Linea  | Token              | Lexema                       | ID
     10 | LLAVEINIC          | {                            |  291
     10 | LLAVEFIN           | }                            |  292
     11 | INT                | int                          |  262
-    11 | ID                 | FUNCION                      |  269
     11 | PARENTINIC         | (                            |  289
     11 | INT                | int                          |  262
     11 | ID                 | A                            |  269
     11 | COMA               | ,                            |  287
+    11 | CV                 | cv                           |  267
     11 | INT                | int                          |  262
     11 | ID                 | B                            |  269
     11 | PARENTFIN          | )                            |  290
     11 | LLAVEINIC          | {                            |  291
     11 | LLAVEFIN           | }                            |  292
     12 | INT                | int                          |  262
+    12 | ID                 | FUNCION                      |  269
+    12 | PARENTINIC         | (                            |  289
+    12 | INT                | int                          |  262
     12 | ID                 | A                            |  269
-    14 | ID                 | A                            |  269
-    14 | ASIGN              | :=                           |  273
-    14 | ID                 | B                            |  269
-    14 | PUNTOYCOMA         | ;                            |  288
+    12 | COMA               | ,                            |  287
+    12 | INT                | int                          |  262
+    12 | ID                 | B                            |  269
+    12 | PARENTFIN          | )                            |  290
+    12 | LLAVEINIC          | {                            |  291
+    12 | LLAVEFIN           | }                            |  292
+    13 | INT                | int                          |  262
+    13 | ID                 | A                            |  269
     15 | ID                 | A                            |  269
     15 | ASIGN              | :=                           |  273
-    15 | CONST_INT          | 3I                           |  270
+    15 | ID                 | B                            |  269
     15 | PUNTOYCOMA         | ;                            |  288
     16 | ID                 | A                            |  269
     16 | ASIGN              | :=                           |  273
-    16 | CONST_FLOAT        | 4.5                          |  271
+    16 | CONST_INT          | 3I                           |  270
     16 | PUNTOYCOMA         | ;                            |  288
     17 | ID                 | A                            |  269
     17 | ASIGN              | :=                           |  273
-    17 | CONST_FLOAT        | 4.5D+6                       |  271
+    17 | CONST_FLOAT        | 4.5                          |  271
     17 | PUNTOYCOMA         | ;                            |  288
     18 | ID                 | A                            |  269
-    18 | PUNTO              | .                            |  286
-    18 | ID                 | C                            |  269
     18 | ASIGN              | :=                           |  273
-    18 | CONST_INT          | 3I                           |  270
-    18 | MAS                | +                            |  279
-    18 | CONST_INT          | 4I                           |  270
+    18 | CONST_FLOAT        | 4.5D+6                       |  271
     18 | PUNTOYCOMA         | ;                            |  288
     19 | ID                 | A                            |  269
     19 | PUNTO              | .                            |  286
     19 | ID                 | C                            |  269
     19 | ASIGN              | :=                           |  273
     19 | CONST_INT          | 3I                           |  270
-    19 | MENOS              | -                            |  282
+    19 | MAS                | +                            |  279
     19 | CONST_INT          | 4I                           |  270
     19 | PUNTOYCOMA         | ;                            |  288
     20 | ID                 | A                            |  269
+    20 | PUNTO              | .                            |  286
+    20 | ID                 | C                            |  269
     20 | ASIGN              | :=                           |  273
+    20 | CONST_INT          | 3I                           |  270
+    20 | MENOS              | -                            |  282
     20 | CONST_INT          | 4I                           |  270
-    20 | MUL                | *                            |  280
-    20 | CONST_FLOAT        | 6.6                          |  271
     20 | PUNTOYCOMA         | ;                            |  288
     21 | ID                 | A                            |  269
     21 | ASIGN              | :=                           |  273
     21 | CONST_INT          | 4I                           |  270
-    21 | DIV                | /                            |  281
+    21 | MUL                | *                            |  280
     21 | CONST_FLOAT        | 6.6                          |  271
     21 | PUNTOYCOMA         | ;                            |  288
     22 | ID                 | A                            |  269
-    22 | PUNTO              | .                            |  286
-    22 | ID                 | C                            |  269
     22 | ASIGN              | :=                           |  273
-    22 | CONST_INT          | 3I                           |  270
-    22 | MAS                | +                            |  279
+    22 | CONST_INT          | 4I                           |  270
+    22 | DIV                | /                            |  281
+    22 | CONST_FLOAT        | 6.6                          |  271
     22 | PUNTOYCOMA         | ;                            |  288
     23 | ID                 | A                            |  269
     23 | PUNTO              | .                            |  286
     23 | ID                 | C                            |  269
     23 | ASIGN              | :=                           |  273
     23 | CONST_INT          | 3I                           |  270
-    23 | MENOS              | -                            |  282
+    23 | MAS                | +                            |  279
     23 | PUNTOYCOMA         | ;                            |  288
     24 | ID                 | A                            |  269
+    24 | PUNTO              | .                            |  286
+    24 | ID                 | C                            |  269
     24 | ASIGN              | :=                           |  273
-    24 | CONST_INT          | 4I                           |  270
-    24 | MUL                | *                            |  280
+    24 | CONST_INT          | 3I                           |  270
+    24 | MENOS              | -                            |  282
     24 | PUNTOYCOMA         | ;                            |  288
     25 | ID                 | A                            |  269
     25 | ASIGN              | :=                           |  273
-    25 | CONST_INT          | 5I                           |  270
-    25 | DIV                | /                            |  281
+    25 | CONST_INT          | 4I                           |  270
+    25 | MUL                | *                            |  280
     25 | PUNTOYCOMA         | ;                            |  288
     26 | ID                 | A                            |  269
-    26 | PUNTO              | .                            |  286
-    26 | ID                 | C                            |  269
     26 | ASIGN              | :=                           |  273
-    26 | MAS                | +                            |  279
-    26 | CONST_INT          | 3I                           |  270
+    26 | CONST_INT          | 5I                           |  270
+    26 | DIV                | /                            |  281
     26 | PUNTOYCOMA         | ;                            |  288
     27 | ID                 | A                            |  269
     27 | PUNTO              | .                            |  286
     27 | ID                 | C                            |  269
     27 | ASIGN              | :=                           |  273
-    27 | MENOS              | -                            |  282
+    27 | MAS                | +                            |  279
     27 | CONST_INT          | 3I                           |  270
     27 | PUNTOYCOMA         | ;                            |  288
     28 | ID                 | A                            |  269
@@ -155,471 +159,462 @@ Linea  | Token              | Lexema                       | ID
     28 | ID                 | C                            |  269
     28 | ASIGN              | :=                           |  273
     28 | MENOS              | -                            |  282
-    28 | MENOS              | -                            |  282
     28 | CONST_INT          | 3I                           |  270
     28 | PUNTOYCOMA         | ;                            |  288
     29 | ID                 | A                            |  269
+    29 | PUNTO              | .                            |  286
+    29 | ID                 | C                            |  269
     29 | ASIGN              | :=                           |  273
-    29 | MUL                | *                            |  280
-    29 | CONST_INT          | 4I                           |  270
+    29 | MENOS              | -                            |  282
+    29 | MENOS              | -                            |  282
+    29 | CONST_INT          | 3I                           |  270
     29 | PUNTOYCOMA         | ;                            |  288
     30 | ID                 | A                            |  269
     30 | ASIGN              | :=                           |  273
-    30 | DIV                | /                            |  281
-    30 | CONST_INT          | 5I                           |  270
+    30 | MUL                | *                            |  280
+    30 | CONST_INT          | 4I                           |  270
     30 | PUNTOYCOMA         | ;                            |  288
     31 | ID                 | A                            |  269
     31 | ASIGN              | :=                           |  273
-    31 | CONST_INT          | 4I                           |  270
+    31 | DIV                | /                            |  281
     31 | CONST_INT          | 5I                           |  270
     31 | PUNTOYCOMA         | ;                            |  288
-    34 | ID                 | A                            |  269
-    34 | PUNTO              | .                            |  286
-    34 | ID                 | A                            |  269
-    34 | IGUALUNICO         | =                            |  283
-    34 | CONST_INT          | 1I                           |  270
-    34 | PUNTOYCOMA         | ;                            |  288
-    36 | ID                 | A                            |  269
-    36 | COMA               | ,                            |  287
-    36 | ID                 | B                            |  269
-    36 | IGUALUNICO         | =                            |  283
-    36 | CONST_INT          | 1I                           |  270
-    36 | PUNTOYCOMA         | ;                            |  288
-    37 | ID                 | A                            |  269
-    37 | PUNTO              | .                            |  286
+    32 | ID                 | A                            |  269
+    32 | ASIGN              | :=                           |  273
+    32 | CONST_INT          | 4I                           |  270
+    32 | CONST_INT          | 5I                           |  270
+    32 | PUNTOYCOMA         | ;                            |  288
+    35 | ID                 | A                            |  269
+    35 | PUNTO              | .                            |  286
+    35 | ID                 | A                            |  269
+    35 | IGUALUNICO         | =                            |  283
+    35 | CONST_INT          | 1I                           |  270
+    35 | PUNTOYCOMA         | ;                            |  288
     37 | ID                 | A                            |  269
     37 | COMA               | ,                            |  287
     37 | ID                 | B                            |  269
-    37 | PUNTO              | .                            |  286
-    37 | ID                 | B                            |  269
-    37 | COMA               | ,                            |  287
-    37 | ID                 | C                            |  269
-    37 | PUNTO              | .                            |  286
-    37 | ID                 | C                            |  269
     37 | IGUALUNICO         | =                            |  283
     37 | CONST_INT          | 1I                           |  270
-    37 | COMA               | ,                            |  287
-    37 | CONST_INT          | 2I                           |  270
-    37 | COMA               | ,                            |  287
-    37 | CONST_INT          | 3I                           |  270
     37 | PUNTOYCOMA         | ;                            |  288
-    39 | ID                 | A                            |  269
-    39 | COMA               | ,                            |  287
-    39 | ID                 | B                            |  269
-    39 | IGUALUNICO         | =                            |  283
-    39 | PUNTOYCOMA         | ;                            |  288
-    41 | IGUALUNICO         | =                            |  283
-    41 | CONST_INT          | 2I                           |  270
-    41 | COMA               | ,                            |  287
-    41 | CONST_INT          | 3I                           |  270
-    41 | PUNTOYCOMA         | ;                            |  288
-    43 | ID                 | A                            |  269
-    43 | ID                 | B                            |  269
-    43 | IGUALUNICO         | =                            |  283
-    43 | CONST_INT          | 2I                           |  270
-    43 | COMA               | ,                            |  287
-    43 | CONST_INT          | 3I                           |  270
-    43 | PUNTOYCOMA         | ;                            |  288
+    38 | ID                 | A                            |  269
+    38 | PUNTO              | .                            |  286
+    38 | ID                 | A                            |  269
+    38 | COMA               | ,                            |  287
+    38 | ID                 | B                            |  269
+    38 | PUNTO              | .                            |  286
+    38 | ID                 | B                            |  269
+    38 | COMA               | ,                            |  287
+    38 | ID                 | C                            |  269
+    38 | PUNTO              | .                            |  286
+    38 | ID                 | C                            |  269
+    38 | IGUALUNICO         | =                            |  283
+    38 | CONST_INT          | 1I                           |  270
+    38 | COMA               | ,                            |  287
+    38 | CONST_INT          | 2I                           |  270
+    38 | COMA               | ,                            |  287
+    38 | CONST_INT          | 3I                           |  270
+    38 | PUNTOYCOMA         | ;                            |  288
+    40 | ID                 | A                            |  269
+    40 | COMA               | ,                            |  287
+    40 | ID                 | B                            |  269
+    40 | IGUALUNICO         | =                            |  283
+    40 | PUNTOYCOMA         | ;                            |  288
+    42 | IGUALUNICO         | =                            |  283
+    42 | CONST_INT          | 2I                           |  270
+    42 | COMA               | ,                            |  287
+    42 | CONST_INT          | 3I                           |  270
+    42 | PUNTOYCOMA         | ;                            |  288
     44 | ID                 | A                            |  269
-    44 | COMA               | ,                            |  287
     44 | ID                 | B                            |  269
     44 | IGUALUNICO         | =                            |  283
     44 | CONST_INT          | 2I                           |  270
+    44 | COMA               | ,                            |  287
     44 | CONST_INT          | 3I                           |  270
     44 | PUNTOYCOMA         | ;                            |  288
-    46 | ID                 | A                            |  269
-    46 | ASIGN              | :=                           |  273
-    46 | CONST_INT          | 3I                           |  270
-    46 | PUNTOYCOMA         | ;                            |  288
-    48 | IF                 | if                           |  257
-    48 | PARENTINIC         | (                            |  289
-    48 | ID                 | A                            |  269
-    48 | MAYOR              | >                            |  284
-    48 | CONST_INT          | 5I                           |  270
-    48 | PARENTFIN          | )                            |  290
-    48 | LLAVEINIC          | {                            |  291
+    45 | ID                 | A                            |  269
+    45 | COMA               | ,                            |  287
+    45 | ID                 | B                            |  269
+    45 | IGUALUNICO         | =                            |  283
+    45 | CONST_INT          | 2I                           |  270
+    45 | CONST_INT          | 3I                           |  270
+    45 | PUNTOYCOMA         | ;                            |  288
+    47 | ID                 | A                            |  269
+    47 | ASIGN              | :=                           |  273
+    47 | CONST_INT          | 3I                           |  270
+    47 | PUNTOYCOMA         | ;                            |  288
+    49 | IF                 | if                           |  257
+    49 | PARENTINIC         | (                            |  289
     49 | ID                 | A                            |  269
-    49 | ASIGN              | :=                           |  273
-    49 | CONST_INT          | 3I                           |  270
-    49 | MAS                | +                            |  279
-    49 | CONST_INT          | 3I                           |  270
-    49 | PUNTOYCOMA         | ;                            |  288
-    50 | LLAVEFIN           | }                            |  292
-    50 | ELSE               | else                         |  258
-    50 | LLAVEINIC          | {                            |  291
-    51 | ID                 | B                            |  269
-    51 | ASIGN              | :=                           |  273
-    51 | CONST_INT          | 3I                           |  270
-    51 | MUL                | *                            |  280
-    51 | CONST_INT          | 2I                           |  270
-    51 | PUNTOYCOMA         | ;                            |  288
-    52 | LLAVEFIN           | }                            |  292
-    53 | ENDIF              | endif                        |  259
-    53 | PUNTOYCOMA         | ;                            |  288
-    55 | IF                 | if                           |  257
-    55 | PARENTINIC         | (                            |  289
-    55 | ID                 | A                            |  269
-    55 | MENOR              | <                            |  285
-    55 | CONST_INT          | 5I                           |  270
-    55 | PARENTFIN          | )                            |  290
-    55 | LLAVEINIC          | {                            |  291
+    49 | MAYOR              | >                            |  284
+    49 | CONST_INT          | 5I                           |  270
+    49 | PARENTFIN          | )                            |  290
+    49 | LLAVEINIC          | {                            |  291
+    50 | ID                 | A                            |  269
+    50 | ASIGN              | :=                           |  273
+    50 | CONST_INT          | 3I                           |  270
+    50 | MAS                | +                            |  279
+    50 | CONST_INT          | 3I                           |  270
+    50 | PUNTOYCOMA         | ;                            |  288
+    51 | LLAVEFIN           | }                            |  292
+    51 | ELSE               | else                         |  258
+    51 | LLAVEINIC          | {                            |  291
+    52 | ID                 | B                            |  269
+    52 | ASIGN              | :=                           |  273
+    52 | CONST_INT          | 3I                           |  270
+    52 | MUL                | *                            |  280
+    52 | CONST_INT          | 2I                           |  270
+    52 | PUNTOYCOMA         | ;                            |  288
+    53 | LLAVEFIN           | }                            |  292
+    54 | ENDIF              | endif                        |  259
+    54 | PUNTOYCOMA         | ;                            |  288
+    56 | IF                 | if                           |  257
+    56 | PARENTINIC         | (                            |  289
     56 | ID                 | A                            |  269
-    56 | ASIGN              | :=                           |  273
+    56 | MENOR              | <                            |  285
     56 | CONST_INT          | 5I                           |  270
-    56 | PUNTOYCOMA         | ;                            |  288
-    57 | LLAVEFIN           | }                            |  292
-    58 | ENDIF              | endif                        |  259
-    58 | PUNTOYCOMA         | ;                            |  288
-    60 | IF                 | if                           |  257
-    60 | PARENTINIC         | (                            |  289
-    60 | ID                 | A                            |  269
-    60 | IGUAL              | ==                           |  275
-    60 | CONST_INT          | 5I                           |  270
-    60 | PARENTFIN          | )                            |  290
+    56 | PARENTFIN          | )                            |  290
+    56 | LLAVEINIC          | {                            |  291
+    57 | ID                 | A                            |  269
+    57 | ASIGN              | :=                           |  273
+    57 | CONST_INT          | 5I                           |  270
+    57 | PUNTOYCOMA         | ;                            |  288
+    58 | LLAVEFIN           | }                            |  292
+    59 | ENDIF              | endif                        |  259
+    59 | PUNTOYCOMA         | ;                            |  288
+    61 | IF                 | if                           |  257
+    61 | PARENTINIC         | (                            |  289
     61 | ID                 | A                            |  269
-    61 | ASIGN              | :=                           |  273
-    61 | CONST_INT          | 3I                           |  270
-    61 | PUNTOYCOMA         | ;                            |  288
-    62 | ENDIF              | endif                        |  259
-    64 | IF                 | if                           |  257
-    64 | ID                 | A                            |  269
-    64 | IGUAL              | ==                           |  275
-    64 | CONST_INT          | 5I                           |  270
-    64 | PARENTFIN          | )                            |  290
+    61 | IGUAL              | ==                           |  275
+    61 | CONST_INT          | 5I                           |  270
+    61 | PARENTFIN          | )                            |  290
+    62 | ID                 | A                            |  269
+    62 | ASIGN              | :=                           |  273
+    62 | CONST_INT          | 3I                           |  270
+    62 | PUNTOYCOMA         | ;                            |  288
+    63 | ENDIF              | endif                        |  259
+    65 | IF                 | if                           |  257
     65 | ID                 | A                            |  269
-    65 | ASIGN              | :=                           |  273
-    65 | CONST_INT          | 3I                           |  270
-    65 | PUNTOYCOMA         | ;                            |  288
-    66 | ENDIF              | endif                        |  259
+    65 | IGUAL              | ==                           |  275
+    65 | CONST_INT          | 5I                           |  270
+    65 | PARENTFIN          | )                            |  290
+    66 | ID                 | A                            |  269
+    66 | ASIGN              | :=                           |  273
+    66 | CONST_INT          | 3I                           |  270
     66 | PUNTOYCOMA         | ;                            |  288
-    68 | IF                 | if                           |  257
-    68 | PARENTINIC         | (                            |  289
-    68 | ID                 | A                            |  269
-    68 | IGUAL              | ==                           |  275
-    68 | CONST_INT          | 5I                           |  270
+    67 | ENDIF              | endif                        |  259
+    67 | PUNTOYCOMA         | ;                            |  288
+    69 | IF                 | if                           |  257
+    69 | PARENTINIC         | (                            |  289
     69 | ID                 | A                            |  269
-    69 | ASIGN              | :=                           |  273
-    69 | CONST_INT          | 3I                           |  270
-    69 | PUNTOYCOMA         | ;                            |  288
-    70 | ENDIF              | endif                        |  259
+    69 | IGUAL              | ==                           |  275
+    69 | CONST_INT          | 5I                           |  270
+    70 | ID                 | A                            |  269
+    70 | ASIGN              | :=                           |  273
+    70 | CONST_INT          | 3I                           |  270
     70 | PUNTOYCOMA         | ;                            |  288
-    72 | IF                 | if                           |  257
-    72 | ID                 | A                            |  269
-    72 | IGUAL              | ==                           |  275
-    72 | CONST_INT          | 5I                           |  270
+    71 | ENDIF              | endif                        |  259
+    71 | PUNTOYCOMA         | ;                            |  288
+    73 | IF                 | if                           |  257
     73 | ID                 | A                            |  269
-    73 | ASIGN              | :=                           |  273
-    73 | CONST_INT          | 3I                           |  270
-    73 | PUNTOYCOMA         | ;                            |  288
-    74 | ENDIF              | endif                        |  259
+    73 | IGUAL              | ==                           |  275
+    73 | CONST_INT          | 5I                           |  270
+    74 | ID                 | A                            |  269
+    74 | ASIGN              | :=                           |  273
+    74 | CONST_INT          | 3I                           |  270
     74 | PUNTOYCOMA         | ;                            |  288
-    76 | IF                 | if                           |  257
-    76 | PARENTINIC         | (                            |  289
-    76 | ID                 | A                            |  269
-    76 | DISTINTO           | =!                           |  276
-    76 | CONST_INT          | 5I                           |  270
-    76 | PARENTFIN          | )                            |  290
-    77 | ELSE               | else                         |  258
-    78 | ENDIF              | endif                        |  259
-    78 | PUNTOYCOMA         | ;                            |  288
-    80 | IF                 | if                           |  257
-    80 | PARENTINIC         | (                            |  289
-    80 | ID                 | A                            |  269
-    80 | DISTINTO           | =!                           |  276
-    80 | CONST_INT          | 5I                           |  270
-    80 | PARENTFIN          | )                            |  290
-    80 | LLAVEINIC          | {                            |  291
-    82 | LLAVEFIN           | }                            |  292
-    82 | ELSE               | else                         |  258
-    82 | LLAVEINIC          | {                            |  291
-    84 | LLAVEFIN           | }                            |  292
-    85 | ENDIF              | endif                        |  259
-    85 | PUNTOYCOMA         | ;                            |  288
-    87 | IF                 | if                           |  257
-    87 | ID                 | A                            |  269
-    87 | DISTINTO           | =!                           |  276
-    87 | CONST_INT          | 5I                           |  270
-    87 | PARENTFIN          | )                            |  290
-    87 | LLAVEINIC          | {                            |  291
-    89 | LLAVEFIN           | }                            |  292
-    89 | ELSE               | else                         |  258
-    89 | LLAVEINIC          | {                            |  291
-    91 | LLAVEFIN           | }                            |  292
-    92 | ENDIF              | endif                        |  259
-    92 | PUNTOYCOMA         | ;                            |  288
-    94 | IF                 | if                           |  257
-    94 | PARENTINIC         | (                            |  289
-    94 | ID                 | A                            |  269
-    94 | DISTINTO           | =!                           |  276
-    94 | CONST_INT          | 5I                           |  270
-    94 | LLAVEINIC          | {                            |  291
-    96 | LLAVEFIN           | }                            |  292
-    96 | ELSE               | else                         |  258
-    96 | LLAVEINIC          | {                            |  291
-    98 | LLAVEFIN           | }                            |  292
-    99 | ENDIF              | endif                        |  259
-    99 | PUNTOYCOMA         | ;                            |  288
-   101 | IF                 | if                           |  257
-   101 | ID                 | A                            |  269
-   101 | DISTINTO           | =!                           |  276
-   101 | CONST_INT          | 5I                           |  270
-   101 | LLAVEINIC          | {                            |  291
-   103 | LLAVEFIN           | }                            |  292
-   103 | ELSE               | else                         |  258
-   103 | LLAVEINIC          | {                            |  291
-   105 | LLAVEFIN           | }                            |  292
-   106 | ENDIF              | endif                        |  259
-   106 | PUNTOYCOMA         | ;                            |  288
-   108 | IF                 | if                           |  257
-   108 | PARENTINIC         | (                            |  289
-   108 | PARENTFIN          | )                            |  290
-   108 | LLAVEINIC          | {                            |  291
-   110 | LLAVEFIN           | }                            |  292
-   111 | ENDIF              | endif                        |  259
-   111 | PUNTOYCOMA         | ;                            |  288
-   113 | IF                 | if                           |  257
-   113 | PARENTINIC         | (                            |  289
-   113 | ID                 | A                            |  269
-   113 | MAYOR              | >                            |  284
-   113 | PARENTFIN          | )                            |  290
-   113 | LLAVEINIC          | {                            |  291
-   115 | LLAVEFIN           | }                            |  292
-   116 | ENDIF              | endif                        |  259
-   116 | PUNTOYCOMA         | ;                            |  288
-   118 | IF                 | if                           |  257
-   118 | PARENTINIC         | (                            |  289
-   118 | MENOR              | <                            |  285
-   118 | ID                 | B                            |  269
-   118 | PARENTFIN          | )                            |  290
-   118 | LLAVEINIC          | {                            |  291
-   120 | LLAVEFIN           | }                            |  292
-   121 | ENDIF              | endif                        |  259
-   121 | PUNTOYCOMA         | ;                            |  288
-   123 | FOR                | for                          |  263
-   123 | PARENTINIC         | (                            |  289
-   123 | ID                 | I                            |  269
-   123 | FROM               | from                         |  264
-   123 | CONST_INT          | 1I                           |  270
-   123 | TO                 | to                           |  265
-   123 | CONST_INT          | 10I                          |  270
-   123 | PARENTFIN          | )                            |  290
-   123 | LLAVEINIC          | {                            |  291
-   124 | ID                 | B                            |  269
-   124 | ASIGN              | :=                           |  273
-   124 | ID                 | A                            |  269
-   124 | PUNTOYCOMA         | ;                            |  288
-   125 | ID                 | A                            |  269
+    75 | ENDIF              | endif                        |  259
+    75 | PUNTOYCOMA         | ;                            |  288
+    77 | IF                 | if                           |  257
+    77 | PARENTINIC         | (                            |  289
+    77 | ID                 | A                            |  269
+    77 | DISTINTO           | =!                           |  276
+    77 | CONST_INT          | 5I                           |  270
+    77 | PARENTFIN          | )                            |  290
+    78 | ELSE               | else                         |  258
+    79 | ENDIF              | endif                        |  259
+    79 | PUNTOYCOMA         | ;                            |  288
+    81 | IF                 | if                           |  257
+    81 | PARENTINIC         | (                            |  289
+    81 | ID                 | A                            |  269
+    81 | DISTINTO           | =!                           |  276
+    81 | CONST_INT          | 5I                           |  270
+    81 | PARENTFIN          | )                            |  290
+    81 | LLAVEINIC          | {                            |  291
+    83 | LLAVEFIN           | }                            |  292
+    83 | ELSE               | else                         |  258
+    83 | LLAVEINIC          | {                            |  291
+    85 | LLAVEFIN           | }                            |  292
+    86 | ENDIF              | endif                        |  259
+    86 | PUNTOYCOMA         | ;                            |  288
+    88 | IF                 | if                           |  257
+    88 | ID                 | A                            |  269
+    88 | DISTINTO           | =!                           |  276
+    88 | CONST_INT          | 5I                           |  270
+    88 | PARENTFIN          | )                            |  290
+    88 | LLAVEINIC          | {                            |  291
+    90 | LLAVEFIN           | }                            |  292
+    90 | ELSE               | else                         |  258
+    90 | LLAVEINIC          | {                            |  291
+    92 | LLAVEFIN           | }                            |  292
+    93 | ENDIF              | endif                        |  259
+    93 | PUNTOYCOMA         | ;                            |  288
+    95 | IF                 | if                           |  257
+    95 | PARENTINIC         | (                            |  289
+    95 | ID                 | A                            |  269
+    95 | DISTINTO           | =!                           |  276
+    95 | CONST_INT          | 5I                           |  270
+    95 | LLAVEINIC          | {                            |  291
+    97 | LLAVEFIN           | }                            |  292
+    97 | ELSE               | else                         |  258
+    97 | LLAVEINIC          | {                            |  291
+    99 | LLAVEFIN           | }                            |  292
+   100 | ENDIF              | endif                        |  259
+   100 | PUNTOYCOMA         | ;                            |  288
+   102 | IF                 | if                           |  257
+   102 | ID                 | A                            |  269
+   102 | DISTINTO           | =!                           |  276
+   102 | CONST_INT          | 5I                           |  270
+   102 | LLAVEINIC          | {                            |  291
+   104 | LLAVEFIN           | }                            |  292
+   104 | ELSE               | else                         |  258
+   104 | LLAVEINIC          | {                            |  291
+   106 | LLAVEFIN           | }                            |  292
+   107 | ENDIF              | endif                        |  259
+   107 | PUNTOYCOMA         | ;                            |  288
+   109 | IF                 | if                           |  257
+   109 | PARENTINIC         | (                            |  289
+   109 | PARENTFIN          | )                            |  290
+   109 | LLAVEINIC          | {                            |  291
+   111 | LLAVEFIN           | }                            |  292
+   112 | ENDIF              | endif                        |  259
+   112 | PUNTOYCOMA         | ;                            |  288
+   114 | IF                 | if                           |  257
+   114 | PARENTINIC         | (                            |  289
+   114 | ID                 | A                            |  269
+   114 | MAYOR              | >                            |  284
+   114 | PARENTFIN          | )                            |  290
+   114 | LLAVEINIC          | {                            |  291
+   116 | LLAVEFIN           | }                            |  292
+   117 | ENDIF              | endif                        |  259
+   117 | PUNTOYCOMA         | ;                            |  288
+   119 | IF                 | if                           |  257
+   119 | PARENTINIC         | (                            |  289
+   119 | MENOR              | <                            |  285
+   119 | ID                 | B                            |  269
+   119 | PARENTFIN          | )                            |  290
+   119 | LLAVEINIC          | {                            |  291
+   121 | LLAVEFIN           | }                            |  292
+   122 | ENDIF              | endif                        |  259
+   122 | PUNTOYCOMA         | ;                            |  288
+   124 | FOR                | for                          |  263
+   124 | PARENTINIC         | (                            |  289
+   124 | ID                 | I                            |  269
+   124 | FROM               | from                         |  264
+   124 | CONST_INT          | 1I                           |  270
+   124 | TO                 | to                           |  265
+   124 | CONST_INT          | 10I                          |  270
+   124 | PARENTFIN          | )                            |  290
+   124 | LLAVEINIC          | {                            |  291
+   125 | ID                 | B                            |  269
    125 | ASIGN              | :=                           |  273
    125 | ID                 | A                            |  269
-   125 | MAS                | +                            |  279
-   125 | CONST_INT          | 1I                           |  270
    125 | PUNTOYCOMA         | ;                            |  288
-   126 | LLAVEFIN           | }                            |  292
+   126 | ID                 | A                            |  269
+   126 | ASIGN              | :=                           |  273
+   126 | ID                 | A                            |  269
+   126 | MAS                | +                            |  279
+   126 | CONST_INT          | 1I                           |  270
    126 | PUNTOYCOMA         | ;                            |  288
-   128 | FOR                | for                          |  263
-   128 | PARENTINIC         | (                            |  289
-   128 | ID                 | I                            |  269
-   128 | FROM               | from                         |  264
-   128 | CONST_INT          | 1I                           |  270
-   128 | TO                 | to                           |  265
-   128 | CONST_INT          | 10I                          |  270
-   128 | PARENTFIN          | )                            |  290
-   129 | ID                 | A                            |  269
-   129 | ASIGN              | :=                           |  273
-   129 | ID                 | A                            |  269
-   129 | MAS                | +                            |  279
+   127 | LLAVEFIN           | }                            |  292
+   127 | PUNTOYCOMA         | ;                            |  288
+   129 | FOR                | for                          |  263
+   129 | PARENTINIC         | (                            |  289
+   129 | ID                 | I                            |  269
+   129 | FROM               | from                         |  264
    129 | CONST_INT          | 1I                           |  270
-   129 | PUNTOYCOMA         | ;                            |  288
-   131 | FOR                | for                          |  263
-   131 | ID                 | I                            |  269
-   131 | FROM               | from                         |  264
-   131 | CONST_INT          | 1I                           |  270
-   131 | TO                 | to                           |  265
-   131 | CONST_INT          | 10I                          |  270
-   131 | PARENTFIN          | )                            |  290
-   131 | LLAVEINIC          | {                            |  291
-   132 | ID                 | A                            |  269
-   132 | ASIGN              | :=                           |  273
-   132 | ID                 | A                            |  269
-   132 | MAS                | +                            |  279
+   129 | TO                 | to                           |  265
+   129 | CONST_INT          | 10I                          |  270
+   129 | PARENTFIN          | )                            |  290
+   130 | ID                 | A                            |  269
+   130 | ASIGN              | :=                           |  273
+   130 | ID                 | A                            |  269
+   130 | MAS                | +                            |  279
+   130 | CONST_INT          | 1I                           |  270
+   130 | PUNTOYCOMA         | ;                            |  288
+   132 | FOR                | for                          |  263
+   132 | ID                 | I                            |  269
+   132 | FROM               | from                         |  264
    132 | CONST_INT          | 1I                           |  270
-   132 | PUNTOYCOMA         | ;                            |  288
-   133 | LLAVEFIN           | }                            |  292
+   132 | TO                 | to                           |  265
+   132 | CONST_INT          | 10I                          |  270
+   132 | PARENTFIN          | )                            |  290
+   132 | LLAVEINIC          | {                            |  291
+   133 | ID                 | A                            |  269
+   133 | ASIGN              | :=                           |  273
+   133 | ID                 | A                            |  269
+   133 | MAS                | +                            |  279
+   133 | CONST_INT          | 1I                           |  270
    133 | PUNTOYCOMA         | ;                            |  288
-   135 | FOR                | for                          |  263
-   135 | PARENTINIC         | (                            |  289
-   135 | FROM               | from                         |  264
-   135 | CONST_INT          | 1I                           |  270
-   135 | TO                 | to                           |  265
-   135 | CONST_INT          | 10I                          |  270
-   135 | PARENTFIN          | )                            |  290
-   135 | LLAVEINIC          | {                            |  291
-   136 | ID                 | A                            |  269
-   136 | ASIGN              | :=                           |  273
-   136 | ID                 | A                            |  269
-   136 | MAS                | +                            |  279
+   134 | LLAVEFIN           | }                            |  292
+   134 | PUNTOYCOMA         | ;                            |  288
+   136 | FOR                | for                          |  263
+   136 | PARENTINIC         | (                            |  289
+   136 | FROM               | from                         |  264
    136 | CONST_INT          | 1I                           |  270
-   136 | PUNTOYCOMA         | ;                            |  288
-   137 | LLAVEFIN           | }                            |  292
+   136 | TO                 | to                           |  265
+   136 | CONST_INT          | 10I                          |  270
+   136 | PARENTFIN          | )                            |  290
+   136 | LLAVEINIC          | {                            |  291
+   137 | ID                 | A                            |  269
+   137 | ASIGN              | :=                           |  273
+   137 | ID                 | A                            |  269
+   137 | MAS                | +                            |  279
+   137 | CONST_INT          | 1I                           |  270
    137 | PUNTOYCOMA         | ;                            |  288
-   139 | FOR                | for                          |  263
-   139 | PARENTINIC         | (                            |  289
-   139 | ID                 | I                            |  269
-   139 | CONST_INT          | 1I                           |  270
-   139 | TO                 | to                           |  265
-   139 | CONST_INT          | 10I                          |  270
-   139 | PARENTFIN          | )                            |  290
-   139 | LLAVEINIC          | {                            |  291
-   140 | ID                 | A                            |  269
-   140 | ASIGN              | :=                           |  273
-   140 | ID                 | A                            |  269
-   140 | MAS                | +                            |  279
+   138 | LLAVEFIN           | }                            |  292
+   138 | PUNTOYCOMA         | ;                            |  288
+   140 | FOR                | for                          |  263
+   140 | PARENTINIC         | (                            |  289
+   140 | ID                 | I                            |  269
    140 | CONST_INT          | 1I                           |  270
-   140 | PUNTOYCOMA         | ;                            |  288
-   141 | LLAVEFIN           | }                            |  292
+   140 | TO                 | to                           |  265
+   140 | CONST_INT          | 10I                          |  270
+   140 | PARENTFIN          | )                            |  290
+   140 | LLAVEINIC          | {                            |  291
+   141 | ID                 | A                            |  269
+   141 | ASIGN              | :=                           |  273
+   141 | ID                 | A                            |  269
+   141 | MAS                | +                            |  279
+   141 | CONST_INT          | 1I                           |  270
    141 | PUNTOYCOMA         | ;                            |  288
-   143 | FOR                | for                          |  263
-   143 | PARENTINIC         | (                            |  289
-   143 | ID                 | I                            |  269
-   143 | FROM               | from                         |  264
-   143 | TO                 | to                           |  265
-   143 | CONST_INT          | 10I                          |  270
-   143 | PARENTFIN          | )                            |  290
-   143 | LLAVEINIC          | {                            |  291
-   144 | ID                 | A                            |  269
-   144 | ASIGN              | :=                           |  273
-   144 | ID                 | A                            |  269
-   144 | MAS                | +                            |  279
-   144 | CONST_INT          | 1I                           |  270
-   144 | PUNTOYCOMA         | ;                            |  288
-   145 | LLAVEFIN           | }                            |  292
+   142 | LLAVEFIN           | }                            |  292
+   142 | PUNTOYCOMA         | ;                            |  288
+   144 | FOR                | for                          |  263
+   144 | PARENTINIC         | (                            |  289
+   144 | ID                 | I                            |  269
+   144 | FROM               | from                         |  264
+   144 | TO                 | to                           |  265
+   144 | CONST_INT          | 10I                          |  270
+   144 | PARENTFIN          | )                            |  290
+   144 | LLAVEINIC          | {                            |  291
+   145 | ID                 | A                            |  269
+   145 | ASIGN              | :=                           |  273
+   145 | ID                 | A                            |  269
+   145 | MAS                | +                            |  279
+   145 | CONST_INT          | 1I                           |  270
    145 | PUNTOYCOMA         | ;                            |  288
-   147 | FOR                | for                          |  263
-   147 | PARENTINIC         | (                            |  289
-   147 | ID                 | I                            |  269
-   147 | FROM               | from                         |  264
-   147 | CONST_INT          | 1I                           |  270
-   147 | CONST_INT          | 10I                          |  270
-   147 | PARENTFIN          | )                            |  290
-   147 | LLAVEINIC          | {                            |  291
-   148 | ID                 | A                            |  269
-   148 | ASIGN              | :=                           |  273
-   148 | ID                 | A                            |  269
-   148 | MAS                | +                            |  279
+   146 | LLAVEFIN           | }                            |  292
+   146 | PUNTOYCOMA         | ;                            |  288
+   148 | FOR                | for                          |  263
+   148 | PARENTINIC         | (                            |  289
+   148 | ID                 | I                            |  269
+   148 | FROM               | from                         |  264
    148 | CONST_INT          | 1I                           |  270
-   148 | PUNTOYCOMA         | ;                            |  288
-   149 | LLAVEFIN           | }                            |  292
+   148 | CONST_INT          | 10I                          |  270
+   148 | PARENTFIN          | )                            |  290
+   148 | LLAVEINIC          | {                            |  291
+   149 | ID                 | A                            |  269
+   149 | ASIGN              | :=                           |  273
+   149 | ID                 | A                            |  269
+   149 | MAS                | +                            |  279
+   149 | CONST_INT          | 1I                           |  270
    149 | PUNTOYCOMA         | ;                            |  288
-   151 | FOR                | for                          |  263
-   151 | PARENTINIC         | (                            |  289
-   151 | ID                 | I                            |  269
-   151 | FROM               | from                         |  264
-   151 | CONST_INT          | 1I                           |  270
-   151 | TO                 | to                           |  265
-   151 | PARENTFIN          | )                            |  290
-   151 | LLAVEINIC          | {                            |  291
-   152 | ID                 | A                            |  269
-   152 | ASIGN              | :=                           |  273
-   152 | ID                 | A                            |  269
-   152 | MAS                | +                            |  279
+   150 | LLAVEFIN           | }                            |  292
+   150 | PUNTOYCOMA         | ;                            |  288
+   152 | FOR                | for                          |  263
+   152 | PARENTINIC         | (                            |  289
+   152 | ID                 | I                            |  269
+   152 | FROM               | from                         |  264
    152 | CONST_INT          | 1I                           |  270
-   152 | PUNTOYCOMA         | ;                            |  288
-   153 | LLAVEFIN           | }                            |  292
-   155 | FOR                | for                          |  263
-   155 | PARENTINIC         | (                            |  289
-   155 | ID                 | I                            |  269
-   155 | FROM               | from                         |  264
-   155 | CONST_INT          | 1I                           |  270
-   155 | TO                 | to                           |  265
-   155 | CONST_INT          | 10I                          |  270
-   155 | LLAVEINIC          | {                            |  291
-   156 | ID                 | A                            |  269
-   156 | ASIGN              | :=                           |  273
-   156 | ID                 | A                            |  269
-   156 | MAS                | +                            |  279
+   152 | TO                 | to                           |  265
+   152 | PARENTFIN          | )                            |  290
+   152 | LLAVEINIC          | {                            |  291
+   153 | ID                 | A                            |  269
+   153 | ASIGN              | :=                           |  273
+   153 | ID                 | A                            |  269
+   153 | MAS                | +                            |  279
+   153 | CONST_INT          | 1I                           |  270
+   153 | PUNTOYCOMA         | ;                            |  288
+   154 | LLAVEFIN           | }                            |  292
+   156 | FOR                | for                          |  263
+   156 | PARENTINIC         | (                            |  289
+   156 | ID                 | I                            |  269
+   156 | FROM               | from                         |  264
    156 | CONST_INT          | 1I                           |  270
-   156 | PUNTOYCOMA         | ;                            |  288
-   157 | LLAVEFIN           | }                            |  292
-   159 | FOR                | for                          |  263
-   159 | ID                 | I                            |  269
-   159 | FROM               | from                         |  264
-   159 | CONST_INT          | 1I                           |  270
-   159 | TO                 | to                           |  265
-   159 | CONST_INT          | 10I                          |  270
-   159 | LLAVEINIC          | {                            |  291
-   160 | ID                 | A                            |  269
-   160 | ASIGN              | :=                           |  273
-   160 | ID                 | A                            |  269
-   160 | MAS                | +                            |  279
+   156 | TO                 | to                           |  265
+   156 | CONST_INT          | 10I                          |  270
+   156 | LLAVEINIC          | {                            |  291
+   157 | ID                 | A                            |  269
+   157 | ASIGN              | :=                           |  273
+   157 | ID                 | A                            |  269
+   157 | MAS                | +                            |  279
+   157 | CONST_INT          | 1I                           |  270
+   157 | PUNTOYCOMA         | ;                            |  288
+   158 | LLAVEFIN           | }                            |  292
+   160 | FOR                | for                          |  263
+   160 | ID                 | I                            |  269
+   160 | FROM               | from                         |  264
    160 | CONST_INT          | 1I                           |  270
-   160 | PUNTOYCOMA         | ;                            |  288
-   161 | LLAVEFIN           | }                            |  292
-   163 | FOR                | for                          |  263
-   163 | PARENTINIC         | (                            |  289
-   163 | ID                 | I                            |  269
-   163 | FROM               | from                         |  264
-   163 | CONST_INT          | 1I                           |  270
-   163 | TO                 | to                           |  265
-   163 | CONST_INT          | 10I                          |  270
-   163 | PARENTFIN          | )                            |  290
-   163 | LLAVEINIC          | {                            |  291
-   165 | LLAVEFIN           | }                            |  292
-   165 | PUNTOYCOMA         | ;                            |  288
-   167 | FOR                | for                          |  263
-   167 | PARENTINIC         | (                            |  289
-   167 | ID                 | I                            |  269
-   167 | FROM               | from                         |  264
-   167 | CONST_INT          | 1I                           |  270
-   167 | TO                 | to                           |  265
-   167 | CONST_INT          | 10I                          |  270
-   167 | PARENTFIN          | )                            |  290
-   169 | PRINT              | print                        |  260
-   169 | PARENTINIC         | (                            |  289
-   169 | CONST_FLOAT        | 8.5                          |  271
-   169 | PARENTFIN          | )                            |  290
-   169 | PUNTOYCOMA         | ;                            |  288
+   160 | TO                 | to                           |  265
+   160 | CONST_INT          | 10I                          |  270
+   160 | LLAVEINIC          | {                            |  291
+   161 | ID                 | A                            |  269
+   161 | ASIGN              | :=                           |  273
+   161 | ID                 | A                            |  269
+   161 | MAS                | +                            |  279
+   161 | CONST_INT          | 1I                           |  270
+   161 | PUNTOYCOMA         | ;                            |  288
+   162 | LLAVEFIN           | }                            |  292
+   164 | FOR                | for                          |  263
+   164 | PARENTINIC         | (                            |  289
+   164 | ID                 | I                            |  269
+   164 | FROM               | from                         |  264
+   164 | CONST_INT          | 1I                           |  270
+   164 | TO                 | to                           |  265
+   164 | CONST_INT          | 10I                          |  270
+   164 | PARENTFIN          | )                            |  290
+   164 | LLAVEINIC          | {                            |  291
+   166 | LLAVEFIN           | }                            |  292
+   166 | PUNTOYCOMA         | ;                            |  288
+   168 | FOR                | for                          |  263
+   168 | PARENTINIC         | (                            |  289
+   168 | ID                 | I                            |  269
+   168 | FROM               | from                         |  264
+   168 | CONST_INT          | 1I                           |  270
+   168 | TO                 | to                           |  265
+   168 | CONST_INT          | 10I                          |  270
+   168 | PARENTFIN          | )                            |  290
    170 | PRINT              | print                        |  260
    170 | PARENTINIC         | (                            |  289
    170 | CONST_FLOAT        | 8.5                          |  271
    170 | PARENTFIN          | )                            |  290
    170 | PUNTOYCOMA         | ;                            |  288
    171 | PRINT              | print                        |  260
+   171 | PARENTINIC         | (                            |  289
    171 | CONST_FLOAT        | 8.5                          |  271
    171 | PARENTFIN          | )                            |  290
    171 | PUNTOYCOMA         | ;                            |  288
    172 | PRINT              | print                        |  260
-   172 | PARENTINIC         | (                            |  289
+   172 | CONST_FLOAT        | 8.5                          |  271
    172 | PARENTFIN          | )                            |  290
    172 | PUNTOYCOMA         | ;                            |  288
    173 | PRINT              | print                        |  260
    173 | PARENTINIC         | (                            |  289
-   173 | CONST_FLOAT        | 8.5                          |  271
+   173 | PARENTFIN          | )                            |  290
    173 | PUNTOYCOMA         | ;                            |  288
-   175 | ID                 | SUMAR                        |  269
-   175 | PARENTINIC         | (                            |  289
-   175 | CONST_INT          | 4I                           |  270
-   175 | FLECHA             | ->                           |  274
-   175 | ID                 | A                            |  269
-   175 | COMA               | ,                            |  287
-   175 | CONST_INT          | 5I                           |  270
-   175 | MAS                | +                            |  279
-   175 | CONST_FLOAT        | 6.5                          |  271
-   175 | FLECHA             | ->                           |  274
-   175 | ID                 | B                            |  269
-   175 | PARENTFIN          | )                            |  290
-   175 | PUNTOYCOMA         | ;                            |  288
+   174 | PRINT              | print                        |  260
+   174 | PARENTINIC         | (                            |  289
+   174 | CONST_FLOAT        | 8.5                          |  271
+   174 | PUNTOYCOMA         | ;                            |  288
    176 | ID                 | SUMAR                        |  269
    176 | PARENTINIC         | (                            |  289
    176 | CONST_INT          | 4I                           |  270
    176 | FLECHA             | ->                           |  274
    176 | ID                 | A                            |  269
    176 | COMA               | ,                            |  287
-   176 | TRUNC              | trunc                        |  268
-   176 | PARENTINIC         | (                            |  289
    176 | CONST_INT          | 5I                           |  270
-   176 | DIV                | /                            |  281
-   176 | CONST_INT          | 6I                           |  270
-   176 | PARENTFIN          | )                            |  290
+   176 | MAS                | +                            |  279
+   176 | CONST_FLOAT        | 6.5                          |  271
    176 | FLECHA             | ->                           |  274
    176 | ID                 | B                            |  269
    176 | PARENTFIN          | )                            |  290
@@ -635,6 +630,7 @@ Linea  | Token              | Lexema                       | ID
    177 | CONST_INT          | 5I                           |  270
    177 | DIV                | /                            |  281
    177 | CONST_INT          | 6I                           |  270
+   177 | PARENTFIN          | )                            |  290
    177 | FLECHA             | ->                           |  274
    177 | ID                 | B                            |  269
    177 | PARENTFIN          | )                            |  290
@@ -646,10 +642,10 @@ Linea  | Token              | Lexema                       | ID
    178 | ID                 | A                            |  269
    178 | COMA               | ,                            |  287
    178 | TRUNC              | trunc                        |  268
+   178 | PARENTINIC         | (                            |  289
    178 | CONST_INT          | 5I                           |  270
    178 | DIV                | /                            |  281
    178 | CONST_INT          | 6I                           |  270
-   178 | PARENTFIN          | )                            |  290
    178 | FLECHA             | ->                           |  274
    178 | ID                 | B                            |  269
    178 | PARENTFIN          | )                            |  290
@@ -664,6 +660,7 @@ Linea  | Token              | Lexema                       | ID
    179 | CONST_INT          | 5I                           |  270
    179 | DIV                | /                            |  281
    179 | CONST_INT          | 6I                           |  270
+   179 | PARENTFIN          | )                            |  290
    179 | FLECHA             | ->                           |  274
    179 | ID                 | B                            |  269
    179 | PARENTFIN          | )                            |  290
@@ -674,44 +671,26 @@ Linea  | Token              | Lexema                       | ID
    180 | FLECHA             | ->                           |  274
    180 | ID                 | A                            |  269
    180 | COMA               | ,                            |  287
+   180 | TRUNC              | trunc                        |  268
    180 | CONST_INT          | 5I                           |  270
-   180 | MAS                | +                            |  279
-   180 | CONST_FLOAT        | 6.5                          |  271
+   180 | DIV                | /                            |  281
+   180 | CONST_INT          | 6I                           |  270
    180 | FLECHA             | ->                           |  274
+   180 | ID                 | B                            |  269
    180 | PARENTFIN          | )                            |  290
    180 | PUNTOYCOMA         | ;                            |  288
-   182 | ID                 | SUMAR                        |  269
-   182 | PARENTINIC         | (                            |  289
-   182 | CONST_INT          | 4I                           |  270
-   182 | FLECHA             | ->                           |  274
-   182 | ID                 | A                            |  269
-   182 | COMA               | ,                            |  287
-   182 | PARENTINIC         | (                            |  289
-   182 | INT                | int                          |  262
-   182 | ID                 | A                            |  269
-   182 | PARENTFIN          | )                            |  290
-   182 | LLAVEINIC          | {                            |  291
-   182 | IF                 | if                           |  257
-   182 | PARENTINIC         | (                            |  289
-   182 | ID                 | A                            |  269
-   182 | MAYOR              | >                            |  284
-   182 | CONST_INT          | 1I                           |  270
-   182 | PARENTFIN          | )                            |  290
-   182 | PRINT              | print                        |  260
-   182 | PARENTINIC         | (                            |  289
-   182 | ID                 | A                            |  269
-   182 | PARENTFIN          | )                            |  290
-   182 | PUNTOYCOMA         | ;                            |  288
-   182 | ENDIF              | endif                        |  259
-   182 | PUNTOYCOMA         | ;                            |  288
-   182 | LLAVEFIN           | }                            |  292
-   182 | PARENTINIC         | (                            |  289
-   182 | CONST_INT          | 4I                           |  270
-   182 | PARENTFIN          | )                            |  290
-   182 | FLECHA             | ->                           |  274
-   182 | ID                 | B                            |  269
-   182 | PARENTFIN          | )                            |  290
-   182 | PUNTOYCOMA         | ;                            |  288
+   181 | ID                 | SUMAR                        |  269
+   181 | PARENTINIC         | (                            |  289
+   181 | CONST_INT          | 4I                           |  270
+   181 | FLECHA             | ->                           |  274
+   181 | ID                 | A                            |  269
+   181 | COMA               | ,                            |  287
+   181 | CONST_INT          | 5I                           |  270
+   181 | MAS                | +                            |  279
+   181 | CONST_FLOAT        | 6.5                          |  271
+   181 | FLECHA             | ->                           |  274
+   181 | PARENTFIN          | )                            |  290
+   181 | PUNTOYCOMA         | ;                            |  288
    183 | ID                 | SUMAR                        |  269
    183 | PARENTINIC         | (                            |  289
    183 | CONST_INT          | 4I                           |  270
@@ -722,6 +701,7 @@ Linea  | Token              | Lexema                       | ID
    183 | INT                | int                          |  262
    183 | ID                 | A                            |  269
    183 | PARENTFIN          | )                            |  290
+   183 | LLAVEINIC          | {                            |  291
    183 | IF                 | if                           |  257
    183 | PARENTINIC         | (                            |  289
    183 | ID                 | A                            |  269
@@ -735,8 +715,9 @@ Linea  | Token              | Lexema                       | ID
    183 | PUNTOYCOMA         | ;                            |  288
    183 | ENDIF              | endif                        |  259
    183 | PUNTOYCOMA         | ;                            |  288
+   183 | LLAVEFIN           | }                            |  292
    183 | PARENTINIC         | (                            |  289
-   183 | ID                 | A                            |  269
+   183 | CONST_INT          | 4I                           |  270
    183 | PARENTFIN          | )                            |  290
    183 | FLECHA             | ->                           |  274
    183 | ID                 | B                            |  269
@@ -765,7 +746,6 @@ Linea  | Token              | Lexema                       | ID
    184 | PUNTOYCOMA         | ;                            |  288
    184 | ENDIF              | endif                        |  259
    184 | PUNTOYCOMA         | ;                            |  288
-   184 | LLAVEFIN           | }                            |  292
    184 | PARENTINIC         | (                            |  289
    184 | ID                 | A                            |  269
    184 | PARENTFIN          | )                            |  290
@@ -783,7 +763,6 @@ Linea  | Token              | Lexema                       | ID
    185 | INT                | int                          |  262
    185 | ID                 | A                            |  269
    185 | PARENTFIN          | )                            |  290
-   185 | LLAVEINIC          | {                            |  291
    185 | IF                 | if                           |  257
    185 | PARENTINIC         | (                            |  289
    185 | ID                 | A                            |  269
@@ -797,6 +776,7 @@ Linea  | Token              | Lexema                       | ID
    185 | PUNTOYCOMA         | ;                            |  288
    185 | ENDIF              | endif                        |  259
    185 | PUNTOYCOMA         | ;                            |  288
+   185 | LLAVEFIN           | }                            |  292
    185 | PARENTINIC         | (                            |  289
    185 | ID                 | A                            |  269
    185 | PARENTFIN          | )                            |  290
@@ -804,45 +784,76 @@ Linea  | Token              | Lexema                       | ID
    185 | ID                 | B                            |  269
    185 | PARENTFIN          | )                            |  290
    185 | PUNTOYCOMA         | ;                            |  288
-   187 | INT                | int                          |  262
-   187 | ID                 | FUNCION                      |  269
-   187 | PARENTINIC         | (                            |  289
-   187 | INT                | int                          |  262
-   187 | ID                 | A                            |  269
-   187 | COMA               | ,                            |  287
-   187 | CV                 | cv                           |  267
-   187 | INT                | int                          |  262
-   187 | ID                 | B                            |  269
-   187 | PARENTFIN          | )                            |  290
-   187 | LLAVEINIC          | {                            |  291
+   186 | ID                 | SUMAR                        |  269
+   186 | PARENTINIC         | (                            |  289
+   186 | CONST_INT          | 4I                           |  270
+   186 | FLECHA             | ->                           |  274
+   186 | ID                 | A                            |  269
+   186 | COMA               | ,                            |  287
+   186 | PARENTINIC         | (                            |  289
+   186 | INT                | int                          |  262
+   186 | ID                 | A                            |  269
+   186 | PARENTFIN          | )                            |  290
+   186 | LLAVEINIC          | {                            |  291
+   186 | IF                 | if                           |  257
+   186 | PARENTINIC         | (                            |  289
+   186 | ID                 | A                            |  269
+   186 | MAYOR              | >                            |  284
+   186 | CONST_INT          | 1I                           |  270
+   186 | PARENTFIN          | )                            |  290
+   186 | PRINT              | print                        |  260
+   186 | PARENTINIC         | (                            |  289
+   186 | ID                 | A                            |  269
+   186 | PARENTFIN          | )                            |  290
+   186 | PUNTOYCOMA         | ;                            |  288
+   186 | ENDIF              | endif                        |  259
+   186 | PUNTOYCOMA         | ;                            |  288
+   186 | PARENTINIC         | (                            |  289
+   186 | ID                 | A                            |  269
+   186 | PARENTFIN          | )                            |  290
+   186 | FLECHA             | ->                           |  274
+   186 | ID                 | B                            |  269
+   186 | PARENTFIN          | )                            |  290
+   186 | PUNTOYCOMA         | ;                            |  288
+   188 | INT                | int                          |  262
+   188 | ID                 | FUNCION                      |  269
+   188 | PARENTINIC         | (                            |  289
+   188 | INT                | int                          |  262
    188 | ID                 | A                            |  269
-   188 | ASIGN              | :=                           |  273
-   188 | CONST_INT          | 3I                           |  270
-   188 | PUNTOYCOMA         | ;                            |  288
-   189 | RETURN             | return                       |  261
-   189 | PARENTINIC         | (                            |  289
+   188 | COMA               | ,                            |  287
+   188 | CV                 | cv                           |  267
+   188 | INT                | int                          |  262
+   188 | ID                 | B                            |  269
+   188 | PARENTFIN          | )                            |  290
+   188 | LLAVEINIC          | {                            |  291
    189 | ID                 | A                            |  269
-   189 | PARENTFIN          | )                            |  290
+   189 | ASIGN              | :=                           |  273
+   189 | CONST_INT          | 3I                           |  270
    189 | PUNTOYCOMA         | ;                            |  288
-   190 | LLAVEFIN           | }                            |  292
-   191 | INT                | int                          |  262
-   191 | ID                 | FUNCION                      |  269
-   191 | PARENTINIC         | (                            |  289
-   191 | INT                | int                          |  262
-   191 | ID                 | A                            |  269
-   191 | COMA               | ,                            |  287
-   191 | CV                 | cv                           |  267
-   191 | INT                | int                          |  262
-   191 | ID                 | B                            |  269
-   191 | PARENTFIN          | )                            |  290
-   191 | LLAVEINIC          | {                            |  291
+   190 | RETURN             | return                       |  261
+   190 | PARENTINIC         | (                            |  289
+   190 | ID                 | A                            |  269
+   190 | PARENTFIN          | )                            |  290
+   190 | PUNTOYCOMA         | ;                            |  288
+   191 | LLAVEFIN           | }                            |  292
+   192 | INT                | int                          |  262
+   192 | ID                 | FUNCION                      |  269
+   192 | PARENTINIC         | (                            |  289
+   192 | INT                | int                          |  262
    192 | ID                 | A                            |  269
-   192 | ASIGN              | :=                           |  273
-   192 | CONST_INT          | 3I                           |  270
-   192 | PUNTOYCOMA         | ;                            |  288
-   193 | RETURN             | return                       |  261
-   193 | PARENTINIC         | (                            |  289
+   192 | COMA               | ,                            |  287
+   192 | CV                 | cv                           |  267
+   192 | INT                | int                          |  262
+   192 | ID                 | B                            |  269
+   192 | PARENTFIN          | )                            |  290
+   192 | LLAVEINIC          | {                            |  291
    193 | ID                 | A                            |  269
-   193 | PARENTFIN          | )                            |  290
-   194 | LLAVEFIN           | }                            |  292
-   196 | LLAVEFIN           | }                            |  292
+   193 | ASIGN              | :=                           |  273
+   193 | CONST_INT          | 3I                           |  270
+   193 | PUNTOYCOMA         | ;                            |  288
+   194 | RETURN             | return                       |  261
+   194 | PARENTINIC         | (                            |  289
+   194 | ID                 | A                            |  269
+   194 | PARENTFIN          | )                            |  290
+   195 | LLAVEFIN           | }                            |  292
+   197 | LLAVEFIN           | }                            |  292

@@ -108,8 +108,9 @@ declaracion_variable : tipo lista_ids PUNTOYCOMA { SINT.add(lex.getLineaActual()
 lista_ids	: ID
  			| lista_ids COMA ID
 			| lista_ids COMA error { yyerror("Error: falta identificador después de coma");}
-			// | lista_ids ID {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
-            //ESTA LINEA DE ARRIBA DEBERIA ESTAR
+            | error COMA {yyerror("Identificador invalido");}
+			| error ID {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
+            //ESTA LINEA DE ARRIBA DEBERIA SER DISTINTA ANDA, PERO RECONOCE MAS COSAS COMO ESE ERROR
   			;
 
 declaracion_con_asignacion  : tipo ID ASIGN expresion PUNTOYCOMA { SINT.add(lex.getLineaActual(), "Declaracion de variable con asignacion"); }
@@ -192,7 +193,6 @@ lista_vars	: var_ref {n_var++;}
             | lista_vars COMA var_ref {n_var++;}
             | lista_vars COMA error { yyerror("Error sintactico: falta identificador después de coma");}
             | lista_vars var_ref {yyerror("Error sintactico: falta una coma entre identificadores en la lista de variables");}
-            //ESTA LINEA DE ARRIBA DEBERIA ESTAR
             ;
 
 var_ref		: ID					/* tema 22 */
@@ -371,7 +371,7 @@ parametro_real	: expresion
 
 /* ========= Lambda como parámetro (tema 28) ========= */
 
-lambda_expr		: PARENTINIC tipo ID PARENTFIN LLAVEINIC bloque_ejecutable LLAVEFIN PARENTINIC argumento PARENTFIN { SINT.add(lex.getLineaActual(), "Lambda"); System.out.println("HOLAAAA");}
+lambda_expr		: PARENTINIC tipo ID PARENTFIN LLAVEINIC bloque_ejecutable LLAVEFIN PARENTINIC argumento PARENTFIN { SINT.add(lex.getLineaActual(), "Lambda");}
                 | PARENTINIC tipo ID PARENTFIN bloque_ejecutable LLAVEFIN PARENTINIC argumento PARENTFIN { yyerror("Falta '{' en expresión lambda."); }
                 | PARENTINIC tipo ID PARENTFIN LLAVEINIC bloque_ejecutable PARENTINIC argumento PARENTFIN { yyerror("Falta '}' en expresión lambda."); }
                 | PARENTINIC tipo ID PARENTFIN bloque_ejecutable PARENTINIC argumento PARENTFIN { yyerror("Faltan los delimitadores '{}' en expresión lambda."); }

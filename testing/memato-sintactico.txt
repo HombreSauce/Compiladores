@@ -4,11 +4,9 @@
 Linea  | Estructura                    
 ------ | ------------------------------
      3 | Declaracion de variable       
-     5 | Declaracion de variable       
-     8 | Declaracion de funcion        
      9 | Declaracion de funcion        
-    11 | Declaracion de funcion        
-    14 | Asignacion simple             
+    10 | Declaracion de funcion        
+    12 | Declaracion de funcion        
     15 | Asignacion simple             
     16 | Asignacion simple             
     17 | Asignacion simple             
@@ -26,57 +24,56 @@ Linea  | Estructura
     29 | Asignacion simple             
     30 | Asignacion simple             
     31 | Asignacion simple             
-    36 | Asignacion multiple           
+    32 | Asignacion simple             
+    35 | Asignacion multiple           
     37 | Asignacion multiple           
-    44 | Asignacion multiple           
-    46 | Asignacion simple             
-    49 | Asignacion simple             
-    51 | Asignacion simple             
-    53 | Sentencia if                  
-    53 | Sentencia else                
-    56 | Asignacion simple             
-    58 | Sentencia if                  
-    61 | Asignacion simple             
-    62 | Sentencia if                  
-    65 | Asignacion simple             
-    69 | Asignacion simple             
-    73 | Asignacion simple             
-    78 | Sentencia if                  
-    78 | Sentencia else                
-    85 | Sentencia if                  
-    85 | Sentencia else                
-   116 | Sentencia if                  
-   121 | Sentencia if                  
-   124 | Asignacion simple             
+    38 | Asignacion multiple           
+    45 | Asignacion multiple           
+    47 | Asignacion simple             
+    50 | Asignacion simple             
+    52 | Asignacion simple             
+    54 | Sentencia if                  
+    54 | Sentencia else                
+    57 | Asignacion simple             
+    59 | Sentencia if                  
+    62 | Asignacion simple             
+    63 | Sentencia if                  
+    66 | Asignacion simple             
+    70 | Asignacion simple             
+    74 | Asignacion simple             
+    79 | Sentencia if                  
+    79 | Sentencia else                
+    86 | Sentencia if                  
+    86 | Sentencia else                
+   117 | Sentencia if                  
+   122 | Sentencia if                  
    125 | Asignacion simple             
-   126 | Sentencia for                 
-   129 | Asignacion simple             
-   129 | Sentencia for                 
-   132 | Asignacion simple             
-   136 | Asignacion simple             
-   140 | Asignacion simple             
-   144 | Asignacion simple             
-   148 | Asignacion simple             
-   152 | Asignacion simple             
-   156 | Asignacion simple             
-   160 | Asignacion simple             
-   165 | Sentencia for                 
-   169 | Print                         
-   169 | Sentencia for                 
+   126 | Asignacion simple             
+   127 | Sentencia for                 
+   130 | Asignacion simple             
+   130 | Sentencia for                 
+   133 | Asignacion simple             
+   137 | Asignacion simple             
+   141 | Asignacion simple             
+   145 | Asignacion simple             
+   149 | Asignacion simple             
+   153 | Asignacion simple             
+   157 | Asignacion simple             
+   161 | Asignacion simple             
+   166 | Sentencia for                 
    170 | Print                         
-   175 | Llamada a funcion             
-   176 | Trunc                         
+   170 | Sentencia for                 
+   171 | Print                         
    176 | Llamada a funcion             
+   177 | Trunc                         
    177 | Llamada a funcion             
    178 | Llamada a funcion             
    179 | Llamada a funcion             
    180 | Llamada a funcion             
-   182 | Print                         
-   182 | Sentencia if                  
-   182 | Lambda                        
-   182 | Llamada a funcion             
+   181 | Llamada a funcion             
    183 | Print                         
    183 | Sentencia if                  
+   183 | Lambda                        
    183 | Llamada a funcion             
    184 | Print                         
    184 | Sentencia if                  
@@ -84,8 +81,11 @@ Linea  | Estructura
    185 | Print                         
    185 | Sentencia if                  
    185 | Llamada a funcion             
-   188 | Asignacion simple             
-   189 | Return                        
-   190 | Declaracion de funcion        
-   192 | Asignacion simple             
-   194 | Declaracion de funcion        
+   186 | Print                         
+   186 | Sentencia if                  
+   186 | Llamada a funcion             
+   189 | Asignacion simple             
+   190 | Return                        
+   191 | Declaracion de funcion        
+   193 | Asignacion simple             
+   195 | Declaracion de funcion        
