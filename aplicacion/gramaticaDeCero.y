@@ -57,7 +57,13 @@
 %token LLAVEFIN		/* '}' */
 
 %% 
+// programa    : prog
+//             ;
+
 prog	: ID LLAVEINIC bloque LLAVEFIN             
+        | ID error bloque LLAVEFIN {yyerror("Falta '{' en declaración de programa");}
+        | ID LLAVEINIC bloque {yyerror("Falta '}' en declaración de programa");}
+        | error LLAVEINIC bloque LLAVEFIN {yyerror("Falta identificador en declaración de programa");}
 		;
 
 /* ========= Bloques ========= */ /* Mezcla declarativas + ejecutables */   
@@ -114,7 +120,7 @@ declaracion_con_asignacion  : tipo ID ASIGN expresion PUNTOYCOMA { SINT.add(lex.
                             ;
 
 /* ========= Funciones (declaración) ========= */
-declaracion_funcion     : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque LLAVEFIN { SINT.add(lex.getLineaActual(), "Declaracion de funcion"); }
+declaracion_funcion     : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque return_sent LLAVEFIN { SINT.add(lex.getLineaActual(), "Declaracion de funcion"); }
                         | declaracion_funcion_err
                         ;
 
@@ -143,10 +149,15 @@ sem_pasaje_opt		: /* vacío */
 					| CV
 					;
 
+return_sent		: RETURN PARENTINIC expresion PARENTFIN PUNTOYCOMA{ SINT.add(lex.getLineaActual(), "Return"); }
+        		| RETURN PARENTINIC expresion PARENTFIN { yyerror("Error en declaración de variables, falta ';' al final."); }
+                | /* vacio */
+  				;
+
 /* ========= Asignaciones ========= */
 /* Asignación simple y expresión aritmética SIN paréntesis de agrupación */	
 
-asign_simple	: var_ref ASIGN expresion {System.out.println("Asignación válida");}
+asign_simple	: var_ref ASIGN expresion { SINT.add(lex.getLineaActual(), "Asignacion simple"); }
   				;
 
 /* Tema 18 */ /* LHS puede tener más elementos que RHS.  RHS sólo constantes */
@@ -160,7 +171,7 @@ asign_multiple	: lista_vars IGUALUNICO lista_ctes {
                             yyerror("Error sintactico: más constantes que variables en la asignación");
                         } else {
                             // System.out.println("Asignación válida (" + n_var + ", " + n_cte + ")");
-                            System.out.println("Asignación válida");
+                            SINT.add(lex.getLineaActual(), "Asignacion multiple");
                         }
                     }
 					n_var = n_cte = 0;  /* reset para la próxima */
@@ -274,6 +285,7 @@ bloque_if_error : IF condicion PARENTFIN rama_if ENDIF { yyerror("Falta '(' en s
                 | IF rama_if ELSE rama_else ENDIF { yyerror("Falta el cuerpo de condicion en el if.");}
                 | IF PARENTINIC error PARENTFIN rama_if ENDIF { yyerror("Falta condicion en el if."); }
                 | IF PARENTINIC error PARENTFIN rama_if ELSE rama_else ENDIF { yyerror("Falta condicion en el if."); }
+                | IF PARENTINIC condicion PARENTFIN error {yyerror("Falta bloque del if");}
                 ;
 
 condicion   : expresion op_relacion expresion
@@ -316,10 +328,11 @@ bloque_for	: FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for { SINT.a
             | FOR PARENTINIC ID FROM CTEINT TO CTEINT error rama_for { yyerror("Falta ')' en sentencia for."); }
             | FOR error ID FROM CTEINT TO CTEINT error rama_for { yyerror("Faltan los parentesis en sentencia for."); }
             | FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN error { yyerror("Falta bloque del for."); }
+            //EL DE ARRIBA FUNCIONA A VECES, SI TIENE UN PUNTO Y COMA AL FINAL FUNCIONA 
             ;
 
 rama_for	: sentencia_ejec //sin punto y coma porque ya lo pide la sentencia ejecutable
-            | LLAVEINIC bloque_ejecutable LLAVEFIN {System.out.println("BLOQUE FOR");}
+            | LLAVEINIC bloque_ejecutable LLAVEFIN
             | LLAVEINIC LLAVEFIN  {yyerror("Falta cuerpo en el bloque del for");}
             ;
 
@@ -367,6 +380,8 @@ lambda_expr		: PARENTINIC tipo ID PARENTFIN LLAVEINIC bloque_ejecutable LLAVEFIN
 argumento	: ID
   			| cte
   			;
+
+                
 %%
 
 /* ---- Seccion de código ---- */

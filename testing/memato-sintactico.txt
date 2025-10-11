@@ -8,18 +8,58 @@ Linea  | Estructura
      8 | Declaracion de funcion        
      9 | Declaracion de funcion        
     11 | Declaracion de funcion        
+    14 | Asignacion simple             
+    15 | Asignacion simple             
+    16 | Asignacion simple             
+    17 | Asignacion simple             
+    18 | Asignacion simple             
+    19 | Asignacion simple             
+    20 | Asignacion simple             
+    21 | Asignacion simple             
+    22 | Asignacion simple             
+    23 | Asignacion simple             
+    24 | Asignacion simple             
+    25 | Asignacion simple             
+    26 | Asignacion simple             
+    27 | Asignacion simple             
+    28 | Asignacion simple             
+    29 | Asignacion simple             
+    30 | Asignacion simple             
+    31 | Asignacion simple             
+    36 | Asignacion multiple           
+    37 | Asignacion multiple           
+    44 | Asignacion multiple           
+    46 | Asignacion simple             
+    49 | Asignacion simple             
+    51 | Asignacion simple             
     53 | Sentencia if                  
     53 | Sentencia else                
+    56 | Asignacion simple             
     58 | Sentencia if                  
+    61 | Asignacion simple             
     62 | Sentencia if                  
+    65 | Asignacion simple             
+    69 | Asignacion simple             
+    73 | Asignacion simple             
     78 | Sentencia if                  
     78 | Sentencia else                
     85 | Sentencia if                  
     85 | Sentencia else                
    116 | Sentencia if                  
    121 | Sentencia if                  
+   124 | Asignacion simple             
+   125 | Asignacion simple             
    126 | Sentencia for                 
+   129 | Asignacion simple             
    129 | Sentencia for                 
+   132 | Asignacion simple             
+   136 | Asignacion simple             
+   140 | Asignacion simple             
+   144 | Asignacion simple             
+   148 | Asignacion simple             
+   152 | Asignacion simple             
+   156 | Asignacion simple             
+   160 | Asignacion simple             
    165 | Sentencia for                 
    169 | Print                         
    169 | Sentencia for                 
@@ -44,3 +84,8 @@ Linea  | Estructura
    185 | Print                         
    185 | Sentencia if                  
    185 | Llamada a funcion             
+   188 | Asignacion simple             
+   189 | Return                        
+   190 | Declaracion de funcion        
+   192 | Asignacion simple             
+   194 | Declaracion de funcion        

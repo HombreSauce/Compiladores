@@ -87,8 +87,6 @@ Linea  | Descripcion
    161 | Error sintactico: Faltan los parentesis en sentencia for.
    163 | Error sintactico: Falta ';' al final de la sentencia.
    165 | Error sintactico: Falta cuerpo en el bloque del for
-   167 | Error sintactico: Falta ';' al final de la sentencia.
-   171 | Error sintactico: Falta ';' al final de la sentencia.
    171 | Error sintactico: Falta '(' en sentencia print.
    172 | Error sintactico: Falta argumento en sentencia print.
    173 | Error sintactico: Falta ')' en sentencia print.
@@ -99,3 +97,4 @@ Linea  | Descripcion
    183 | Error sintactico: Faltan los delimitadores '{}' en expresión lambda.
    184 | Error sintactico: Falta '{' en expresión lambda.
    185 | Error sintactico: Falta '}' en expresión lambda.
+   194 | Error sintactico: Error en declaración de variables, falta ';' al final.

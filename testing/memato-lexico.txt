@@ -564,6 +564,7 @@ Linea  | Token              | Lexema                       | ID
    163 | PARENTFIN          | )                            |  290
    163 | LLAVEINIC          | {                            |  291
    165 | LLAVEFIN           | }                            |  292
+   165 | PUNTOYCOMA         | ;                            |  288
    167 | FOR                | for                          |  263
    167 | PARENTINIC         | (                            |  289
    167 | ID                 | I                            |  269
@@ -581,6 +582,7 @@ Linea  | Token              | Lexema                       | ID
    170 | PARENTINIC         | (                            |  289
    170 | CONST_FLOAT        | 8.5                          |  271
    170 | PARENTFIN          | )                            |  290
+   170 | PUNTOYCOMA         | ;                            |  288
    171 | PRINT              | print                        |  260
    171 | CONST_FLOAT        | 8.5                          |  271
    171 | PARENTFIN          | )                            |  290
@@ -802,4 +804,45 @@ Linea  | Token              | Lexema                       | ID
    185 | ID                 | B                            |  269
    185 | PARENTFIN          | )                            |  290
    185 | PUNTOYCOMA         | ;                            |  288
-   187 | LLAVEFIN           | }                            |  292
+   187 | INT                | int                          |  262
+   187 | ID                 | FUNCION                      |  269
+   187 | PARENTINIC         | (                            |  289
+   187 | INT                | int                          |  262
+   187 | ID                 | A                            |  269
+   187 | COMA               | ,                            |  287
+   187 | CV                 | cv                           |  267
+   187 | INT                | int                          |  262
+   187 | ID                 | B                            |  269
+   187 | PARENTFIN          | )                            |  290
+   187 | LLAVEINIC          | {                            |  291
+   188 | ID                 | A                            |  269
+   188 | ASIGN              | :=                           |  273
+   188 | CONST_INT          | 3I                           |  270
+   188 | PUNTOYCOMA         | ;                            |  288
+   189 | RETURN             | return                       |  261
+   189 | PARENTINIC         | (                            |  289
+   189 | ID                 | A                            |  269
+   189 | PARENTFIN          | )                            |  290
+   189 | PUNTOYCOMA         | ;                            |  288
+   190 | LLAVEFIN           | }                            |  292
+   191 | INT                | int                          |  262
+   191 | ID                 | FUNCION                      |  269
+   191 | PARENTINIC         | (                            |  289
+   191 | INT                | int                          |  262
+   191 | ID                 | A                            |  269
+   191 | COMA               | ,                            |  287
+   191 | CV                 | cv                           |  267
+   191 | INT                | int                          |  262
+   191 | ID                 | B                            |  269
+   191 | PARENTFIN          | )                            |  290
+   191 | LLAVEINIC          | {                            |  291
+   192 | ID                 | A                            |  269
+   192 | ASIGN              | :=                           |  273
+   192 | CONST_INT          | 3I                           |  270
+   192 | PUNTOYCOMA         | ;                            |  288
+   193 | RETURN             | return                       |  261
+   193 | PARENTINIC         | (                            |  289
+   193 | ID                 | A                            |  269
+   193 | PARENTFIN          | )                            |  290
+   194 | LLAVEFIN           | }                            |  292
+   196 | LLAVEFIN           | }                            |  292
