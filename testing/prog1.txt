@@ -24,9 +24,13 @@ int Q;      @esta declaracion es comida porque la anterior esta buscando el ; pa
 @
 @int A, B, C, 
 @
-@int D, E, F
+int D, E, F
 
 int G, H, I;
+
+int XD (int X) {
+    int D;
+}
 
 @X:=1I;
 @Y:=2I;

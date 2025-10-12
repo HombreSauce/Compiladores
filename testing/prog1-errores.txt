@@ -3,3 +3,4 @@
 ==========================
 Linea  | Descripcion
 ------ | ------------------------------
+    29 | Error sintactico: Error en declaración de variables, falta ';' al final.

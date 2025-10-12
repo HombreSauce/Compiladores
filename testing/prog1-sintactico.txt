@@ -3,5 +3,10 @@
 ==========================================
 Linea  | Estructura                    
 ------ | ------------------------------
-    13 | Declaracion de variable       
-    15 | Declaracion de variable       
+    13 | Declaracion de variable: Z    
+    15 | Declaracion de variable: Q    
+    29 | Declaracion de variable: G    
+    29 | Declaracion de variable: H    
+    29 | Declaracion de variable: I    
+    32 | Declaracion de variable: D    
+    33 | Declaracion de funcion: XD    

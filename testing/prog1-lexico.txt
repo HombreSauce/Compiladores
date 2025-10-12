@@ -11,6 +11,12 @@ Linea  | Token              | Lexema                       | ID
     15 | INT                | int                          |  262
     15 | ID                 | Q                            |  269
     15 | PUNTOYCOMA         | ;                            |  288
+    27 | INT                | int                          |  262
+    27 | ID                 | D                            |  269
+    27 | COMA               | ,                            |  287
+    27 | ID                 | E                            |  269
+    27 | COMA               | ,                            |  287
+    27 | ID                 | F                            |  269
     29 | INT                | int                          |  262
     29 | ID                 | G                            |  269
     29 | COMA               | ,                            |  287
@@ -18,4 +24,15 @@ Linea  | Token              | Lexema                       | ID
     29 | COMA               | ,                            |  287
     29 | ID                 | I                            |  269
     29 | PUNTOYCOMA         | ;                            |  288
+    31 | INT                | int                          |  262
+    31 | ID                 | XD                           |  269
+    31 | PARENTINIC         | (                            |  289
+    31 | INT                | int                          |  262
+    31 | ID                 | X                            |  269
+    31 | PARENTFIN          | )                            |  290
+    31 | LLAVEINIC          | {                            |  291
+    32 | INT                | int                          |  262
+    32 | ID                 | D                            |  269
+    32 | PUNTOYCOMA         | ;                            |  288
     33 | LLAVEFIN           | }                            |  292
+    37 | LLAVEFIN           | }                            |  292
