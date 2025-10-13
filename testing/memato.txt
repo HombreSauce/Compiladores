@@ -11,6 +11,34 @@ P{
     int FUNCION (int A, int B) {}
     int A
 
+    int FUNCION (int A) {
+        return(3I + 6.5);
+    }
+
+    int FUNCION (int A) {
+        return(3I + 6.5)
+    }
+
+    int FUNCION (int A) {
+        return(3I + );
+    }
+
+    int FUNCION (int A) {
+        return( + 6.5)
+    }
+
+    @int FUNCION (int A) {
+    @    return(A B)
+    @}
+
+    int A := 3I + 4I;
+    int A := 3I + 4I
+    int A := 3I + 
+    @int A := 3I 4I; 
+    int A := + 4I; 
+    int A  3I + 4I; 
+    int  := 3I + 4I; 
+
     A := B;
     A := 3I;
     A := 4.5;
@@ -28,8 +56,8 @@ P{
     A.C := - -3I ;
     A :=  * 4;
     A := / 5 ;
-    A := 4I 5I;
-    @ A := B 3I; @/ Comentado porque se rompe
+    @A := 4I 5I;
+    @A := B 3I; 
 
     A.A = 1;
 
@@ -79,34 +107,6 @@ P{
 
     if (A =! 5) {}
     else
-    endif;
-
-    if (A =! 5) {
-
-    } else {
-        
-    }
-    endif;
-
-    if A =! 5) {
-
-    } else {
-        
-    }
-    endif;
-
-    if (A =! 5 {
-
-    } else {
-        
-    }
-    endif;
-
-    if A =! 5 {
-
-    } else {
-        
-    }
     endif;
 
     if () {
@@ -189,6 +189,7 @@ P{
     print(8.5);
     print8.5);
     print();
+    print(int A:=3I);
     print(8.5;
 
     SUMAR(4I -> A, 5I + 6.5 -> B);

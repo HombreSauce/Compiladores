@@ -3,25 +3,86 @@
 ==========================================
 Linea  | Estructura                    
 ------ | ------------------------------
-     5 | Declaracion de variable       
-     8 | Declaracion de funcion        
-     9 | Declaracion de funcion        
-    11 | Declaracion de funcion        
-    14 | Asignacion simple             
-    15 | Asignacion simple             
-    16 | Asignacion simple             
-    17 | Asignacion simple             
-    18 | Asignacion simple             
-    19 | Asignacion simple             
-    20 | Asignacion simple             
-    21 | Asignacion simple             
-    22 | Asignacion simple             
-    23 | Asignacion simple             
-    24 | Asignacion simple             
-    25 | Asignacion simple             
-    26 | Asignacion simple             
-    27 | Asignacion simple             
-    28 | Asignacion simple             
-    29 | Asignacion simple             
-    30 | Asignacion simple             
+     8 | Declaracion de funcion: FUNCION
+     9 | Declaracion de funcion: FUNCION
+    11 | Declaracion de funcion: FUNCION
+    15 | Return                        
+    16 | Declaracion de funcion: FUNCION
+    20 | Declaracion de funcion: FUNCION
+    23 | Return                        
+    24 | Declaracion de funcion: FUNCION
+    28 | Declaracion de funcion: FUNCION
+    34 | Declaracion de variable con asignacion
+    38 | Declaracion de variable con asignacion
+    42 | Asignacion simple             
+    43 | Asignacion simple             
+    44 | Asignacion simple             
+    45 | Asignacion simple             
+    46 | Asignacion simple             
+    47 | Asignacion simple             
+    48 | Asignacion simple             
     49 | Asignacion simple             
+    50 | Asignacion simple             
+    51 | Asignacion simple             
+    52 | Asignacion simple             
+    53 | Asignacion simple             
+    54 | Asignacion simple             
+    55 | Asignacion simple             
+    56 | Asignacion simple             
+    57 | Asignacion simple             
+    58 | Asignacion simple             
+    64 | Asignacion multiple           
+    65 | Asignacion multiple           
+    72 | Asignacion multiple           
+    74 | Asignacion simple             
+    77 | Asignacion simple             
+    79 | Asignacion simple             
+    81 | Sentencia if                  
+    81 | Sentencia else                
+    84 | Asignacion simple             
+    86 | Sentencia if                  
+    89 | Asignacion simple             
+    90 | Sentencia if                  
+    93 | Asignacion simple             
+    97 | Asignacion simple             
+   101 | Asignacion simple             
+   120 | Sentencia if                  
+   125 | Sentencia if                  
+   130 | Sentencia if                  
+   143 | Asignacion simple             
+   144 | Asignacion simple             
+   145 | Sentencia for                 
+   148 | Asignacion simple             
+   148 | Sentencia for                 
+   151 | Asignacion simple             
+   155 | Asignacion simple             
+   159 | Asignacion simple             
+   163 | Asignacion simple             
+   167 | Asignacion simple             
+   171 | Asignacion simple             
+   175 | Asignacion simple             
+   179 | Asignacion simple             
+   184 | Sentencia for                 
+   188 | Print                         
+   188 | Sentencia for                 
+   189 | Print                         
+   195 | Llamada a funcion             
+   196 | Trunc                         
+   196 | Llamada a funcion             
+   197 | Llamada a funcion             
+   198 | Llamada a funcion             
+   199 | Llamada a funcion             
+   200 | Llamada a funcion             
+   202 | Print                         
+   202 | Sentencia if                  
+   202 | Lambda                        
+   202 | Llamada a funcion             
+   203 | Print                         
+   203 | Sentencia if                  
+   203 | Llamada a funcion             
+   204 | Print                         
+   204 | Sentencia if                  
+   204 | Llamada a funcion             
+   205 | Print                         
+   205 | Sentencia if                  
+   205 | Llamada a funcion             

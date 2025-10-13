@@ -64,6 +64,7 @@ prog	: ID LLAVEINIC bloque LLAVEFIN
         | ID bloque LLAVEFIN {yyerror("Falta '{' en declaración de programa");}
         | ID LLAVEINIC bloque {yyerror("Falta '}' en declaración de programa");}
         | LLAVEINIC bloque LLAVEFIN {yyerror("Falta identificador en declaración de programa");}
+        | ID LLAVEINIC bloque LLAVEFIN error {yyerror("Sentencias definidas fuera del bloque de programa");}
 		;
 
 /* ========= Bloques ========= */ /* Mezcla declarativas + ejecutables */   
@@ -100,15 +101,26 @@ sentencia_ejec	: asign_simple
 
 /* ========= Declaraciones ========= */
 
-declaracion_variable : tipo lista_ids PUNTOYCOMA { SINT.add(lex.getLineaActual(), "Declaracion de variable"); }
-                     | tipo lista_ids { yyerror("Error en declaración de variables, falta ';' al final."); }
-                    //  | tipo error PUNTOYCOMA {yyerror("Error en declaración de variables, falta ',' entre identificadores");};
-                     ;
+declaracion_variable    : tipo lista_ids PUNTOYCOMA {
+                                                    if (!error_lista_ids) {
+                                                        int linea = lex.getLineaActual();
+                                                        for (String n : $2.sval.split(",\s")) {
+                                                        SINT.add(linea, "Declaracion de variable: " + n);
+                                                        }
+                                                    } else {
+                                                        error_lista_ids = false;  /* reset para la próxima */
+                                                    }
+                                                    }
+                        | tipo lista_ids { yyerror("Error en declaración de variables, falta ';' al final."); }
+                        | tipo PUNTOYCOMA {yyerror("Error en declaración de variables, falta identificador."); }
+                        //| tipo error PUNTOYCOMA {yyerror("Error en declaración de variables, falta ',' entre identificadores");};
+                         ;
 
 
-lista_ids	: ID
- 			| lista_ids COMA ID
-			| lista_ids COMA error { yyerror("Error: falta identificador después de coma");}
+lista_ids   : ID { yyval = new ParserVal(((EntradaTablaSimbolos)$1.obj).getLexema()); }
+            | lista_ids COMA ID { yyval = new ParserVal($1.sval + ", " + ((EntradaTablaSimbolos)$3.obj).getLexema()); }
+            // | lista_ids COMA COMA {yyerror("Falta identificador entre comas"); error_lista_ids = true;}
+            | lista_ids COMA error { yyerror("Falta identificador después de coma"); error_lista_ids = true;}
             // | lista_ids ID {yyerror("Error en declaración de variables, falta ',' entre identificadores");};
             // | error COMA {yyerror("Identificador invalido");}
 			// | error ID {yyerror("Error: falta una coma entre identificadores en la lista de variables");}
@@ -122,7 +134,11 @@ declaracion_con_asignacion  : tipo ID ASIGN expresion PUNTOYCOMA { SINT.add(lex.
                             ;
 
 /* ========= Funciones (declaración) ========= */
-declaracion_funcion     : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque return_sent LLAVEFIN { SINT.add(lex.getLineaActual(), "Declaracion de funcion"); }
+declaracion_funcion     : tipo ID PARENTINIC lista_params_formales PARENTFIN LLAVEINIC bloque return_sent LLAVEFIN {
+                                                                                                                    String nombre = ((EntradaTablaSimbolos) val_peek(7).obj).getLexema();
+                                                                                                                    SINT.add(lex.getLineaActual(), "Declaracion de funcion: " + nombre);
+                                                                                                                    yyval = new ParserVal(nombre);
+                                                                                                                   }
                         | declaracion_funcion_err
                         ;
 
@@ -139,7 +155,7 @@ lista_params_formales	: param_formal
 						| lista_params_formales COMA param_formal
                         | lista_params_formales COMA error {yyerror("Error sintáctico: falta identificador despues de coma en parametro formal");}
                         // | lista_params_formales param_formal {yyerror("Error sintactico: falta coma entre parametros formales en declaracion de funcion");}
-                        // DEBERIA ESTAR ESTE DE ARRIBA
+                        // SHIFT/REDUCE CONFLICT
 						;
 
 param_formal		: sem_pasaje_opt tipo ID            /* tema 24 */
@@ -209,6 +225,7 @@ expresion	: termino
   			| expresion MENOS termino
             | expresion MENOS error { yyerror("Falta operando derecho después de '-' en expresión."); }
   			| error MENOS termino { yyerror("Falta operando izquierdo antes de '-' en expresión."); }
+            // | expresion error termino
 			;
 
 termino		: factor
@@ -223,44 +240,46 @@ termino		: factor
 			;
 
 factor		: var_ref
-  			// | llamada_funcion
+  			| llamada_funcion
+            // HAY SHIFT REDUCE CONFLICT CON var_ref
   			| cte
  			;
 
 /* ========= Constante ========= */
 
-cte		: CTEFLOAT //no es necesario chequear el rango de los flotantes positivos ni negativos porque ya lo hace la AS9
-		| MENOS CTEFLOAT {
-			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$2.obj;
-			String valor_negativo = '-' + entrada.getLexema();
-			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
-			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); //eliminamos la entrada del positivo que se creo en el lexico
-			yyval = $2; //se reduce por CTEFLOAT
-		}
-		| CTEINT {
-			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$1.obj;
-			String valor = entrada.getLexema();
-			valor = valor.substring(0, valor.length() - 1); //nos quedamos con el numero sin el I final
-			int num = Integer.parseInt(valor);
-			int max = 32767;
-			//al ser positivo debemos chequear el maximo
-			if (num > max) {
-				System.err.println("Error léxico: constante entera fuera de rango en línea " + lex.getLineaActual() + ": " + num);
-				tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea());
-			}
-
-			yyval = $1;
-		}
-		| MENOS CTEINT {
-			EntradaTablaSimbolos entrada = (EntradaTablaSimbolos)$2.obj;
-			String valor_negativo = '-' + entrada.getLexema();
-			tablaSimbolos.insertar(valor_negativo, entrada.getUltimaLinea());
-			tablaSimbolos.eliminarEntrada(entrada.getLexema(), entrada.getUltimaLinea()); //eliminamos la entrada del positivo que se creo en el lexico
-
-			yyval = $2;
-		}
-		| CTESTR
-  		;
+cte     : CTEFLOAT { yyval = $1; }
+        | MENOS CTEFLOAT
+            {
+            EntradaTablaSimbolos ent = (EntradaTablaSimbolos)$2.obj;
+            String neg = '-' + ent.getLexema();
+            tablaSimbolos.insertar(neg, ent.getUltimaLinea());
+            tablaSimbolos.eliminarEntrada(ent.getLexema(), ent.getUltimaLinea());
+            yyval = $2;  /* devolvés el mismo ParserVal */
+            }
+        | CTEINT
+            {
+            EntradaTablaSimbolos ent = (EntradaTablaSimbolos)$1.obj;
+            String valor = ent.getLexema();
+            valor = valor.substring(0, valor.length() - 1); /* quita la 'I' final */
+            int num = Integer.parseInt(valor);
+            if (num > 32767) {
+                System.err.println("Error léxico: constante entera fuera de rango en línea "
+                                + lex.getLineaActual() + ": " + num);
+                tablaSimbolos.eliminarEntrada(ent.getLexema(), ent.getUltimaLinea());
+            }
+            yyval = $1;
+            }
+        | MENOS CTEINT
+            {
+            EntradaTablaSimbolos ent = (EntradaTablaSimbolos)$2.obj;
+            String neg = '-' + ent.getLexema();
+            tablaSimbolos.insertar(neg, ent.getUltimaLinea());
+            tablaSimbolos.eliminarEntrada(ent.getLexema(), ent.getUltimaLinea());
+            yyval = $2;
+            }
+        | CTESTR
+            { yyval = $1; }
+        ;
 
 /* ========= If (selección) ========= */
 
@@ -285,7 +304,7 @@ bloque_if_error : IF condicion PARENTFIN rama_if ENDIF { yyerror("Falta '(' en s
                 | IF PARENTINIC error PARENTFIN rama_if ENDIF { yyerror("Falta condicion en el if."); }
                 | IF PARENTINIC error PARENTFIN rama_if ELSE rama_else ENDIF { yyerror("Falta condicion en el if."); }
                 | IF PARENTINIC condicion PARENTFIN error {yyerror("Falta bloque del if");}
-                |  IF PARENTINIC condicion PARENTFIN rama_if ELSE error {yyerror("Falta bloque del else");}
+                | IF PARENTINIC condicion PARENTFIN rama_if ELSE error {yyerror("Falta bloque del else");}
                 ;
 
 condicion   : expresion op_relacion expresion
@@ -321,16 +340,17 @@ rama_else   : sentencia_ejec PUNTOYCOMA
 /* ========= For (tema 15) ========= */
 
 bloque_for	: FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN rama_for { SINT.add(lex.getLineaActual(), "Sentencia for"); }
-            | FOR error ID FROM CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta '(' en sentencia for."); }
-            | FOR PARENTINIC error FROM CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta identificador en sentencia for."); }
-            | FOR PARENTINIC ID error CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta 'from' en sentencia for."); }
-            | FOR PARENTINIC ID FROM error TO CTEINT PARENTFIN rama_for { yyerror("Falta constante entera después de 'from' en sentencia for."); }
-            | FOR PARENTINIC ID FROM CTEINT error CTEINT PARENTFIN rama_for { yyerror("Falta 'to' en sentencia for."); }
-            | FOR PARENTINIC ID FROM CTEINT TO error PARENTFIN rama_for { yyerror("Falta constante entera después de 'to' en sentencia for."); }
-            | FOR PARENTINIC ID FROM CTEINT TO CTEINT error rama_for { yyerror("Falta ')' en sentencia for."); }
-            | FOR error ID FROM CTEINT TO CTEINT error rama_for { yyerror("Faltan los parentesis en sentencia for."); }
+            | FOR ID FROM CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta '(' en sentencia for."); }
+            | FOR PARENTINIC FROM CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta identificador en sentencia for."); }
+            | FOR PARENTINIC ID CTEINT TO CTEINT PARENTFIN rama_for { yyerror("Falta 'from' en sentencia for."); }
+            | FOR PARENTINIC ID FROM TO CTEINT PARENTFIN rama_for { yyerror("Falta constante entera después de 'from' en sentencia for."); }
+            | FOR PARENTINIC ID FROM CTEINT CTEINT PARENTFIN rama_for { yyerror("Falta 'to' en sentencia for."); }
+            | FOR PARENTINIC ID FROM CTEINT TO PARENTFIN rama_for { yyerror("Falta constante entera después de 'to' en sentencia for."); }
+            | FOR PARENTINIC ID FROM CTEINT TO CTEINT rama_for { yyerror("Falta ')' en sentencia for."); }
+            | FOR ID FROM CTEINT TO CTEINT rama_for { yyerror("Faltan los parentesis en sentencia for."); }
             | FOR PARENTINIC ID FROM CTEINT TO CTEINT PARENTFIN error { yyerror("Falta bloque del for."); }
             //EL DE ARRIBA FUNCIONA A VECES, SI TIENE UN PUNTO Y COMA AL FINAL FUNCIONA 
+            // | FOR error LLAVEFIN {yyerror("Error en declaración del for");}
             ;
 
 rama_for	: sentencia_ejec //sin punto y coma porque ya lo pide la sentencia ejecutable
@@ -342,7 +362,7 @@ rama_for	: sentencia_ejec //sin punto y coma porque ya lo pide la sentencia ejec
 
 sentencia_print	: PRINT PARENTINIC expresion PARENTFIN { SINT.add(lex.getLineaActual(), "Print"); }
                 | PRINT PARENTINIC error PARENTFIN { yyerror("Falta argumento en sentencia print."); }
-                | PRINT error expresion PARENTFIN { yyerror("Falta '(' en sentencia print."); }
+                | PRINT expresion PARENTFIN { yyerror("Falta '(' en sentencia print."); }
                 | PRINT PARENTINIC expresion { yyerror("Falta ')' en sentencia print."); }
                 ;
 
@@ -351,7 +371,7 @@ sentencia_print	: PRINT PARENTINIC expresion PARENTFIN { SINT.add(lex.getLineaAc
 /* Params reales pueden ser expr, lambda (tema 28) o trunc (expr) (tema 31) */
 
 llamada_funcion	: ID PARENTINIC lista_params_reales PARENTFIN { SINT.add(lex.getLineaActual(), "Llamada a funcion"); }
-                // | PARENTINIC lista_params_reales PARENTFIN{ yyerror("Llamada a función sin nombre");}
+                // | error PARENTINIC lista_params_reales PARENTFIN{ yyerror("Llamada a función sin nombre");}
   				;
 
 lista_params_reales	: param_real_map
@@ -366,8 +386,8 @@ param_real_map	: parametro_real FLECHA ID
 parametro_real	: expresion                    
   				| TRUNC PARENTINIC expresion PARENTFIN { SINT.add(lex.getLineaActual(), "Trunc"); }                		 /* tema 31 */
                 | TRUNC PARENTINIC expresion { yyerror("Falta ')' en llamada a función con 'trunc'.");}
-                | TRUNC error expresion PARENTFIN { yyerror("Falta '(' en llamada a función con 'trunc'.");}
-                | TRUNC error expresion { yyerror("Faltan los paréntesis en llamada a función con 'trunc'.");}
+                | TRUNC expresion PARENTFIN { yyerror("Falta '(' en llamada a función con 'trunc'.");}
+                | TRUNC expresion { yyerror("Faltan los paréntesis en llamada a función con 'trunc'.");}
   				| lambda_expr                                     	 /* tema 28 */
 				;
 
@@ -393,6 +413,7 @@ static Parser par = null;
 static TablaSimbolos tablaSimbolos = TablaSimbolos.getInstancia();
 static int n_var = 0; //para contar variables en asignaciones multiples
 static int n_cte = 0; //para contar ctes en asignaciones multiples
+static boolean error_lista_ids = false; //para controlar errores en lista_ids
 
 public static Tokens_out TOKENS;
 public static TS_out TS;
