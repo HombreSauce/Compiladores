@@ -22,7 +22,7 @@ public class AccionSemantica8 implements AccionSemantica{
         int num = Integer.parseInt(lexema.toString());
         if(num <= 32768) { //si es negativo está bien, si es positivo damos error en la etapa sintactica
             lexema.append("I"); //agregamos la I
-            EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);
+            EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual, "CTEINT");
             Token token = new Token(tablaIDToken.getID("CTEINT"), entrada);
             return token;
         } else {

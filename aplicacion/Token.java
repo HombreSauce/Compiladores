@@ -20,6 +20,10 @@ public class Token {
     public EntradaTablaSimbolos getEntradaTS() {
         return entradaTS;
     }
+
+    public String getLexema() {
+        return (entradaTS != null) ? entradaTS.getLexema() : null;
+    }
     
     public void mostrarToken() {
         TablaIdentificadorToken tablaIdentificadorToken = TablaIdentificadorToken.getInstancia();

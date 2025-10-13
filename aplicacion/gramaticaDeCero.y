@@ -240,46 +240,47 @@ termino		: factor
 			;
 
 factor		: var_ref
-  			| llamada_funcion
+  			// | llamada_funcion
             // HAY SHIFT REDUCE CONFLICT CON var_ref
   			| cte
  			;
 
 /* ========= Constante ========= */
 
-cte     : CTEFLOAT { yyval = $1; }
-        | MENOS CTEFLOAT
-            {
+cte : CTEFLOAT //no es necesario chequear el rango de los flotantes positivos ni negativos porque ya lo hace la AS9
+        { yyval = $1; }
+    | MENOS CTEFLOAT
+        {
             EntradaTablaSimbolos ent = (EntradaTablaSimbolos)$2.obj;
-            String neg = '-' + ent.getLexema();
-            tablaSimbolos.insertar(neg, ent.getUltimaLinea());
+            String neg = "-" + ent.getLexema();
+            tablaSimbolos.insertar(neg, ent.getUltimaLinea(), "CTEFLOAT");
             tablaSimbolos.eliminarEntrada(ent.getLexema(), ent.getUltimaLinea());
-            yyval = $2;  /* devolvés el mismo ParserVal */
-            }
-        | CTEINT
-            {
+            yyval = $2;
+        }
+    | CTEINT
+        {
             EntradaTablaSimbolos ent = (EntradaTablaSimbolos)$1.obj;
             String valor = ent.getLexema();
-            valor = valor.substring(0, valor.length() - 1); /* quita la 'I' final */
+            valor = valor.substring(0, valor.length() - 1); //sin la I del final
             int num = Integer.parseInt(valor);
             if (num > 32767) {
                 System.err.println("Error léxico: constante entera fuera de rango en línea "
-                                + lex.getLineaActual() + ": " + num);
+                                    + lex.getLineaActual() + ": " + num);
                 tablaSimbolos.eliminarEntrada(ent.getLexema(), ent.getUltimaLinea());
             }
             yyval = $1;
-            }
-        | MENOS CTEINT
-            {
+        }
+    | MENOS CTEINT
+        {
             EntradaTablaSimbolos ent = (EntradaTablaSimbolos)$2.obj;
-            String neg = '-' + ent.getLexema();
-            tablaSimbolos.insertar(neg, ent.getUltimaLinea());
+            String neg = "-" + ent.getLexema();
+            tablaSimbolos.insertar(neg, ent.getUltimaLinea(), "CTEINT");
             tablaSimbolos.eliminarEntrada(ent.getLexema(), ent.getUltimaLinea());
             yyval = $2;
-            }
-        | CTESTR
-            { yyval = $1; }
-        ;
+        }
+    | CTESTR
+        { yyval = $1; }
+    ;
 
 /* ========= If (selección) ========= */
 

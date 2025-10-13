@@ -37,7 +37,7 @@ public class AccionSemantica9 implements AccionSemantica {
         }
         //Como el rango es simétrico chequeamos por el absoluto
         if((Math.abs(num) >= MIN_NORMAL && Math.abs(num) <= MAX_VALUE || num == 0.0)) {
-            EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);
+            EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual, "CTEFLOAT");
             Token token = new Token(tablaIDToken.getID("CTEFLOAT"), entrada);
             return token;
         } else {

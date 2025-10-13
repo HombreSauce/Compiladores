@@ -24,7 +24,7 @@ public class AccionSemantica3 implements AccionSemantica{
             lexema.setLength(20);
             Parser.logLexWarnAt(lineaCodigoActual, "Identificador truncado a 20 caracteres: '" + lexema.toString() + "'");
         }
-        EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);
+        EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual, "ID");
         Token token = new Token(tablaIDToken.getID("ID"), entrada);
         return token;
     }

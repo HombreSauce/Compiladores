@@ -20,7 +20,7 @@ public class AccionSemantica11 implements AccionSemantica{
         String lexemaSinSaltos = lexema.toString().replace("\n", " ").replace("\r", " ");
         lexema.setLength(0);
         lexema.append(lexemaSinSaltos);
-        EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual);
+        EntradaTablaSimbolos entrada = tablaSimbolos.insertar(lexema.toString(), lineaCodigoActual, "CTESTR");
         Token token = new Token(tablaIDToken.getID("CTESTR"), entrada);
         return token;
     }

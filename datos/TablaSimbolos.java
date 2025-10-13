@@ -22,13 +22,13 @@ public class TablaSimbolos {
         return tablaSimbolos.get(lexema);
     }
 
-    public EntradaTablaSimbolos insertar(String lexema, int nroLinea) {
+    public EntradaTablaSimbolos insertar(String lexema, int nroLinea, String categoria) {
         if (tablaSimbolos.containsKey(lexema)) {
             EntradaTablaSimbolos entrada = tablaSimbolos.get(lexema);
             entrada.agregarLinea(nroLinea);
             return tablaSimbolos.get(lexema);
         } else {
-            EntradaTablaSimbolos nuevaEntrada = new EntradaTablaSimbolos(lexema, nroLinea);
+            EntradaTablaSimbolos nuevaEntrada = new EntradaTablaSimbolos(lexema, nroLinea, categoria);
             tablaSimbolos.put(lexema, nuevaEntrada);
             return nuevaEntrada;
         }
@@ -63,16 +63,10 @@ public class TablaSimbolos {
         return s.substring(0, max-1) + "…";
     }
 
-    private static String categoriaDe(String lex) {
-        if (lex == null || lex.isEmpty()) return "ID";
-        // Heurística simple sin tocar tus clases:
-        if (lex.matches("^[0-9]+$"))            return "CONST_INT";
-        if (lex.matches("^[0-9]+\\.[0-9]+$"))   return "CONST_FLOAT";
-        if (lex.length() >= 2 && lex.startsWith("\"") && lex.endsWith("\"")) return "CONST_STRING";
-        return "ID";
-    }
+
+
     public void mostrarTabla(PrintWriter pw) {
-        // Encabezado de columnas (el encabezado grande ya lo escribís en main)
+        // Encabezado de columnas (el encabezado grande ya lo escribís en TS_out)
         pw.printf("%-30s | %-12s | %-8s | %s%n", "Lexema", "Categoria", "Ocurr.", "Lineas");
         pw.println("------------------------------ | ------------ | -------- | ------------------------------");
 
@@ -80,9 +74,9 @@ public class TablaSimbolos {
             .sorted(Map.Entry.comparingByKey()) // ordena por lexema
             .forEach(e -> {
                 EntradaTablaSimbolos ets = e.getValue();
-                String lex   = sanitizar(ets.getLexema());
-                String cat   = categoriaDe(lex);                     // ID / CONST_INT / CONST_FLOAT / CONST_STRING
-                int ocurr    = ets.getNroLineas().size();            // cuántas apariciones
+                String lex    = sanitizar(ets.getLexema());
+                String cat    = ets.getCategoria();
+                int ocurr     = ets.getNroLineas().size();
                 String lineas = ets.getNroLineas().stream()
                                 .sorted()
                                 .map(String::valueOf)

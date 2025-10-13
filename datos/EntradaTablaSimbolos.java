@@ -5,11 +5,13 @@ import java.util.ArrayList;
 public class EntradaTablaSimbolos {
     private String lexema;
     ArrayList<Integer> nroLineas;
+    private String categoria;
 
-    public EntradaTablaSimbolos(String lexema, int nroLinea) {
+    public EntradaTablaSimbolos(String lexema, int nroLinea, String categoria) {
         this.lexema = lexema;
         this.nroLineas = new ArrayList<>();
         this.nroLineas.add(nroLinea);
+        this.categoria = categoria;
     }
 
     public void agregarLinea(int nroLinea) {
@@ -35,6 +37,14 @@ public class EntradaTablaSimbolos {
             return nroLineas.get(nroLineas.size() - 1);
         }
         return -1; //si no hay lineas guardadas
+    }
+
+    public void setCategoria(String c) {
+        this.categoria = c; 
+    }
+    
+    public String getCategoria() {
+        return categoria;
     }
 
     @Override
